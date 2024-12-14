@@ -72,7 +72,7 @@ public class Robot extends TimedRobot
   @Override
   public void disabledInit()
   {
-    m_OI.setMotorBrake(true);
+    // m_OI.setMotorBrake(true);
     disabledTimer.reset();
     disabledTimer.start();
   }
@@ -81,8 +81,8 @@ public class Robot extends TimedRobot
   public void disabledPeriodic()
   {
     if (disabledTimer.hasElapsed(RobotMap.DrivebaseConstants.WHEEL_LOCK_TIME))
-    {
-      m_OI.setMotorBrake(false);
+    { 
+      // m_OI.setMotorBrake(false);
       disabledTimer.stop();
     }
   }
@@ -93,7 +93,7 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit()
   {
-    m_OI.setMotorBrake(true);
+    // m_OI.setMotorBrake(true);
     m_autonomousCommand = m_OI.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -118,15 +118,15 @@ public class Robot extends TimedRobot
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null)
-    {
-      m_autonomousCommand.cancel();
-    } else
-    {
-      CommandScheduler.getInstance().cancelAll();
-    }
-    m_OI.setDriveMode();
-    m_OI.setMotorBrake(true);
+    // if (m_autonomousCommand != null)
+    // {
+    //   m_autonomousCommand.cancel();
+    // } else
+    // {
+    //   CommandScheduler.getInstance().cancelAll();
+    // }
+    // m_OI.setDriveMode();
+    // m_OI.setMotorBrake(true);
   }
 
   /**
@@ -142,7 +142,7 @@ public class Robot extends TimedRobot
   {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-    m_OI.setDriveMode();
+    // m_OI.setDriveMode();
   }
 
   /**
