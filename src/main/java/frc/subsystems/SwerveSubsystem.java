@@ -53,7 +53,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   //Setup AutoBuilder for PathPlanner.
-  //reenable when the full version of pathplanner comes out
+  //re-enable when the full version of pathplanner comes out
   // public void setupPathPlanner(){
   //   AutoBuilder.configureHolonomic(
   //       this::getPose, // Robot pose supplier
@@ -91,7 +91,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param pose Target {@link Pose2d} to go to.
    * @return PathFinding command*/
 
-   
+
   //reenable later
   // public Command driveToPose(Pose2d pose){
   //   // Create the constraints to use while pathfinding

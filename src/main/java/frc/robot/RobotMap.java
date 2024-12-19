@@ -33,11 +33,11 @@ public final class RobotMap
 
   public static class OperatorConstants
   {
-
+    public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
     // Joystick Deadband
     //tbd
     public static final double kDeadband = 0;
-
     public static final double LEFT_X_DEADBAND  = 0.1;
     public static final double LEFT_Y_DEADBAND  = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;

@@ -26,11 +26,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class OI {
   //Controllers
-  private final static CommandXboxController io_DriverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  private final static CommandXboxController io_OperatorController = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+  private final static CommandXboxController driveController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final static CommandXboxController operatorController = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   // Subsystems
-  private final SwerveSubsystem  s_SwerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  private final SwerveSubsystem  swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
   //Commands
 
@@ -55,14 +55,13 @@ public class OI {
   }
 
   private void setDefaultCommands(){
-    //s_ArmSubsystem.setDefaultCommand(new ArmHoldAngle(s_ArmSubsystem, s_SwerveSubsystem, 17, 0.01)); TODO: Figure out if we want this
     //Run intake on operator's right stick
 
-    Command driveFieldOrientedAnglularVelocity = s_SwerveSubsystem.driveCommand(
-        () -> MathUtil.applyDeadband(-io_DriverController.getLeftY(), OperatorConstants.kDeadband),
-        () -> MathUtil.applyDeadband(-io_DriverController.getLeftX(), OperatorConstants.kDeadband),
-        () -> -MathUtil.applyDeadband(io_DriverController.getRightX(), OperatorConstants.kDeadband+0.05));
-    s_SwerveSubsystem.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    Command driveFieldOrientedAnglularVelocity = swerveSubsystem.driveCommand(
+        () -> MathUtil.applyDeadband(-driveController.getLeftY(), OperatorConstants.kDeadband),
+        () -> MathUtil.applyDeadband(-driveController.getLeftX(), OperatorConstants.kDeadband),
+        () -> -MathUtil.applyDeadband(driveController.getRightX(), OperatorConstants.kDeadband+0.05));
+    swerveSubsystem.setDefaultCommand(driveFieldOrientedAnglularVelocity);
   }
 
   private void configureCamera(){
@@ -73,31 +72,32 @@ public class OI {
   }
 
   public static void setRightRumbleDriver(double rumble){
-    io_DriverController.getHID().setRumble(RumbleType.kRightRumble, rumble);
+    driveController.getHID().setRumble(RumbleType.kRightRumble, rumble);
   }
   public static void setRightRumbleOperator(double rumble){
-    io_OperatorController.getHID().setRumble(RumbleType.kRightRumble, rumble);
+    operatorController.getHID().setRumble(RumbleType.kRightRumble, rumble);
   }
 
   private void configureBindings() {
 
     //Driver Controller
-    io_DriverController.b().whileTrue( //Drive Slow button
-    s_SwerveSubsystem.driveCommand(
-        () -> MathUtil.applyDeadband(-io_DriverController.getLeftY()*.5, OperatorConstants.kDeadband),
-        () -> MathUtil.applyDeadband(-io_DriverController.getLeftX()*.5, OperatorConstants.kDeadband),
-        () -> -MathUtil.applyDeadband(io_DriverController.getRightX(), OperatorConstants.kDeadband+0.05))
+    driveController.b().whileTrue( //Drive Slow button
+    swerveSubsystem.driveCommand(
+        () -> MathUtil.applyDeadband(-driveController.getLeftY()*.5, OperatorConstants.kDeadband),
+        () -> MathUtil.applyDeadband(-driveController.getLeftX()*.5, OperatorConstants.kDeadband),
+        () -> -MathUtil.applyDeadband(driveController.getRightX(), OperatorConstants.kDeadband+0.05))
     );
-    io_DriverController.back().whileTrue(new InstantCommand(s_SwerveSubsystem::zeroGyro)); //Reset gyro
+    driveController.back().whileTrue(new InstantCommand(swerveSubsystem::zeroGyro)); //Reset gyro
     
 
     ///Operator Controller
-        //io_OperatorController.rightBumper().whileTrue(new ArmRotateDashboard(s_ArmSubsystem, 17, 0.01)); //for testing
+        //operatorController.rightBumper().whileTrue(new ArmRotateDashboard(s_ArmSubsystem, 17, 0.01)); //for testing
 
-    //io_OperatorController.start().whileTrue(z_ShootFullPower);
-    //io_OperatorController.back().whileTrue(z_Shoot75Power);
+    //operatorController.start().whileTrue(z_ShootFullPower);
+    //operatorController.back().whileTrue(z_Shoot75Power);
     
   }
+  //I have no idea what this does -Zach
   private double getGreaterAxis(double axisOne, double axisTwo){
     if(Math.abs(axisOne) > Math.abs(axisTwo)){
       return axisOne;
@@ -107,7 +107,7 @@ public class OI {
   }
 
   public Command getAutonomousCommand() {
-    //return s_SwerveSubsystem.getAutonomousCommand("scoreClose3");
+    //return swerveSubsystem.getAutonomousCommand("scoreClose3");
     return autoChooser.getSelected();
   }
 }
