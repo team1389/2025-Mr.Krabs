@@ -11,7 +11,6 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.*;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -259,6 +258,7 @@ public class SwerveSubsystem extends SubsystemBase {
     return RobotSwerve.getMaximumAngularVelocity();
   }
 
+  @SuppressWarnings("removal")
   public void updateVisionOdometry(){
     boolean rejectUpdate = false;
     LimelightHelpers.SetRobotOrientation("limelight",RobotSwerve.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
