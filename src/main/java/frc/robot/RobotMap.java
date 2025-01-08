@@ -43,22 +43,4 @@ public final class RobotMap
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
-
-  public static class SwerveConstants {
-    //Speeds
-    public static final double kMaxSpeed = Units.feetToMeters(17.2); // Maximum speed of the robot in meters per second, used to limit acceleration.
-  }
-
-  public static class AutoConstants {
-    //PIDs
-    public static final PIDConstants kTranslationPID = new PIDConstants(1.25, 0, 0); // was 0.7 before!
-    public static final PIDConstants kAnglePID   = new PIDConstants(1, 0, 0.01); /// was 0.4 before!
-  } 
-
-  //Update the goal position for 2025
-  public static class FieldConstants {
-    public static final Translation2d kSpeakerPositionBLUE = new Translation2d(0.0, 5.547868); //TODO: Confirm these
-    public static final Translation2d kSpeakerPositionRED = new Translation2d(16.5410642, 5.547868);
-  }
-
 }
