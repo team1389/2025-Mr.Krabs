@@ -43,4 +43,17 @@ public final class RobotMap
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
+  public static class LimelightConstants {
+
+    //All of these have to be determined later (some of these are useless tbh)
+    public static final double AprilTagHeight = 0;
+    public static final double LimelightHeight = 0;
+    public static final double LimelightAngle = 0;
+    public static final double SpeakerXDistfromCenter = 0;
+    public static final double SpeakerYDistfromCenter = 0;
+    public static final double XOffset = 0;
+    public static final double YOffset = 0;
+    public static final double dis_LL_to_bumpers = 0;
+
+  }
 }

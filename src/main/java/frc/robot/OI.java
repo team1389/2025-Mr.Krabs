@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.RobotMap.OperatorConstants;
-import frc.subsystems.*;
 import frc.subsystems.SwerveDrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import frc.command.*;
@@ -160,12 +159,12 @@ public class OI {
     } else
     {
       driveController.a().onTrue((Commands.runOnce(swerveSubsystem::zeroGyro)));
-      driveController.x().onTrue(Commands.runOnce(swerveSubsystem::addFakeVisionReading));
+      driveController.x().onTrue(Commands.none());
       driveController.b().whileTrue(
           swerveSubsystem.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
                               );
-      driveController.y().whileTrue(swerveSubsystem.aimAtSpeaker(2));
+      driveController.y().whileTrue(Commands.none());
       driveController.start().whileTrue(Commands.none());
       driveController.back().whileTrue(Commands.none());
       driveController.leftBumper().whileTrue(Commands.runOnce(swerveSubsystem::lock, swerveSubsystem).repeatedly());
