@@ -1,6 +1,6 @@
 package frc.subsystems.SwerveDrive;
 
-import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -19,6 +19,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -26,14 +27,14 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.RobotMap;
-import frc.subsystems.LimelightVisionSubsystem;
-import frc.subsystems.SwerveDrive.Vision.Cameras;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +55,12 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
+import limelight.Limelight;
+import limelight.estimator.LimelightPoseEstimator;
+import limelight.estimator.PoseEstimate;
+import limelight.structures.LimelightSettings.LEDMode;
+
+
 public class SwerveSubsystem extends SubsystemBase
 {
 
@@ -62,7 +69,16 @@ public class SwerveSubsystem extends SubsystemBase
    */
   private final SwerveDrive swerveDrive;
 
-  private LimelightVisionSubsystem limelight;
+  private Limelight limelight;
+
+  LimelightPoseEstimator poseEstimator;
+
+  Pose3d                         cameraOffset        = new Pose3d(Inches.of(9.75).in(Meters),
+                                                                  Inches.of(9.75).in(Meters),
+                                                                  Inches.of(24.5).in(Meters),
+                                                                  Rotation3d.kZero);
+
+  // private LimelightVisionSubsystem limelight;
   /**
    * AprilTag field layout.
    */
@@ -75,7 +91,6 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * PhotonVision class to keep an accurate odometry.
    */
-  private Vision vision;
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -84,6 +99,13 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public SwerveSubsystem(File directory)
   {
+
+    limelight = new Limelight("");
+    limelight.getSettings()
+             .withLimelightLEDMode(LEDMode.PipelineControl)
+             .withCameraOffset(cameraOffset)
+             .save();
+    poseEstimator = limelight.getPoseEstimator(true); 
     // Angle conversion factor is 360 / (GEAR RATIO * ENCODER RESOLUTION)
     //  In this case the gear ratio is 12.8 motor revolutions per wheel rotation.
     //  The encoder resolution per motor revolution is 1 per motor revolution.
@@ -119,7 +141,7 @@ public class SwerveSubsystem extends SubsystemBase
                                                0.1); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
     swerveDrive.setModuleEncoderAutoSynchronize(false,
                                                 1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
-    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
+    // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
     if (visionDriveTest)
     {
       setupPhotonVision();
@@ -149,7 +171,6 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void setupPhotonVision()
   {
-    LimelightVisionSubsystem limelight = new LimelightVisionSubsystem();
     // vision = new Vision(swerveDrive::getPose, swerveDrive.field);
   }
 
@@ -160,7 +181,7 @@ public class SwerveSubsystem extends SubsystemBase
     if (visionDriveTest)
     {
       swerveDrive.updateOdometry();
-      vision.updatePoseEstimation(swerveDrive);
+      // vision.updatePoseEstimation(swerveDrive);
     }
   }
 
@@ -372,9 +393,21 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * Add a fake vision reading for testing purposes.
    */
-  public void addFakeVisionReading(LimelightVisionSubsystem limelight)
+  public void addFakeVisionReading()
   {
-    swerveDrive.addVisionMeasurement(limelight.getBotPose2d(), Timer.getFPGATimestamp());
+    Optional<PoseEstimate> visionEstimate = poseEstimator.getPoseEstimate(); // BotPose.BLUE_MEGATAG2.get(limelight);
+    visionEstimate.ifPresent((PoseEstimate poseEstimate) -> {
+      // If the average tag distance is less than 4 meters,
+      // there are more than 0 tags in view,
+      // and the average ambiguity between tags is less than 30% then we update the pose estimation.
+      if (poseEstimate.avgTagDist < 4 && poseEstimate.tagCount > 0 && poseEstimate.getMinTagAmbiguity() < 0.3)
+      {
+        SmartDashboard.putNumber("Pose2d X:", poseEstimate.pose.toPose2d().getX());
+        SmartDashboard.putNumber("Pose2d Y:", poseEstimate.pose.toPose2d().getY());
+      }
+    });
+    
+
   }
 
   /**

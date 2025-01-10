@@ -7,7 +7,6 @@ package frc.robot;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.SwerveDrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
-import frc.command.*;
 import frc.command.drivebase.AbsoluteDriveAdv;
 
 import java.io.File;
@@ -74,9 +73,9 @@ public class OI {
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
    */
-  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driveController::getRightX,
-                                                                                             driveController::getRightY)
-                                                           .headingWhile(true);
+  // SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driveController::getRightX,
+  //                                                                                            driveController::getRightY)
+  //                                                          .headingWhile(true);
 
                                                            
   // Applies deadbands and inverts controls because joysticks
@@ -84,7 +83,7 @@ public class OI {
   // controls are front-left positive
   // left stick controls translation
   // right stick controls the desired angle NOT angular rotation
-  Command driveFieldOrientedDirectAngle = swerveSubsystem.driveFieldOriented(driveDirectAngle);
+  // Command driveFieldOrientedDirectAngle = swerveSubsystem.driveFieldOriented(driveDirectAngle);
 
   // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
@@ -93,7 +92,7 @@ public class OI {
   // right stick controls the angular velocity of the robot
   Command driveFieldOrientedAnglularVelocity = swerveSubsystem.driveFieldOriented(driveAngularVelocity);
 
-  Command driveSetpointGen = swerveSubsystem.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
+  // Command driveSetpointGen = swerveSubsystem.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
 
   SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(swerveSubsystem.getSwerveDrive(),
                                                                    () -> -driveController.getLeftY(),
@@ -120,12 +119,14 @@ public class OI {
 
 
   //Auto
-  private final SendableChooser<Command> autoChooser;
-  
-  /* The container for the robot. Contains subsystems, OI devices, and commands. */
-  public OI() {
-    registerCommands();
-    autoChooser = AutoBuilder.buildAutoChooser();
+  private SendableChooser<Command> autoChooser;
+  private AutoBuilder autobuilder = new AutoBuilder();
+    
+    /* The container for the robot. Contains subsystems, OI devices, and commands. */
+    public OI() { 
+      // autoChooser = new SendableChooser<>();
+      registerCommands();
+      autoChooser = autobuilder.buildAutoChooser();
     SmartDashboard.putData("Auto", autoChooser);
     
     // configureCamera();
@@ -137,9 +138,10 @@ public class OI {
   private void configureBindings()
   {
     // (Condition) ? Return-On-True : Return-on-False
-    swerveSubsystem.setDefaultCommand(!RobotBase.isSimulation() ?
-                                driveFieldOrientedDirectAngle :
-                                driveFieldOrientedDirectAngleSim);
+    // swerveSubsystem.setDefaultCommand(!RobotBase.isSimulation() ?
+    //                             driveFieldOrientedDirectAngle :
+    //                             driveFieldOrientedDirectAngleSim);
+    swerveSubsystem.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
     if (Robot.isSimulation())
     {
