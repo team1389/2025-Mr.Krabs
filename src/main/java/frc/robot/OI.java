@@ -137,10 +137,10 @@ public class OI {
 
   private void configureBindings()
   {
-    // (Condition) ? Return-On-True : Return-on-False
+    // // (Condition) ? Return-On-True : Return-on-False
     // swerveSubsystem.setDefaultCommand(!RobotBase.isSimulation() ?
-    //                             driveFieldOrientedDirectAngle :
-    //                             driveFieldOrientedDirectAngleSim);
+    //                             driveFieldOrientedAnglularVelocity :
+    //                             driveSetpointGenSim);
     swerveSubsystem.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
     if (Robot.isSimulation())
