@@ -1,9 +1,9 @@
 {
   "location": {
     "front": 18,
-    "left": 18
+    "left": -18
   },
-  "absoluteEncoderOffset": 78,
+  "absoluteEncoderOffset": 215,
   "drive": {
     "type": "sparkflex_neo",
     "id": 6,
@@ -21,7 +21,7 @@
   },
   "inverted": {
     "drive": false,
-    "angle": false
+    "angle": true
   },
   "absoluteEncoderInverted": false
 }
