@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.RobotMap.OperatorConstants;
+import frc.subsystems.landonMotorSubsystem;
 import frc.subsystems.SwerveDrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import frc.command.drivebase.AbsoluteDriveAdv;
@@ -38,6 +39,7 @@ public class OI {
 
   // Subsystems
   private final SwerveSubsystem  swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  public final landonMotorSubsystem landonSubsystem = new landonMotorSubsystem();
 
   // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
@@ -151,7 +153,7 @@ public class OI {
     {
       swerveSubsystem.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
 
-      driveController.b().whileTrue(swerveSubsystem.sysIdDriveMotorCommand());
+      // driveController.b().whileTrue(swerveSubsystem.sysIdDriveMotorCommand());
       driveController.x().whileTrue(Commands.runOnce(swerveSubsystem::lock, swerveSubsystem).repeatedly());
       driveController.y().whileTrue(swerveSubsystem.driveToDistanceCommand(1.0, 0.2));
       driveController.start().onTrue((Commands.runOnce(swerveSubsystem::zeroGyro)));
@@ -162,10 +164,12 @@ public class OI {
     {
       driveController.a().onTrue((Commands.runOnce(swerveSubsystem::zeroGyro)));
       driveController.x().onTrue(Commands.none());
-      driveController.b().whileTrue(
-          swerveSubsystem.driveToPose(
-              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
-                              );
+      operatorController.x().whileTrue(Commands.runOnce(landonSubsystem::spin));
+      operatorController.x().whileFalse(Commands.runOnce(landonSubsystem::stop));
+      // driveController.b().whileTrue(
+      //     swerveSubsystem.driveToPose(
+      //         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
+      //                         );
       driveController.y().whileTrue(Commands.none());
       driveController.start().whileTrue(Commands.none());
       driveController.back().whileTrue(Commands.none());

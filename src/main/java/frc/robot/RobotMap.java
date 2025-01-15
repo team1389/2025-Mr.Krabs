@@ -16,6 +16,7 @@ public final class RobotMap
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
   public static final double MAX_SPEED  = Units.feetToMeters(14.5);
   // Maximum speed of the robot in meters per second, used to limit acceleration.
+public static final String INTAKE_MOTOR = null;
 
 //  public static final class AutonConstants
 //  {
@@ -55,5 +56,9 @@ public final class RobotMap
     public static final double YOffset = 0;
     public static final double dis_LL_to_bumpers = 0;
 
+  }
+
+  public static class MotorPorts{
+    public static final int landonMotor = 10;
   }
 }
