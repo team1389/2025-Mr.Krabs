@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.9141999999999999,
-  "robotLength": 0.9652000000000001,
+  "robotWidth": 0.914,
+  "robotLength": 0.965,
   "holonomicMode": true,
   "pathFolders": [],
   "autoFolders": [],
@@ -18,17 +18,17 @@
   "driveMotorType": "vortex",
   "driveCurrentLimit": 40.0,
   "wheelCOF": 1.0,
-  "flModuleX": 0.711,
-  "flModuleY": 0.762,
-  "frModuleX": 0.711,
-  "frModuleY": 0.0,
-  "blModuleX": 0.0,
-  "blModuleY": 0.762,
-  "brModuleX": 0.0,
-  "brModuleY": 0.0,
-  "bumperOffsetX": 0.3555,
-  "bumperOffsetY": 0.381,
+  "flModuleX": 0.356,
+  "flModuleY": 0.381,
+  "frModuleX": 0.356,
+  "frModuleY": -0.381,
+  "blModuleX": -0.356,
+  "blModuleY": 0.381,
+  "brModuleX": -0.356,
+  "brModuleY": -0.381,
+  "bumperOffsetX": 0.0,
+  "bumperOffsetY": 0.0,
   "robotFeatures": [
-    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.3555,\"y\":0.381},\"size\":{\"width\":0.711,\"length\":0.762},\"borderRadius\":0.0,\"strokeWidth\":0.02,\"filled\":false}}"
+    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.0,\"y\":0.0},\"size\":{\"width\":0.711,\"length\":0.762},\"borderRadius\":0.0,\"strokeWidth\":0.02,\"filled\":false}}"
   ]
 }

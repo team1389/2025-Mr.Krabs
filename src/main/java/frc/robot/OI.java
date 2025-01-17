@@ -165,8 +165,8 @@ public class OI {
     {
       driveController.a().onTrue((Commands.runOnce(swerveSubsystem::zeroGyro)));
       driveController.x().onTrue(Commands.none());
-      operatorController.x().whileTrue(Commands.runOnce(landonSubsystem::spin));
-      operatorController.x().whileFalse(Commands.runOnce(landonSubsystem::stop));
+      // operatorController.x().whileTrue(Commands.runOnce(landonSubsystem::spin));
+      // operatorController.x().whileFalse(Commands.runOnce(landonSubsystem::stop));
       // driveController.b().whileTrue(
       //     swerveSubsystem.driveToPose(
       //         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
@@ -207,6 +207,6 @@ public class OI {
 
   public Command getAutonomousCommand() {
     //return swerveSubsystem.getAutonomousCommand("scoreClose3");
-        return new PathPlannerAuto("MoveForward3M");
+    return new PathPlannerAuto("MoveForward3M");
   }
 }
