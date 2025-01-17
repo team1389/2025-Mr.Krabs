@@ -143,7 +143,7 @@ public class OI {
     // // (Condition) ? Return-On-True : Return-on-False
     // swerveSubsystem.setDefaultCommand(!RobotBase.isSimulation() ?
     //                             driveFieldOrientedAnglularVelocity :
-    //                             driveSetpointGenSim);
+    //                             driveSetpointGenSim);S
     swerveSubsystem.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
     if (Robot.isSimulation())

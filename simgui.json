@@ -9,11 +9,21 @@
       "/SmartDashboard/IMU": "Alerts",
       "/SmartDashboard/JSON": "Alerts",
       "/SmartDashboard/Motors": "Alerts",
+      "/SmartDashboard/Pigeon IMU [0]": "Gyro",
       "/SmartDashboard/Pigeon IMU [18]": "Gyro",
       "/SmartDashboard/Swerve Drive": "Alerts"
     },
     "windows": {
       "/SmartDashboard/Field": {
+        "Robot": {
+          "style": "Box/Image"
+        },
+        "XModules": {
+          "length": 0.20000000298023224,
+          "selectable": false,
+          "style": "Box/Image",
+          "width": 0.20000000298023224
+        },
         "bottom": 1476,
         "height": 8.210550308227539,
         "left": 150,
