@@ -16,7 +16,7 @@
   },
   "encoder": {
     "type": "dutycycle",
-    "id": 2,
+    "id": 8,
     "canbus": null
   },
   "inverted": {
