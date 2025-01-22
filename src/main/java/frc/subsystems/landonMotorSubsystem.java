@@ -21,4 +21,8 @@ public class landonMotorSubsystem extends SubsystemBase{
     public void stop(){
         spinnyMotor.set(0);
     }
+
+    // public int getEncoderValue(){
+    //     return spinnyMotor.getEncoderPosition();
+    // }
 }
