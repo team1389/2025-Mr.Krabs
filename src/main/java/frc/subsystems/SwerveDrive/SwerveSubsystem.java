@@ -1,6 +1,10 @@
-package frc.subsystems.SwerveDrive;
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
-import static edu.wpi.first.units.Units.*;
+package frc.subsystems.swervedrive;
+
+import static edu.wpi.first.units.Units.Meter;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -19,7 +23,6 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -27,15 +30,12 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.RobotMap;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -55,39 +55,21 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
-import limelight.Limelight;
-import limelight.estimator.LimelightPoseEstimator;
-import limelight.estimator.PoseEstimate;
-import limelight.structures.LimelightSettings.LEDMode;
-
-
 public class SwerveSubsystem extends SubsystemBase
 {
 
   /**
    * Swerve drive object.
    */
-  private final SwerveDrive swerveDrive;
-
-  private Limelight limelight;
-
-  LimelightPoseEstimator poseEstimator;
-
-  Pose3d                         cameraOffset        = new Pose3d(Inches.of(9.75).in(Meters),
-                                                                  Inches.of(9.75).in(Meters),
-                                                                  Inches.of(24.5).in(Meters),
-                                                                  Rotation3d.kZero);
-
-  // private LimelightVisionSubsystem limelight;
+  private final SwerveDrive         swerveDrive;
   /**
    * AprilTag field layout.
    */
-  //make sure to change this to the 2025 field layout when it releases
   private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
   /**
    * Enable vision odometry updates while driving.
    */
-  private final boolean visionDriveTest = false;
+  private final boolean             visionDriveTest     = false;
   /**
    * PhotonVision class to keep an accurate odometry.
    */
@@ -99,27 +81,6 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public SwerveSubsystem(File directory)
   {
-
-    limelight = new Limelight("");
-    limelight.getSettings()
-             .withLimelightLEDMode(LEDMode.PipelineControl)
-             .withCameraOffset(cameraOffset)
-             .save();
-    poseEstimator = limelight.getPoseEstimator(true); 
-    // Angle conversion factor is 360 / (GEAR RATIO * ENCODER RESOLUTION)
-    //  In this case the gear ratio is 12.8 motor revolutions per wheel rotation.
-    //  The encoder resolution per motor revolution is 1 per motor revolution.
-    double angleConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(12.8);
-    // Motor conversion factor is (PI * WHEEL DIAMETER IN METERS) / (GEAR RATIO * ENCODER RESOLUTION).
-    //  In this case the wheel diameter is 4 inches, which must be converted to meters to get meters/second.
-    //  The gear ratio is 6.75 motor revolutions per wheel rotation.
-    //  The encoder resolution per motor revolution is 1 per motor revolution.
-    double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.75);
-    System.out.println("\"conversionFactors\": {");
-    System.out.println("\t\"angle\": {\"factor\": " + angleConversionFactor + " },");
-    System.out.println("\t\"drive\": {\"factor\": " + driveConversionFactor + " }");
-    System.out.println("}");
-
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try
@@ -141,7 +102,7 @@ public class SwerveSubsystem extends SubsystemBase
                                                0.1); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
     swerveDrive.setModuleEncoderAutoSynchronize(false,
                                                 1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
-    // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
+//    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
     if (visionDriveTest)
     {
       setupPhotonVision();
@@ -262,6 +223,30 @@ public class SwerveSubsystem extends SubsystemBase
   }
 
   /**
+   * Aim the robot at the target returned by PhotonVision.
+   *
+   * @return A {@link Command} which will run the alignment.
+  //  */
+  // public Command aimAtTarget(Cameras camera)
+  // {
+
+  //   return run(() -> {
+  //     Optional<PhotonPipelineResult> resultO = camera.getBestResult();
+  //     if (resultO.isPresent())
+  //     {
+  //       var result = resultO.get();
+  //       if (result.hasTargets())
+  //       {
+  //         drive(getTargetSpeeds(0,
+  //                               0,
+  //                               Rotation2d.fromDegrees(result.getBestTarget()
+  //                                                            .getYaw()))); // Not sure if this will work, more math may be required.
+  //       }
+  //     }
+  //   });
+  // }
+
+  /**
    * Get the path follower with events.
    *
    * @param pathName PathPlanner path name.
@@ -356,14 +341,14 @@ public class SwerveSubsystem extends SubsystemBase
    *
    * @return SysId Drive Command
    */
-  // public Command sysIdDriveMotorCommand()
-  // {
-  //   return SwerveDriveTest.generateSysIdCommand(
-  //       SwerveDriveTest.setDriveSysIdRoutine(
-  //           new Config(),
-  //           this, swerveDrive, 12),
-  //       3.0, 5.0, 3.0);
-  // }
+  public Command sysIdDriveMotorCommand()
+  {
+    return SwerveDriveTest.generateSysIdCommand(
+        SwerveDriveTest.setDriveSysIdRoutine(
+            new Config(),
+            this, swerveDrive, 12, true),
+        3.0, 5.0, 3.0);
+  }
 
   /**
    * Command to characterize the robot angle motors using SysId
@@ -388,26 +373,6 @@ public class SwerveSubsystem extends SubsystemBase
   {
     return run(() -> Arrays.asList(swerveDrive.getModules())
                            .forEach(it -> it.setAngle(0.0)));
-  }
-
-  /**
-   * Add a fake vision reading for testing purposes.
-   */
-  public void addFakeVisionReading()
-  {
-    Optional<PoseEstimate> visionEstimate = poseEstimator.getPoseEstimate(); // BotPose.BLUE_MEGATAG2.get(limelight);
-    visionEstimate.ifPresent((PoseEstimate poseEstimate) -> {
-      // If the average tag distance is less than 4 meters,
-      // there are more than 0 tags in view,
-      // and the average ambiguity between tags is less than 30% then we update the pose estimation.
-      if (poseEstimate.avgTagDist < 4 && poseEstimate.tagCount > 0 && poseEstimate.getMinTagAmbiguity() < 0.3)
-      {
-        SmartDashboard.putNumber("Pose2d X:", poseEstimate.pose.toPose2d().getX());
-        SmartDashboard.putNumber("Pose2d Y:", poseEstimate.pose.toPose2d().getY());
-      }
-    });
-    
-
   }
 
   /**
@@ -749,12 +714,12 @@ public class SwerveSubsystem extends SubsystemBase
   }
 
   /**
-  //  * Add a fake vision reading for testing purposes.
-  //  */
-  // public void addFakeVisionReading()
-  // {
-  //   swerveDrive.addVisionMeasurement(new Pose2d(3, 3, Rotation2d.fromDegrees(65)), Timer.getFPGATimestamp());
-  // }
+   * Add a fake vision reading for testing purposes.
+   */
+  public void addFakeVisionReading()
+  {
+    swerveDrive.addVisionMeasurement(new Pose2d(3, 3, Rotation2d.fromDegrees(65)), Timer.getFPGATimestamp());
+  }
 
   /**
    * Gets the swerve drive object.
