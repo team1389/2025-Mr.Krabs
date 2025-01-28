@@ -38,7 +38,7 @@ public static final String INTAKE_MOTOR = null;
     public static final int kOperatorControllerPort = 1;
     // Joystick Deadband
     //tbd
-    public static final double kDeadband = 0;
+    public static final double DEADBAND = 0.5;
     public static final double LEFT_X_DEADBAND  = 0.1;
     public static final double LEFT_Y_DEADBAND  = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
