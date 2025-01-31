@@ -45,6 +45,7 @@ public class OI
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driveController.getLeftY() * -1,
                                                                 () -> driveController.getLeftX() * -1)
+                                                                //possible change to getRightY if issue persists
                                                             .withControllerRotationAxis(driveController::getRightX)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
