@@ -502,7 +502,7 @@ public class SwerveSubsystem extends SubsystemBase
       //former code that worked
       // if(isAutoAlign.get() || commandAlign){
       if(isAutoAlign.get()){
-        //may have to create an objecet and set it directly. Ex: ChassisSpeeds temp = velocity.get();
+        //may have to create an object and set it directly. Ex: ChassisSpeeds temp = velocity.get();
         velocity.get().omegaRadiansPerSecond = -(0.1 * alignTx) + Math.toRadians( 25); 
       }
     }
