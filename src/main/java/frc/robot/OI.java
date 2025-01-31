@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotMap.OperatorConstants;
-import frc.subsystems.swervedrive.SwerveSubsystem;
+import frc.subsystems.ClimberSubsystem;
+import frc.subsystems.SwerveSubsystem;
+
 import java.io.File;
 import swervelib.SwerveInputStream;
 
@@ -30,10 +32,13 @@ public class OI
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driveController = new CommandXboxController(0);
+  final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
+  private final ClimberSubsystem      climber    = new ClimberSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
-
+                                                                                
+                                                                              
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
@@ -148,6 +153,8 @@ public class OI
       driveController.back().whileTrue(Commands.none());
       driveController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driveController.rightBumper().onTrue(Commands.none());
+      operatorController.a().whileTrue(Commands.run(climber::spinForwards, climber));
+      operatorController.b().whileTrue(Commands.run(climber::spinBackwards, climber));
     }
 
   }

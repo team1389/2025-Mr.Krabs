@@ -32,6 +32,11 @@ public static final String INTAKE_MOTOR = null;
     public static final double WHEEL_LOCK_TIME = 10; // seconds
   }
 
+  public static final class ClimberConstants
+  {
+    public static final double CLIMBER_SPEED = 0.5;
+  }
+
   public static class OperatorConstants
   {
     public static final int kDriverControllerPort = 0;
@@ -59,6 +64,7 @@ public static final String INTAKE_MOTOR = null;
   }
 
   public static class MotorPorts{
-    public static final int landonMotor = 10;
+    //formerly landon motor
+    public static final int climberMotor = 10;
   }
 }

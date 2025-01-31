@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.subsystems.swervedrive;
+package frc.subsystems;
 
 import static edu.wpi.first.units.Units.Meter;
 
@@ -54,7 +54,6 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
-
 public class SwerveSubsystem extends SubsystemBase
 {
 
@@ -63,7 +62,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   private final SwerveDrive         swerveDrive;
 
-  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  VisionSubsystem visionSubsystem = new VisionSubsystem();
   /**
    * AprilTag field layout.
    */
