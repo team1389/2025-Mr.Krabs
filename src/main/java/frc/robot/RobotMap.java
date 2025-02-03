@@ -66,5 +66,8 @@ public static final String INTAKE_MOTOR = null;
   public static class MotorPorts{
     //formerly landon motor
     public static final int climberMotor = 10;
+    public static final int ELEVATOR_MOTOR = 0; //TODO
+    public static final int ARM_1_MOTOR = 0;
+    public static final int ARM_2_MOTOR = 0;
   }
 }
