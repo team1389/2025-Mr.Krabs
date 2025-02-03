@@ -15,8 +15,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.command.ManualElevator;
+import frc.command.exhaleCommand;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
+import frc.subsystems.ElevatorSubsystem;
 import frc.subsystems.SwerveSubsystem;
 
 import java.io.File;
@@ -35,6 +38,7 @@ public class OI
   final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
   private final ClimberSubsystem      climber    = new ClimberSubsystem();
+  private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
                                                                                 
@@ -154,11 +158,34 @@ public class OI
       driveController.back().whileTrue(Commands.none());
       driveController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driveController.rightBumper().onTrue(Commands.none());
-      // operatorController.a().whileTrue(Commands.run(climber::spinForwards, climber));
-      // operatorController.b().whileTrue(Commands.run(climber::spinBackwards, climber));
-      operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
-      operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
+      operatorController.a().whileTrue(Commands.run(climber::spinForwards, climber));
+      operatorController.b().whileTrue(Commands.run(climber::spinBackwards, climber));
+
+      elevator.setDefaultCommand(new ManualElevator(
+        elevator,
+        () -> getManipLeftY(),
+        () -> getManipRightY(),
+        () -> getManipRightTrigger(),
+        () -> getManipLeftTrigger()
+      )
+      );
+
+
     }
+
+  }
+
+  public double getManipLeftY(){
+    return operatorController.getRawAxis(1);
+  }
+  public double getManipRightY(){
+    return operatorController.getRawAxis(3);
+  }
+  public boolean getManipRightTrigger(){
+    return operatorController.rightTrigger().getAsBoolean();
+  }
+  public boolean getManipLeftTrigger(){
+    return operatorController.leftTrigger().getAsBoolean();
   }
 
   /**
