@@ -158,8 +158,8 @@ public class OI
       driveController.back().whileTrue(Commands.none());
       driveController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driveController.rightBumper().onTrue(Commands.none());
-      operatorController.a().whileTrue(Commands.run(climber::spinForwards, climber));
-      operatorController.b().whileTrue(Commands.run(climber::spinBackwards, climber));
+      operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
+      operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
 
       elevator.setDefaultCommand(new ManualElevator(
         elevator,
