@@ -62,7 +62,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   private final SwerveDrive         swerveDrive;
 
-  VisionSubsystem visionSubsystem = new VisionSubsystem();
+  // VisionSubsystem visionSubsystem = new VisionSubsystem();
   /**
    * AprilTag field layout.
    */
@@ -152,7 +152,7 @@ public class SwerveSubsystem extends SubsystemBase
       // vision.updatePoseEstimation(swerveDrive);
     }
 
-    alignTx = visionSubsystem.getAlignTX();
+    // alignTx = visionSubsystem.getAlignTX();
   }
 
   @Override

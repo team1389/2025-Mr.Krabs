@@ -15,11 +15,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.command.ManualElevator;
+// import frc.command.ManualElevator;
 // import frc.command.exhaleCommand;
 import frc.robot.RobotMap.OperatorConstants;
-import frc.subsystems.ClimberSubsystem;
-import frc.subsystems.ElevatorSubsystem;
+// import frc.subsystems.ClimberSubsystem;
+// import frc.subsystems.ElevatorSubsystem;
 import frc.subsystems.SwerveSubsystem;
 
 import java.io.File;
@@ -37,8 +37,8 @@ public class OI
   final         CommandXboxController driveController = new CommandXboxController(0);
   final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
-  private final ClimberSubsystem      climber    = new ClimberSubsystem();
-  private final ElevatorSubsystem elevator = new ElevatorSubsystem();
+  // private final ClimberSubsystem      climber    = new ClimberSubsystem();
+  // private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
                                                                                 
@@ -158,17 +158,17 @@ public class OI
       driveController.back().whileTrue(Commands.none());
       driveController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driveController.rightBumper().onTrue(Commands.none());
-      operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
-      operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
+      // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
+      // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
  
-      elevator.setDefaultCommand(new ManualElevator(
-        elevator,
-        () -> getManipLeftY(),
-        () -> getManipRightY(),
-        () -> getManipRightTrigger(),
-        () -> getManipLeftTrigger()
-      )
-      );
+      // elevator.setDefaultCommand(new ManualElevator(
+      //   elevator,
+      //   () -> getManipLeftY(),
+      //   () -> getManipRightY(),
+      //   () -> getManipRightTrigger(),
+      //   () -> getManipLeftTrigger()
+      // )
+      // );
 
 
     }
