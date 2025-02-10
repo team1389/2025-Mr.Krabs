@@ -51,7 +51,7 @@ public static final String INTAKE_MOTOR = null;
   }
   public static class LimelightConstants {
 
-    //All of these have to be determined later (some of these are useless tbh)
+    //TODO: All of these have to be determined later (some of these are useless tbh)
     public static final double AprilTagHeight = 0;
     public static final double LimelightHeight = 0;
     public static final double LimelightAngle = 0;
