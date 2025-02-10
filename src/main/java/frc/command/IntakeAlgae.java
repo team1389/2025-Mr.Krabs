@@ -4,17 +4,17 @@
 // import frc.subsystems.IntakeSubsystem;
 
 // public class IntakeAlgae extends Command{
-//     public IntakeSubsystem intakesub;
+//     public IntakeSubsystem intakeSub;
 
-//     public IntakeAlgae(IntakeSubsystem intakesubb) {
-//         intakesub = intakesubb;
+//     public IntakeAlgae(IntakeSubsystem intakeSub) {
+//         intakeSub = this.intakeSub;
 //     }
 
 //     public void execute() {
-//         intakesub.suckAlgae();
+//         intakeSub.intakeAlgae();
 //     }
 
 //     public void end(boolean interrupted) {
-//         intakesub.stopAlgae();
+//         intakeSub.stopAlgae();
 //     }
 // }

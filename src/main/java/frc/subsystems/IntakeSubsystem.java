@@ -16,19 +16,19 @@
 //         coralIntake = new SparkFlex(RobotMap.MotorPorts.intakeCoralMotor, MotorType.kBrushless);
 //     }
 //     //Coral Intake
-//     public void suckCoral() {
+//     public void intakeCoral() {
 //         coralIntake.set(speed);
 //     }
 //     //Coral Outtake
-//     public void spitCoral() {
+//     public void outtakeCoral() {
 //         coralIntake.set(-speed);
 //     }
 //     //Algae Intake
-//     public void suckAlgae() {
+//     public void intakeAlgae() {
 //         algaeIntake.set(speed);
 //     }
 //     //Algae Outtake
-//     public void spitAlgae() {
+//     public void outtakeAlgae() {
 //         algaeIntake.set(-speed);
 //     }
 //     public void stopCoral() {

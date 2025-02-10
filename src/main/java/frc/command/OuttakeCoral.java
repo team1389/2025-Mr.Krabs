@@ -1,20 +1,20 @@
 // package frc.command;
 
 // import edu.wpi.first.wpilibj2.command.Command;
-// import frc.subsystems.IntakeSubsystem;
+// import frc.subsystems.intakeSubsystem;
 
 // public class OuttakeCoral extends Command {
-//     public IntakeSubsystem intakesub;
+//     public intakeSubsystem intakeSub;
 
-//     public OuttakeCoral(IntakeSubsystem intakesubb) {
-//         intakesub = intakesubb;
+//     public OuttakeCoral(intakeSubsystem intakeSub) {
+//         intakeSub = this.intakeSub;
 //     }
 
 //     public void execute() {
-//         intakesub.spitCoral();
+//         intakeSub.outtakeCoral();
 //     }
 
 //     public void end(boolean interrupted) {
-//         intakesub.stopCoral();
+//         intakeSub.stopCoral();
 //     }
 // }

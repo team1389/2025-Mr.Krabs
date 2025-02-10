@@ -64,9 +64,9 @@ public static final String INTAKE_MOTOR = null;
   }
 
   public static class MotorPorts{
-    //formerly landon motor
+    //TODO: add all motor ports
     public static final int climberMotor = 10;
-    public static final int ELEVATOR_MOTOR = 11; //TODO
+    public static final int ELEVATOR_MOTOR = 11; 
     public static final int ARM_1_MOTOR = 12;
     public static final int ARM_2_MOTOR = 13;
     public static final int intakeAlgaeMotor = 14;

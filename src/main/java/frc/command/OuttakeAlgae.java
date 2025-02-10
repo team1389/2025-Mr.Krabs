@@ -1,20 +1,20 @@
 // package frc.command;
 
 // import edu.wpi.first.wpilibj2.command.Command;
-// import frc.subsystems.IntakeSubsystem;
+// import frc.subsystems.intakeSubsystem;
 
 // public class OuttakeAlgae extends Command {
-//     public IntakeSubsystem intakesub;
+//     public intakeSubsystem intakeSub;
 
-//     public OuttakeAlgae(IntakeSubsystem intakesubb) {
-//         intakesub = intakesubb;
+//     public OuttakeAlgae(intakeSubsystem intakeSub) {
+//         intakeSub = this.intakeSub;
 //     }
 
 //     public void execute() {
-//         intakesub.spitAlgae();
+//         intakeSub.outtakeAlgae();
 //     }
 
 //     public void end(boolean interrupted) {
-//         intakesub.stopAlgae();
+//         intakeSub.stopAlgae();
 //     }
 // }
