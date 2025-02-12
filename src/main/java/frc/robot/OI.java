@@ -176,10 +176,10 @@ public class OI
   }
 
   public double getManipLeftY(){
-    return operatorController.getRawAxis(1);
+    return operatorController.getLeftY();
   }
   public double getManipRightY(){
-    return operatorController.getRawAxis(3);
+    return operatorController.getRightY();
   }
   public boolean getManipRightTrigger(){
     return operatorController.rightTrigger().getAsBoolean();
