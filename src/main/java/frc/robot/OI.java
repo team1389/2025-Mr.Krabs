@@ -15,12 +15,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.command.SetElevatorArm;
 // import frc.command.ManualElevator;
 // import frc.command.exhaleCommand;
 import frc.robot.RobotMap.OperatorConstants;
 // import frc.subsystems.ClimberSubsystem;
-// import frc.subsystems.ElevatorSubsystem;
+import frc.subsystems.ElevatorSubsystem;
 import frc.subsystems.SwerveSubsystem;
+import frc.subsystems.ElevatorSubsystem.ArmPosition;
 
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -38,7 +40,7 @@ public class OI
   final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
   // private final ClimberSubsystem      climber    = new ClimberSubsystem();
-  // private final ElevatorSubsystem elevator = new ElevatorSubsystem();
+  private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
                                                                                 
@@ -170,6 +172,7 @@ public class OI
       // )
       // );
 
+      operatorController.x().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
 
     }
 
