@@ -4,13 +4,14 @@
 
 package frc.robot;
 
+import java.io.File;
+
 import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -21,10 +22,8 @@ import frc.command.SetElevatorArm;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
 import frc.subsystems.ElevatorSubsystem;
-import frc.subsystems.SwerveSubsystem;
 import frc.subsystems.ElevatorSubsystem.ArmPosition;
-
-import java.io.File;
+import frc.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 
 /**
@@ -69,33 +68,6 @@ public class OI
    */
   SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
                                                              .allianceRelativeControl(false);
-
-  SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                        () -> -driveController.getLeftY(),
-                                                                        () -> -driveController.getLeftX())
-                                                                    .withControllerRotationAxis(() -> driveController.getRawAxis(
-                                                                        2))
-                                                                    .deadband(OperatorConstants.DEADBAND)
-                                                                    .scaleTranslation(0.8)
-                                                                    .allianceRelativeControl(true);
-  // Derive the heading axis with math!
-  SwerveInputStream driveDirectAngleKeyboard     = driveAngularVelocityKeyboard.copy()
-                                                                               .withControllerHeadingAxis(() ->
-                                                                                                              Math.sin(
-                                                                                                                  driveController.getRawAxis(
-                                                                                                                      2) *
-                                                                                                                  Math.PI) *
-                                                                                                              (Math.PI *
-                                                                                                               2),
-                                                                                                          () ->
-                                                                                                              Math.cos(
-                                                                                                                  driveController.getRawAxis(
-                                                                                                                      2) *
-                                                                                                                  Math.PI) *
-                                                                                                              (Math.PI *
-                                                                                                               2))
-                                                                               .headingWhile(true);
-
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -122,37 +94,8 @@ public class OI
     Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented, () -> driveController.b().getAsBoolean());
     Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngle);
-    Command driveFieldOrientedDirectAngleKeyboard      = drivebase.driveFieldOriented(driveDirectAngleKeyboard, () -> driveController.b().getAsBoolean());
-    Command driveFieldOrientedAnglularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard, () -> driveController.b().getAsBoolean());
-    Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(
-        driveDirectAngleKeyboard);
 
-    if (RobotBase.isSimulation())
-    {
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
-    } else
-    {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    }
-
-    if (Robot.isSimulation())
-    {
-      driveController.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-      driveController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
-
-    }
-    if (DriverStation.isTest())
-    {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
-
-      driveController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driveController.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-      driveController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driveController.back().whileTrue(drivebase.centerModulesCommand());
-      driveController.leftBumper().onTrue(Commands.none());
-      driveController.rightBumper().onTrue(Commands.none());
-    } else
-    {
+    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
       //EDIT YOUR COMMANDS HERE_______________________________________________________________________________________________________________________________
       //dont use driver B for aything else, its already used for auto align
       driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
@@ -177,7 +120,6 @@ public class OI
       // );
 
       operatorController.x().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
-    }
 
   }
 
