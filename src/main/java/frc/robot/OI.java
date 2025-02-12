@@ -16,13 +16,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.SetElevatorArm;
-// import frc.command.ManualElevator;
+import frc.command.ManualElevator;
 // import frc.command.exhaleCommand;
 import frc.robot.RobotMap.OperatorConstants;
 // import frc.subsystems.ClimberSubsystem;
-import frc.subsystems.ElevatorSubsystem;
+import frc.subsystems.ElevatorArmSubsystem;
 import frc.subsystems.SwerveSubsystem;
-import frc.subsystems.ElevatorSubsystem.ArmPosition;
+import frc.subsystems.ElevatorArmSubsystem.ArmPosition;
 
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -40,7 +40,7 @@ public class OI
   final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
   // private final ClimberSubsystem      climber    = new ClimberSubsystem();
-  private final ElevatorSubsystem elevator = new ElevatorSubsystem();
+  private final ElevatorArmSubsystem elevator = new ElevatorArmSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
                                                                                 
@@ -163,14 +163,14 @@ public class OI
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
  
-      // elevator.setDefaultCommand(new ManualElevator(
-      //   elevator,
-      //   () -> getManipLeftY(),
-      //   () -> getManipRightY(),
-      //   () -> getManipRightTrigger(),
-      //   () -> getManipLeftTrigger()
-      // )
-      // );
+      elevator.setDefaultCommand(new ManualElevator(
+        elevator,
+        () -> getManipLeftY(),
+        () -> getManipRightY(),
+        () -> getManipRightTrigger(),
+        () -> getManipLeftTrigger()
+      )
+      );
 
       operatorController.x().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
 
