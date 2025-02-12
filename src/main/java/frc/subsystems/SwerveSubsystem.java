@@ -301,7 +301,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
     SwerveSetpointGenerator setpointGenerator = new SwerveSetpointGenerator(RobotConfig.fromGUISettings(),
                                                                             swerveDrive.getMaximumChassisAngularVelocity());
-    AtomicReference<SwerveSetpoint> prevSetpoint
+    AtomicReference<SwerveSetpoint> prevSetpoint  
         = new AtomicReference<>(new SwerveSetpoint(swerveDrive.getRobotVelocity(),
                                                    swerveDrive.getStates(),
                                                    DriveFeedforwards.zeros(swerveDrive.getModules().length)));

@@ -37,6 +37,13 @@ public static final String INTAKE_MOTOR = null;
     public static final double CLIMBER_SPEED = 1;
   }
 
+  public static final class ArmConstants
+  {
+    public static final double ELEVATOR_MAX_SPEED = 1;
+    public static final double ARM1_MAX_SPEED = 1;
+    public static final double ARM2_MAX_SPEED = 1;
+  }
+
   public static class OperatorConstants
   {
     public static final int kDriverControllerPort = 0;
