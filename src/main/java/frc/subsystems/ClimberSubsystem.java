@@ -15,11 +15,11 @@ public class ClimberSubsystem extends SubsystemBase{
     }
 
     public void spinForwards(){
-        climberMotor.set(RobotMap.ClimberConstants.CLIMBER_SPEED);
+        climberMotor.set(-RobotMap.ClimberConstants.CLIMBER_SPEED);
     }
 
     public void spinBackwards(){
-        climberMotor.set(-RobotMap.ClimberConstants.CLIMBER_SPEED);
+        climberMotor.set(RobotMap.ClimberConstants.CLIMBER_SPEED);
     }
 
     public void stop(){

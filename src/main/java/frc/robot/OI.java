@@ -16,13 +16,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.command.SetElevatorArm;
+import frc.command.runClimberDown;
+import frc.command.runClimberUp;
+// import frc.command.SetElevatorArm;
 // import frc.command.ManualElevator;
 // import frc.command.exhaleCommand;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
-import frc.subsystems.ElevatorSubsystem;
-import frc.subsystems.ElevatorSubsystem.ArmPosition;
+// import frc.subsystems.ElevatorSubsystem;
+// import frc.subsystems.ElevatorSubsystem.ArmPosition;
 import frc.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 
@@ -39,7 +41,7 @@ public class OI
   final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
   private final ClimberSubsystem      climber    = new ClimberSubsystem();
-  private final ElevatorSubsystem elevator = new ElevatorSubsystem();
+  // private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
                                                                                 
@@ -51,7 +53,8 @@ public class OI
                                                                 () -> driveController.getLeftY() * -1,
                                                                 () -> driveController.getLeftX() * -1)
                                                                 //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
-                                                            .withControllerRotationAxis(driveController::getRightY)
+                                                                //Raw axis of rightTriggerAxis is 3 for some reason
+                                                            .withControllerRotationAxis(driveController::getRightTriggerAxis)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -105,9 +108,11 @@ public class OI
       driveController.rightBumper().onTrue(Commands.none());
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
-      operatorController.a().whileTrue(Commands.run(climber::spinForwards, climber));
-      operatorController.y().whileTrue(Commands.run(climber::spinBackwards, climber));
-      operatorController.x().whileTrue(Commands.run(climber::stop, climber));
+      // operatorController.a().whileTrue(Commands.run(climber::spinForwards, climber));
+      // operatorController.y().whileTrue(Commands.run(climber::spinBackwards, climber));
+      // operatorController.x().whileTrue(Commands.run(climber::stop, climber));
+      operatorController.a().whileTrue(new runClimberDown(climber));
+      // operatorController.y().whileTrue(new runClimberUp(climber));
 
  
       // elevator.setDefaultCommand(new ManualElevator(
@@ -119,7 +124,7 @@ public class OI
       // )
       // );
 
-      operatorController.x().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
+      // operatorController.x().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
 
   }
 
