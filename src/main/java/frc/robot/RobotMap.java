@@ -34,7 +34,7 @@ public static final String INTAKE_MOTOR = null;
 
   public static final class ClimberConstants
   {
-    public static final double CLIMBER_SPEED = 1;
+    public static final double CLIMBER_SPEED = .5;
   }
 
   public static final class ArmConstants

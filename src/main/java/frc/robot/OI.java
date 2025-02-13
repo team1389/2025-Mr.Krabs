@@ -110,9 +110,9 @@ public class OI
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.a().whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.y().whileTrue(Commands.run(climber::spinBackwards, climber));
-      // operatorController.x().whileTrue(Commands.run(climber::stop, climber));
+      // operatorController.x().whileTrue(Commands.run(climber::spinForwards, climber));
       operatorController.a().whileTrue(new runClimberDown(climber));
-      // operatorController.y().whileTrue(new runClimberUp(climber));
+      operatorController.y().whileTrue(new runClimberUp(climber));
 
  
       // elevator.setDefaultCommand(new ManualElevator(
