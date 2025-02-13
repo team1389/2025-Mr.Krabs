@@ -41,7 +41,7 @@ public class OI
   final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
   // private final ClimberSubsystem      climber    = new ClimberSubsystem();
-  private final ElevatorArmSubsystem elevator = new ElevatorArmSubsystem();
+  // private final ElevatorArmSubsystem elevator = new ElevatorArmSubsystem();
   private final ClimberSubsystem      climber    = new ClimberSubsystem();
   // private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -117,14 +117,14 @@ public class OI
       operatorController.y().whileTrue(new runClimberUp(climber));
 
  
-      elevator.setDefaultCommand(new ManualElevator(
-        elevator,
-        () -> getManipLeftY(),
-        () -> getManipRightY(),
-        () -> getManipRightTrigger(),
-        () -> getManipLeftTrigger()
-      )
-      );
+      // elevator.setDefaultCommand(new ManualElevator(
+      //   elevator,
+      //   () -> getManipLeftY(),
+      //   () -> getManipRightY(),
+      //   () -> getManipRightTrigger(),
+      //   () -> getManipLeftTrigger()
+      // )
+      // );
 
       // operatorController.x().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
 
