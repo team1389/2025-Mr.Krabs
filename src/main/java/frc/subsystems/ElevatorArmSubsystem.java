@@ -42,7 +42,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
     //TODO
     private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0.1, 0.2, 0.1);
     private final ArmFeedforward shoulderFF = new ArmFeedforward(0.1, 0.2, 0.1);
-    private final ArmFeedforward elbowFF = new ArmFeedforward(0.1, 0.2, 0.1);
+    private final ArmFeedforward elbowFF = new ArmFeedforward(0.1, 0.2, 0.1); 
 
     private double elevatorTarget, shoulderTarget, elbowTarget;
 
@@ -70,7 +70,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
         elbowEncoder = elbowMotor.getAbsoluteEncoder();
 
         //limit switch, classic JJ
-        topLimitSwitch = new DigitalInput(1);
+        topLimitSwitch = new DigitalInput(RobotMap.ArmConstants.TOP_LIMIT_SWITCH);
         bottomLimitSwitch = new DigitalInput(0);
 
         positionMap.put(ArmPosition.Starting, new double[] {0,0,0});
@@ -81,7 +81,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
         positionMap.put(ArmPosition.Feeder, new double[] {0,0,0});
         positionMap.put(ArmPosition.Net, new double[] {0,0,0});
 
-        zeroShoulderRelEncoder();
+        // zeroShoulderRelEncoder();
         setElevatorArm(ArmPosition.Starting);
     }
 
@@ -167,12 +167,12 @@ public class ElevatorArmSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
-        double elevatorPower = elevatorPid.calculate(getElevatorPos(), elevatorTarget);
+        // double elevatorPower = elevatorPid.calculate(getElevatorPos(), elevatorTarget);
         double shoulderPower = shoulderPid.calculate(getShoulderRelPos(), shoulderTarget) + shoulderFF.calculate(shoulderTarget, 0); // for limit switch
     //    double shoulderPower = shoulderPid.calculate(getShoulderPos(), shoulderTarget) + shoulderFF.calculate(shoulderTarget, 0); // add FF TODO shoulderTarget needs to be in radians
         double elbowPower = elbowPid.calculate(getElbowPos(), elbowTarget) + elbowFF.calculate(elbowTarget, 0); // add FF TODO
 
-        moveElevator(elevatorPower);
+      //  moveElevator(elevatorPower);
         moveShoulder(shoulderPower);
         moveElbow(elbowPower);
 

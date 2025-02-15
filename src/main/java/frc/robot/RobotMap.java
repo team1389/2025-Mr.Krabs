@@ -36,12 +36,18 @@ public static final String INTAKE_MOTOR = null;
   {
     public static final double CLIMBER_SPEED = .5;
   }
+  public static final class IntakeConstants
+  {
+    public static final int ALGAE_LIMIT_SWITCH = 0;
+    public static final int CORAL_LIMIT_SWITCH = 1;
+  }
 
   public static final class ArmConstants
   {
     public static final double ELEVATOR_MAX_SPEED = 1;
     public static final double ARM1_MAX_SPEED = 1;
     public static final double ARM2_MAX_SPEED = 1;
+    public static final int TOP_LIMIT_SWITCH = 0;
   }
 
   public static class OperatorConstants
