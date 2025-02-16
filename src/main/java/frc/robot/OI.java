@@ -27,8 +27,8 @@ import frc.subsystems.ClimberSubsystem;
 // import frc.subsystems.ElevatorArmSubsystem;
 // import frc.subsystems.IntakeSubsystem;
 // import frc.subsystems.ElevatorArmSubsystem.ArmPosition;
-// import frc.subsystems.SwerveSubsystem;
-// import swervelib.SwerveInputStream;
+import frc.subsystems.SwerveSubsystem;
+import swervelib.SwerveInputStream;
 import frc.subsystems.ArmTestSubsystem;
 
 /**
@@ -43,39 +43,38 @@ public class OI
   final         CommandXboxController driveController = new CommandXboxController(0);
   final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
-  // private final ClimberSubsystem      climber    = new ClimberSubsystem();
-  // private final ElevatorArmSubsystem elevator = new ElevatorArmSubsystem();
   private final ClimberSubsystem      climber    = new ClimberSubsystem();
+  // private final ElevatorArmSubsystem elevator = new ElevatorArmSubsystem();
   // private final IntakeSubsystem intake = new IntakeSubsystem();
-  // private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                                // "swerve"));
+  private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+                                                                                "swerve"));
   private final ArmTestSubsystem armTest = new ArmTestSubsystem();
                                                                                 
                                                                               
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
-  // SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-  //                                                               () -> driveController.getLeftY() * -1,
-  //                                                               () -> driveController.getLeftX() * -1)
-  //                                                               //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
-  //                                                               //Raw axis of rightBumperAxis is 3 for some reason
-  //                                                           .withControllerRotationAxis(driveController::getrightBumperAxis)
-  //                                                           .deadband(OperatorConstants.DEADBAND)
-  //                                                           .scaleTranslation(0.8)
-  //                                                           .allianceRelativeControl(true);
+  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                                                                () -> driveController.getLeftY() * -1,
+                                                                () -> driveController.getLeftX() * -1)
+                                                                //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
+                                                                //Raw axis of rightBumperAxis is 3 for some reason
+                                                            .withControllerRotationAxis(driveController::getrightBumperAxis)
+                                                            .deadband(OperatorConstants.DEADBAND)
+                                                            .scaleTranslation(0.8)
+                                                            .allianceRelativeControl(true);
 
-  // /**
-  //  * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
-  //  */
-  // SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driveController::getRightX,
-  //                                                                                            driveController::getRightY)
-  //                                                          .headingWhile(true);
+  /**
+   * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
+   */
+  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driveController::getRightX,
+                                                                                             driveController::getRightY)
+                                                           .headingWhile(true);
 
-  // /**
-  //  * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
-  //  */
-  // SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
+  /**
+   * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
+   */
+  SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
   //                                                            .allianceRelativeControl(false);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -98,22 +97,22 @@ public class OI
   private void configureBindings()
   {
     // //RESERVE DRIVE B FOR AUTO ALIGN
-    // Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle, () -> driveController.b().getAsBoolean());
-    // Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity, () -> driveController.b().getAsBoolean());
-    // Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented, () -> driveController.b().getAsBoolean());
-    // Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(
-    //     driveDirectAngle);
+    Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle, () -> driveController.b().getAsBoolean());
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity, () -> driveController.b().getAsBoolean());
+    Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented, () -> driveController.b().getAsBoolean());
+    Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(
+        driveDirectAngle);
 
       //EDIT YOUR COMMANDS HERE_______________________________________________________________________________________________________________________________
       //dont use driver B for aything else, its already used for auto align
 
       //DRIVER CODE
-      // drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-      // driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      // driveController.start().whileTrue(Commands.none());
-      // driveController.back().whileTrue(Commands.none());
-      // driveController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      // driveController.rightBumper().onTrue(Commands.none());
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+      driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      driveController.start().whileTrue(Commands.none());
+      driveController.back().whileTrue(Commands.none());
+      driveController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      driveController.rightBumper().onTrue(Commands.none());
       
 
 
