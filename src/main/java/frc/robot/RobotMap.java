@@ -80,7 +80,9 @@ public static final String INTAKE_MOTOR = null;
     //TODO: add all motor ports
     public static final int climberMotor = 10;
     public static final int ELEVATOR_MOTOR = 11; 
+    //left shoulder motor
     public static final int SHOULDER1_MOTOR = 12;
+    //right shoulder motor
     public static final int SHOULDER2_MOTOR = 13;
     public static final int ELBOW_MOTOR = 14;
     public static final int intakeAlgaeMotor = 15;

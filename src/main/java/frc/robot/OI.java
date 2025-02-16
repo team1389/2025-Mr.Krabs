@@ -18,17 +18,18 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.runClimberDown;
 import frc.command.runClimberUp;
-import frc.command.SetElevatorArm;
-import frc.command.IntakeAlgae;
-import frc.command.IntakeCoral;
-import frc.command.ManualElevator;
+// import frc.command.SetElevatorArm;
+// import frc.command.IntakeAlgae;
+// import frc.command.IntakeCoral;
+// import frc.command.ManualElevator;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
-import frc.subsystems.ElevatorArmSubsystem;
-import frc.subsystems.IntakeSubsystem;
-import frc.subsystems.ElevatorArmSubsystem.ArmPosition;
-import frc.subsystems.SwerveSubsystem;
-import swervelib.SwerveInputStream;
+// import frc.subsystems.ElevatorArmSubsystem;
+// import frc.subsystems.IntakeSubsystem;
+// import frc.subsystems.ElevatorArmSubsystem.ArmPosition;
+// import frc.subsystems.SwerveSubsystem;
+// import swervelib.SwerveInputStream;
+import frc.subsystems.ArmTestSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -43,38 +44,39 @@ public class OI
   final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
   // private final ClimberSubsystem      climber    = new ClimberSubsystem();
-  private final ElevatorArmSubsystem elevator = new ElevatorArmSubsystem();
+  // private final ElevatorArmSubsystem elevator = new ElevatorArmSubsystem();
   private final ClimberSubsystem      climber    = new ClimberSubsystem();
-  private final IntakeSubsystem intake = new IntakeSubsystem();
-  private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                                "swerve"));
+  // private final IntakeSubsystem intake = new IntakeSubsystem();
+  // private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+                                                                                // "swerve"));
+  private final ArmTestSubsystem armTest = new ArmTestSubsystem();
                                                                                 
                                                                               
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
-  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driveController.getLeftY() * -1,
-                                                                () -> driveController.getLeftX() * -1)
-                                                                //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
-                                                                //Raw axis of rightTriggerAxis is 3 for some reason
-                                                            .withControllerRotationAxis(driveController::getRightTriggerAxis)
-                                                            .deadband(OperatorConstants.DEADBAND)
-                                                            .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(true);
+  // SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+  //                                                               () -> driveController.getLeftY() * -1,
+  //                                                               () -> driveController.getLeftX() * -1)
+  //                                                               //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
+  //                                                               //Raw axis of rightBumperAxis is 3 for some reason
+  //                                                           .withControllerRotationAxis(driveController::getrightBumperAxis)
+  //                                                           .deadband(OperatorConstants.DEADBAND)
+  //                                                           .scaleTranslation(0.8)
+  //                                                           .allianceRelativeControl(true);
 
-  /**
-   * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
-   */
-  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driveController::getRightX,
-                                                                                             driveController::getRightY)
-                                                           .headingWhile(true);
+  // /**
+  //  * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
+  //  */
+  // SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driveController::getRightX,
+  //                                                                                            driveController::getRightY)
+  //                                                          .headingWhile(true);
 
-  /**
-   * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
-   */
-  SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                                                             .allianceRelativeControl(false);
+  // /**
+  //  * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
+  //  */
+  // SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
+  //                                                            .allianceRelativeControl(false);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -95,43 +97,76 @@ public class OI
    */
   private void configureBindings()
   {
-    //RESERVE DRIVE B FOR AUTO ALIGN
-    Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle, () -> driveController.b().getAsBoolean());
-    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity, () -> driveController.b().getAsBoolean());
-    Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented, () -> driveController.b().getAsBoolean());
-    Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(
-        driveDirectAngle);
+    // //RESERVE DRIVE B FOR AUTO ALIGN
+    // Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle, () -> driveController.b().getAsBoolean());
+    // Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity, () -> driveController.b().getAsBoolean());
+    // Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented, () -> driveController.b().getAsBoolean());
+    // Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(
+    //     driveDirectAngle);
 
-    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
       //EDIT YOUR COMMANDS HERE_______________________________________________________________________________________________________________________________
       //dont use driver B for aything else, its already used for auto align
-      driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driveController.start().whileTrue(Commands.none());
-      driveController.back().whileTrue(Commands.none());
-      driveController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driveController.rightBumper().onTrue(Commands.none());
+
+      //DRIVER CODE
+      // drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+      // driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      // driveController.start().whileTrue(Commands.none());
+      // driveController.back().whileTrue(Commands.none());
+      // driveController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      // driveController.rightBumper().onTrue(Commands.none());
+      
+
+
+
+
+      //MANIP CODE
+      // operatorController.a().whileTrue(new runClimberDown(climber));
+      // operatorController.y().whileTrue(new runClimberUp(climber));
+
+      // operatorController.x().whileTrue(new IntakeAlgae(intake));
+      // operatorController.y().whileTrue(new IntakeCoral(intake));
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.a().whileTrue(Commands.run(climber::spinForwards, climber));
-      // operatorController.y().whileTrue(Commands.run(climber::spinBackwards, climber));
+      operatorController.y().whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.x().whileTrue(Commands.run(climber::spinForwards, climber));
-      operatorController.a().whileTrue(new runClimberDown(climber));
-      operatorController.y().whileTrue(new runClimberUp(climber));
 
-      operatorController.x().whileTrue(new IntakeAlgae(intake));
-      operatorController.y().whileTrue(new IntakeCoral(intake));
+      // if (operatorController.a().getAsBoolean()) {
+      //   operatorController.leftBumper().whileTrue(Commands.run(armTest::moveArmUp, armTest));
+      //   operatorController.rightBumper().whileTrue(Commands.run(armTest::moveArmDown, armTest));
+      // }
+      // else if (operatorController.x().getAsBoolean()) {
+      //   operatorController.leftBumper().whileTrue(Commands.run(armTest::runAlgaeIntakeIn, armTest));
+      //   operatorController.rightBumper().whileTrue(Commands.run(armTest::runAlgaeIntakeOut, armTest));
+      // }
+      // else if (operatorController.y().getAsBoolean()) {
+      //   operatorController.leftBumper().whileTrue(Commands.run(armTest::runCoralIntakeIn, armTest));
+      //   operatorController.rightBumper().whileTrue(Commands.run(armTest::runCoralIntakeOut, armTest));
+      // }
+      // else if (operatorController.b().getAsBoolean()) {
+      //   operatorController.leftBumper().whileTrue(Commands.run(armTest::runWristForward, armTest));
+      //   operatorController.rightBumper().whileTrue(Commands.run(armTest::runWristBackwards, armTest));
+      // }
+      // else{
+      //   Commands.run(armTest::stop, armTest);
+      // }
+      // operatorController.x().whileTrue(Commands.run(armTest::moveArmUp, armTest));
+      // operatorController.a().whileTrue(Commands.run(armTest::moveArmDown, armTest));
+      // operatorController.b().whileTrue(Commands.run(armTest::stop, armTest));
+
+
 
  
-      elevator.setDefaultCommand(new ManualElevator(
-        elevator,
-        () -> getManipLeftY(),
-        () -> getManipRightY(),
-        () -> getManipRightTrigger(),
-        () -> getManipLeftTrigger()
-      )
-      );
+      // elevator.setDefaultCommand(new ManualElevator(
+      //   elevator,
+      //   () -> getManipLeftY(),
+      //   () -> getManipRightY(),
+      //   () -> getManiprightBumper(),
+      //   () -> getManipleftBumper()
+      // )
+      // );
 
-      operatorController.leftBumper().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
+      // operatorController.leftBumper().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
 
   }
 
@@ -141,26 +176,27 @@ public class OI
   public double getManipRightY(){
     return operatorController.getRightY();
   }
-  public boolean getManipRightTrigger(){
-    return operatorController.rightTrigger().getAsBoolean();
+  public boolean getManiprightBumper(){
+    return operatorController.rightBumper().getAsBoolean();
   }
-  public boolean getManipLeftTrigger(){
-    return operatorController.leftTrigger().getAsBoolean();
+  public boolean getManipleftBumper(){
+    return operatorController.leftBumper().getAsBoolean();
   }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
-   */
+  //  */
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    // return drivebase.getAutonomousCommand("New Auto");
+    return Commands.run(armTest::stop, armTest);
   }
 
-  public void setMotorBrake(boolean brake)
-  {
-    drivebase.setMotorBrake(brake);
-  }
+  // public void setMotorBrake(boolean brake)
+  // {
+  //   drivebase.setMotorBrake(brake);
+  // }
 }
