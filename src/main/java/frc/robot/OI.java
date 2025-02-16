@@ -59,7 +59,7 @@ public class OI
                                                                 () -> driveController.getLeftX() * -1)
                                                                 //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
                                                                 //Raw axis of rightBumperAxis is 3 for some reason
-                                                            .withControllerRotationAxis(driveController::getrightBumperAxis)
+                                                            .withControllerRotationAxis(driveController::getRightTriggerAxis)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -75,7 +75,7 @@ public class OI
    * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
    */
   SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-  //                                                            .allianceRelativeControl(false);
+                                                             .allianceRelativeControl(false);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
