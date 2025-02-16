@@ -128,31 +128,18 @@ public class OI
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.a().whileTrue(Commands.run(climber::spinForwards, climber));
-      operatorController.y().whileTrue(Commands.run(climber::spinBackwards, climber));
+      // operatorController.y().whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.x().whileTrue(Commands.run(climber::spinForwards, climber));
 
-      // if (operatorController.a().getAsBoolean()) {
-      //   operatorController.leftBumper().whileTrue(Commands.run(armTest::moveArmUp, armTest));
-      //   operatorController.rightBumper().whileTrue(Commands.run(armTest::moveArmDown, armTest));
-      // }
-      // else if (operatorController.x().getAsBoolean()) {
-      //   operatorController.leftBumper().whileTrue(Commands.run(armTest::runAlgaeIntakeIn, armTest));
-      //   operatorController.rightBumper().whileTrue(Commands.run(armTest::runAlgaeIntakeOut, armTest));
-      // }
-      // else if (operatorController.y().getAsBoolean()) {
-      //   operatorController.leftBumper().whileTrue(Commands.run(armTest::runCoralIntakeIn, armTest));
-      //   operatorController.rightBumper().whileTrue(Commands.run(armTest::runCoralIntakeOut, armTest));
-      // }
-      // else if (operatorController.b().getAsBoolean()) {
-      //   operatorController.leftBumper().whileTrue(Commands.run(armTest::runWristForward, armTest));
-      //   operatorController.rightBumper().whileTrue(Commands.run(armTest::runWristBackwards, armTest));
-      // }
-      // else{
-      //   Commands.run(armTest::stop, armTest);
-      // }
-      // operatorController.x().whileTrue(Commands.run(armTest::moveArmUp, armTest));
-      // operatorController.a().whileTrue(Commands.run(armTest::moveArmDown, armTest));
-      // operatorController.b().whileTrue(Commands.run(armTest::stop, armTest));
+        // operatorController.leftBumper().whileTrue(Commands.run(armTest::moveArmUp, armTest));
+        // operatorController.rightBumper().whileTrue(Commands.run(armTest::moveArmDown, armTest));
+        // operatorController.leftBumper().whileTrue(Commands.run(armTest::runAlgaeIntakeIn, armTest));
+        // operatorController.rightBumper().whileTrue(Commands.run(armTest::runAlgaeIntakeOut, armTest));
+        operatorController.leftBumper().whileTrue(Commands.run(armTest::runCoralIntakeIn, armTest));
+        operatorController.rightBumper().whileTrue(Commands.run(armTest::runCoralIntakeOut, armTest));
+        // operatorController.leftBumper().whileTrue(Commands.run(armTest::runWristForward, armTest));
+        // operatorController.rightBumper().whileTrue(Commands.run(armTest::runWristBackwards, armTest));
+      operatorController.b().whileTrue(Commands.run(armTest::stop, armTest));
 
 
 
