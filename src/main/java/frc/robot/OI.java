@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.command.IntakeCoralTest;
 import frc.command.runClimberDown;
 import frc.command.runClimberUp;
 // import frc.command.SetElevatorArm;
@@ -97,6 +98,7 @@ public class OI
   private void configureBindings()
   {
     // //RESERVE DRIVE B FOR AUTO ALIGN
+    Command walugigi = new IntakeCoralTest(armTest);
     Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle, () -> driveController.b().getAsBoolean());
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity, () -> driveController.b().getAsBoolean());
     Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented, () -> driveController.b().getAsBoolean());
