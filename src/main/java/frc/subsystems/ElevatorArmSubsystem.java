@@ -61,7 +61,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
     public ElevatorArmSubsystem(){
         elevatorMotor = new SparkFlex(RobotMap.MotorPorts.ELEVATOR_MOTOR, MotorType.kBrushless);
         leftShoulderMotor = new SparkFlex(RobotMap.MotorPorts.LEFT_SHOULDER_MOTOR, MotorType.kBrushless);
-        rightShoulderMotor = new SparkFlex(RobotMap.MotorPorts.RIGHT_SHOULDER2_MOTOR, MotorType.kBrushless);
+        rightShoulderMotor = new SparkFlex(RobotMap.MotorPorts.RIGHT_SHOULDER_MOTOR, MotorType.kBrushless);
         wristMotor = new SparkFlex(RobotMap.MotorPorts.WRIST_MOTOR, MotorType.kBrushless);
 
         shoulderRelEncoder = leftShoulderMotor.getEncoder();
@@ -144,10 +144,19 @@ public class ElevatorArmSubsystem extends SubsystemBase{
         elevatorMotor.setVoltage(MathUtil.clamp(power, -12, 12));
     }
     public void moveShoulder(double power){
+        if((getShoulderRelPos() > 90 || getShoulderRelPos() < 0) && power > 0){
+            leftShoulderMotor.setVoltage(0);
+            rightShoulderMotor.setVoltage(0);
+            return;
+        }
         leftShoulderMotor.setVoltage(MathUtil.clamp(power, -12, 12));
         rightShoulderMotor.setVoltage(MathUtil.clamp(power, -12, 12));
     }
     public void moveWrist(double power){
+        if((getWristPos() > 90 || getWristPos() < 0) && power > 0){
+            wristMotor.setVoltage(0);
+            return;
+        }
         wristMotor.setVoltage(MathUtil.clamp(power, -12, 12));
     }
 
