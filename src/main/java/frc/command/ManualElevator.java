@@ -24,11 +24,11 @@ public class ManualElevator extends Command{
         ElevatorArmSubsystem.setManualElevator(MathUtil.clamp(elevator.get(), -1, 1));
         ElevatorArmSubsystem.setManualShoulder(MathUtil.clamp(arm1.get(), -1, 1));
         if(arm2Up.get()){
-            ElevatorArmSubsystem.setManualElbow(.3);
+            ElevatorArmSubsystem.setManualWrist(.3);
         } else if(arm2Down.get()){
-            ElevatorArmSubsystem.setManualElbow(-.3);
+            ElevatorArmSubsystem.setManualWrist(-.3);
         } else if(!arm2Up.get() && !arm2Down.get()){
-            ElevatorArmSubsystem.setManualElbow(0);
+            ElevatorArmSubsystem.setManualWrist(0);
         }
     }
 

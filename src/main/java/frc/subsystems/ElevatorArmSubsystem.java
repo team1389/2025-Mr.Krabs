@@ -23,10 +23,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class ElevatorArmSubsystem extends SubsystemBase{
-    private SparkFlex elevatorMotor, shoulder1Motor, shoulder2Motor, elbowMotor;
+    private SparkFlex elevatorMotor, leftShoulderMotor, rightShoulderMotor, wristMotor;
 
     private RelativeEncoder shoulderRelEncoder;
-    private AbsoluteEncoder elevatorEncoder, shoulderEncoder, elbowEncoder;
+    private DutyCycleEncoder elevatorEncoder, shoulderEncoder, wristEncoder;
 
     private DigitalInput topLimitSwitch, bottomLimitSwitch;
 
@@ -36,15 +36,15 @@ public class ElevatorArmSubsystem extends SubsystemBase{
     private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(20, 10); //TODO
     private ProfiledPIDController shoulderPid = new ProfiledPIDController(0, 0, 0, arm1Constraints);
 
-    private final TrapezoidProfile.Constraints elbowConstraints = new TrapezoidProfile.Constraints(20, 10); //TODO
-    private ProfiledPIDController elbowPid = new ProfiledPIDController(0, 0, 0, elbowConstraints);
+    private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(20, 10); //TODO
+    private ProfiledPIDController wristPid = new ProfiledPIDController(0, 0, 0, wristConstraints);
 
     //TODO
     private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0.1, 0.2, 0.1);
     private final ArmFeedforward shoulderFF = new ArmFeedforward(0.1, 0.2, 0.1);
-    private final ArmFeedforward elbowFF = new ArmFeedforward(0.1, 0.2, 0.1); 
+    private final ArmFeedforward wristFF = new ArmFeedforward(0.1, 0.2, 0.1, 0); 
 
-    private double elevatorTarget, shoulderTarget, elbowTarget;
+    private double elevatorTarget, shoulderTarget, wristTarget;
 
     public enum ArmPosition {
         Starting,
@@ -60,18 +60,17 @@ public class ElevatorArmSubsystem extends SubsystemBase{
 
     public ElevatorArmSubsystem(){
         elevatorMotor = new SparkFlex(RobotMap.MotorPorts.ELEVATOR_MOTOR, MotorType.kBrushless);
-        shoulder1Motor = new SparkFlex(RobotMap.MotorPorts.SHOULDER1_MOTOR, MotorType.kBrushless);
-        shoulder2Motor = new SparkFlex(RobotMap.MotorPorts.SHOULDER2_MOTOR, MotorType.kBrushless);
-        elbowMotor = new SparkFlex(RobotMap.MotorPorts.ELBOW_MOTOR, MotorType.kBrushless);
+        leftShoulderMotor = new SparkFlex(RobotMap.MotorPorts.LEFT_SHOULDER_MOTOR, MotorType.kBrushless);
+        rightShoulderMotor = new SparkFlex(RobotMap.MotorPorts.RIGHT_SHOULDER2_MOTOR, MotorType.kBrushless);
+        wristMotor = new SparkFlex(RobotMap.MotorPorts.WRIST_MOTOR, MotorType.kBrushless);
 
-        shoulderRelEncoder = shoulder1Motor.getEncoder();
-        elevatorEncoder = elevatorMotor.getAbsoluteEncoder();
-        shoulderEncoder = shoulder1Motor.getAbsoluteEncoder();
-        elbowEncoder = elbowMotor.getAbsoluteEncoder();
+        shoulderRelEncoder = leftShoulderMotor.getEncoder();
+        elevatorEncoder = new DutyCycleEncoder(0);
+        wristEncoder = new DutyCycleEncoder(1);
 
         //limit switch, classic JJ
         topLimitSwitch = new DigitalInput(RobotMap.ArmConstants.TOP_LIMIT_SWITCH);
-        bottomLimitSwitch = new DigitalInput(0);
+        bottomLimitSwitch = new DigitalInput(RobotMap.ArmConstants.BOTTOM_LIMIT_SWITCH);
 
         positionMap.put(ArmPosition.Starting, new double[] {0,0,0});
         positionMap.put(ArmPosition.L1, new double[] {0,0,0});
@@ -87,10 +86,10 @@ public class ElevatorArmSubsystem extends SubsystemBase{
 
     public void setManualElevator(double elevatorSpeed){elevatorMotor.set(elevatorSpeed);}
     public void setManualShoulder(double arm1Speed){
-        shoulder1Motor.set(arm1Speed);
-        shoulder2Motor.set(arm1Speed);
+        leftShoulderMotor.set(arm1Speed);
+        rightShoulderMotor.set(-arm1Speed);
     }
-    public void setManualElbow(double arm2Speed){elbowMotor.set(arm2Speed);}
+    public void setManualWrist(double arm2Speed){wristMotor.set(arm2Speed);}
 
 
     // public void setSpeed(SparkFlex motor, double speed, double maxSpeed){
@@ -99,23 +98,23 @@ public class ElevatorArmSubsystem extends SubsystemBase{
     // }
 
     public double getElevatorPos(){
-        return elevatorEncoder.getPosition();
+        return elevatorEncoder.get();
     }
-    public double getShoulderPos(){
-        return shoulderEncoder.getPosition();
-    }
+    // public double getShoulderPos(){
+    //     return shoulderEncoder.get();
+    // }
     public double getShoulderRelPos(){
         return shoulderRelEncoder.getPosition();
     }
-    public double getElbowPos(){
-        return elbowEncoder.getPosition();
+    public double getWristPos(){
+        return wristEncoder.get();
     }
 
     public void setElevatorArm(ArmPosition pos){
         double[] targets = positionMap.get(pos);
         elevatorTarget = targets[0];
         shoulderTarget = targets[1];
-        elbowTarget = targets[2];
+        wristTarget = targets[2];
     }
 
     // public void setElevator(double setpoint){
@@ -126,18 +125,18 @@ public class ElevatorArmSubsystem extends SubsystemBase{
 
     public void stop(){
         elevatorMotor.set(0);
-        shoulder1Motor.set(0);
-        shoulder2Motor.set(0);
-        elbowMotor.set(0);
+        leftShoulderMotor.set(0);
+        rightShoulderMotor.set(0);
+        wristMotor.set(0);
     }
 
     public void zeroShoulderRelEncoder(){
         while(!topLimitSwitch.get()){
-            shoulder1Motor.set(.3);
-            shoulder2Motor.set(.3);
+            leftShoulderMotor.set(.3);
+            rightShoulderMotor.set(.3);
         }
-        shoulder1Motor.set(0);
-        shoulder2Motor.set(0);
+        leftShoulderMotor.set(0);
+        rightShoulderMotor.set(0);
         shoulderRelEncoder.setPosition(0);
     }
 
@@ -145,41 +144,41 @@ public class ElevatorArmSubsystem extends SubsystemBase{
         elevatorMotor.setVoltage(MathUtil.clamp(power, -12, 12));
     }
     public void moveShoulder(double power){
-        shoulder1Motor.setVoltage(MathUtil.clamp(power, -12, 12));
-        shoulder2Motor.setVoltage(MathUtil.clamp(power, -12, 12));
+        leftShoulderMotor.setVoltage(MathUtil.clamp(power, -12, 12));
+        rightShoulderMotor.setVoltage(MathUtil.clamp(power, -12, 12));
     }
-    public void moveElbow(double power){
-        elbowMotor.setVoltage(MathUtil.clamp(power, -12, 12));
+    public void moveWrist(double power){
+        wristMotor.setVoltage(MathUtil.clamp(power, -12, 12));
     }
 
     public boolean atTargetPosition(){
         boolean elevatorClose = Math.abs(getElevatorPos() - elevatorTarget) < 0.05;
     //    boolean shoulderClose = Math.abs(getShoulderPos() - shoulderTarget) < 0.05;
         boolean shoulderClose = Math.abs(getShoulderRelPos() - shoulderTarget) < 0.05;
-        boolean elbowClose = Math.abs(getElbowPos() - elbowTarget) < 0.05;
+        boolean wristClose = Math.abs(getWristPos() - wristTarget) < 0.05;
     
         SmartDashboard.putBoolean("Elevator At Target", elevatorClose);
         SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
-        SmartDashboard.putBoolean("Elbow At Target", elbowClose);
+        SmartDashboard.putBoolean("Wrist At Target", wristClose);
     
-        return elevatorClose && shoulderClose && elbowClose;
+        return elevatorClose && shoulderClose && wristClose;
     }
 
     @Override
     public void periodic(){
-        // double elevatorPower = elevatorPid.calculate(getElevatorPos(), elevatorTarget);
+         double elevatorPower = elevatorPid.calculate(getElevatorPos(), elevatorTarget);
         double shoulderPower = shoulderPid.calculate(getShoulderRelPos(), shoulderTarget) + shoulderFF.calculate(shoulderTarget, 0); // for limit switch
     //    double shoulderPower = shoulderPid.calculate(getShoulderPos(), shoulderTarget) + shoulderFF.calculate(shoulderTarget, 0); // add FF TODO shoulderTarget needs to be in radians
-        double elbowPower = elbowPid.calculate(getElbowPos(), elbowTarget) + elbowFF.calculate(elbowTarget, 0); // add FF TODO
+        double wristPower = wristPid.calculate(getWristPos(), wristTarget) + wristFF.calculate(wristTarget, 0); // add FF TODO
 
-      //  moveElevator(elevatorPower);
+        moveElevator(elevatorPower);
         moveShoulder(shoulderPower);
-        moveElbow(elbowPower);
+        moveWrist(wristPower);
 
         SmartDashboard.putNumber("Elevator Position", getElevatorPos());
-        SmartDashboard.putNumber("Shoulder Position", getShoulderPos());
+    //    SmartDashboard.putNumber("Shoulder Position", getShoulderPos());
         SmartDashboard.putNumber("Shoulder Rel Pos", getShoulderRelPos());
-        SmartDashboard.putNumber("Elbow Position", getElbowPos());
+        SmartDashboard.putNumber("Wrist Position", getWristPos());
      //   SmartDashboard.putNumber("Arm1 FF", shoulderFF.get());
     }
 }
