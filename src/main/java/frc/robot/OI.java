@@ -16,17 +16,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.command.IntakeCoralTest;
 import frc.command.runClimberDown;
 import frc.command.runClimberUp;
 // import frc.command.SetElevatorArm;
-// import frc.command.IntakeAlgae;
-// import frc.command.IntakeCoral;
 // import frc.command.ManualElevator;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
 // import frc.subsystems.ElevatorArmSubsystem;
-// import frc.subsystems.IntakeSubsystem;
 // import frc.subsystems.ElevatorArmSubsystem.ArmPosition;
 import frc.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -98,7 +94,6 @@ public class OI
   private void configureBindings()
   {
     // //RESERVE DRIVE B FOR AUTO ALIGN
-    Command walugigi = new IntakeCoralTest(armTest);
     Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle, () -> driveController.b().getAsBoolean());
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity, () -> driveController.b().getAsBoolean());
     Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented, () -> driveController.b().getAsBoolean());
@@ -136,8 +131,8 @@ public class OI
         // operatorController.rightBumper().whileTrue(Commands.run(armTest::moveArmDown, armTest));
         // operatorController.leftBumper().whileTrue(Commands.run(armTest::runAlgaeIntakeIn, armTest));
         // operatorController.rightBumper().whileTrue(Commands.run(armTest::runAlgaeIntakeOut, armTest));
-        operatorController.leftBumper().whileTrue(Commands.run(armTest::runCoralIntakeIn, armTest));
-        operatorController.rightBumper().whileTrue(Commands.run(armTest::runCoralIntakeOut, armTest));
+        // operatorController.leftBumper().whileTrue(Commands.run(armTest::runCoralIntakeIn, armTest));
+        // operatorController.rightBumper().whileTrue(Commands.run(armTest::runCoralIntakeOut, armTest));
         // operatorController.leftBumper().whileTrue(Commands.run(armTest::runWristForward, armTest));
         // operatorController.rightBumper().whileTrue(Commands.run(armTest::runWristBackwards, armTest));
       operatorController.b().whileTrue(Commands.run(armTest::stop, armTest));
