@@ -94,6 +94,10 @@ public class ArmTestSubsystem extends SubsystemBase{
         coralIntake.set(intakeCoralSpeed);
     }
 
+    public boolean getIsCoralInIntake(){
+        return marikoSwitch;
+    }
+
     public void runWristForward(){
         if (wristMax>wristEncoder.get()){
             wristMotor.set(wristMotorSpeed);
@@ -111,6 +115,8 @@ public class ArmTestSubsystem extends SubsystemBase{
             wristMotor.set(0);
         }
     }
+
+    
 
     public void stop(){
         leftShoulderMotor.set(0);
