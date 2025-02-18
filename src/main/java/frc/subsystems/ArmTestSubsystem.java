@@ -27,6 +27,7 @@ public class ArmTestSubsystem extends SubsystemBase{
     private SparkLimitSwitch coralLimitSwitch;
     private DutyCycleEncoder wristEncoder;
     private DigitalInput leftLimitSwitch, rightLimitSwitch;
+    //marikoSwitch is a boolean that is true when the coral is in the intake
     public boolean marikoSwitch;
     private RelativeEncoder leftShoulderEncoder, rightShoulderEncoder;
     //TODO: FIND ACTUAL VALUES FOR wristMax and wristMin

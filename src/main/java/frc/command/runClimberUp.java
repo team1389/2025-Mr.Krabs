@@ -10,10 +10,12 @@ public class runClimberUp extends Command{
         climberSubsystem = climberSubsystem1;
     }
 
+    @Override
     public void execute() {
         climberSubsystem.spinForwards();
     }
-
+    
+    @Override
     public void end(boolean interrupted) {
         climberSubsystem.stop();
     }
