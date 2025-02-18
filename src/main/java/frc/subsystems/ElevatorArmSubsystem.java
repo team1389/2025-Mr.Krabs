@@ -144,7 +144,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
         elevatorMotor.setVoltage(MathUtil.clamp(power, -12, 12));
     }
     public void moveShoulder(double power){
-        if((getShoulderRelPos() > 90 || getShoulderRelPos() < 0) && power > 0){
+        if((shoulderTarget > 90 || shoulderTarget < 0) && power > 0){
             leftShoulderMotor.setVoltage(0);
             rightShoulderMotor.setVoltage(0);
             return;
@@ -153,7 +153,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
         rightShoulderMotor.setVoltage(MathUtil.clamp(power, -12, 12));
     }
     public void moveWrist(double power){
-        if((getWristPos() > 90 || getWristPos() < 0) && power > 0){
+        if((wristTarget > 90 || wristTarget < 0) && power > 0){
             wristMotor.setVoltage(0);
             return;
         }
