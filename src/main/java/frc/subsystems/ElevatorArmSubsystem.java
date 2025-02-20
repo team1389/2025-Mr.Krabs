@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class ElevatorArmSubsystem extends SubsystemBase{
-    private SparkFlex elevatorMotor, leftShoulderMotor, rightShoulderMotor, wristMotor;
+    private SparkFlex elevatorMotorOne, leftShoulderMotor, rightShoulderMotor, wristMotor, elevatorMotorTwo;
 
     private RelativeEncoder shoulderRelEncoder;
     private DutyCycleEncoder elevatorEncoder, wristEncoder;
@@ -61,7 +61,8 @@ public class ElevatorArmSubsystem extends SubsystemBase{
     private final Map<ArmPosition, double[]> positionMap = new HashMap<>();
 
     public ElevatorArmSubsystem(){
-        elevatorMotor = new SparkFlex(RobotMap.MotorPorts.ELEVATOR_MOTOR, MotorType.kBrushless);
+        elevatorMotorOne = new SparkFlex(RobotMap.MotorPorts.ELEVATOR_MOTOR_ONE, MotorType.kBrushless);
+        elevatorMotorTwo = new SparkFlex(RobotMap.MotorPorts.ELEVATOR_MOTOR_TWO, MotorType.kBrushless);
         leftShoulderMotor = new SparkFlex(RobotMap.MotorPorts.LEFT_SHOULDER_MOTOR, MotorType.kBrushless);
         rightShoulderMotor = new SparkFlex(RobotMap.MotorPorts.RIGHT_SHOULDER_MOTOR, MotorType.kBrushless);
         wristMotor = new SparkFlex(RobotMap.MotorPorts.WRIST_MOTOR, MotorType.kBrushless);
@@ -83,6 +84,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
         positionMap.put(ArmPosition.Net, new double[] {0,0,0});
 
         setInverted(rightShoulderMotor);
+        setInverted(elevatorMotorOne);
         // zeroShoulderRelEncoder();
         setElevatorArm(ArmPosition.Starting);
     }
@@ -90,10 +92,13 @@ public class ElevatorArmSubsystem extends SubsystemBase{
         configs.inverted(true);
     }
 
-    public void setManualElevator(double elevatorSpeed){elevatorMotor.set(elevatorSpeed);}
+    public void setManualElevator(double elevatorSpeed){
+        elevatorMotorOne.set(elevatorSpeed);
+        elevatorMotorTwo.set(elevatorSpeed);
+    }
     public void setManualShoulder(double arm1Speed){
         leftShoulderMotor.set(arm1Speed);
-        rightShoulderMotor.set(-arm1Speed);
+        rightShoulderMotor.set(arm1Speed);
     }
     public void setManualWrist(double arm2Speed){wristMotor.set(arm2Speed);}
 
@@ -130,7 +135,8 @@ public class ElevatorArmSubsystem extends SubsystemBase{
 
 
     public void stop(){
-        elevatorMotor.set(0);
+        elevatorMotorOne.set(0);
+        elevatorMotorTwo.set(0);
         leftShoulderMotor.set(0);
         rightShoulderMotor.set(0);
         wristMotor.set(0);
@@ -147,7 +153,8 @@ public class ElevatorArmSubsystem extends SubsystemBase{
     }
 
     public void moveElevator(double power){
-        elevatorMotor.setVoltage(MathUtil.clamp(power, -12, 12));
+        elevatorMotorOne.setVoltage(MathUtil.clamp(power, -12, 12));
+        elevatorMotorTwo.setVoltage(MathUtil.clamp(power, -12, 12));
     }
     public void moveShoulder(double power){ 
         if((shoulderTarget > 90 || shoulderTarget < 0) && power > 0){ //TODO
