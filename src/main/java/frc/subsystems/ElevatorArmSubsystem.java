@@ -201,6 +201,10 @@ public class ElevatorArmSubsystem extends SubsystemBase{
         moveShoulder(shoulderPower);
         moveWrist(wristPower);
 
+        if(topLimitSwitch.get()){
+            shoulderRelEncoder.setPosition(0);
+        }
+
         SmartDashboard.putNumber("Elevator Position", getElevatorPos());
     //    SmartDashboard.putNumber("Shoulder Position", getShoulderPos());
         SmartDashboard.putNumber("Shoulder Rel Pos", getShoulderRelPos());
