@@ -18,14 +18,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.runClimberDown;
 import frc.command.runClimberUp;
-import frc.command.SetElevatorArm;
-import frc.command.IntakeAlgae;
-import frc.command.IntakeCoral;
+// import frc.command.SetElevatorArm;
+// import frc.command.IntakeAlgae;
+// import frc.command.IntakeCoral;
 import frc.command.ManualElevator;
+import frc.command.ManualElevatorDown;
+import frc.command.ManualElevatorUp;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
 import frc.subsystems.ElevatorArmSubsystem;
-import frc.subsystems.IntakeSubsystem;
+// import frc.subsystems.IntakeSubsystem;
 import frc.subsystems.ElevatorArmSubsystem.ArmPosition;
 import frc.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -45,7 +47,7 @@ public class OI
   // private final ClimberSubsystem      climber    = new ClimberSubsystem();
   private final ElevatorArmSubsystem elevator = new ElevatorArmSubsystem();
   private final ClimberSubsystem      climber    = new ClimberSubsystem();
-  private final IntakeSubsystem intake = new IntakeSubsystem();
+  // private final IntakeSubsystem intake = new IntakeSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
                                                                                 
@@ -118,20 +120,31 @@ public class OI
       operatorController.a().whileTrue(new runClimberDown(climber));
       operatorController.y().whileTrue(new runClimberUp(climber));
 
-      operatorController.x().whileTrue(new IntakeAlgae(intake));
-      operatorController.y().whileTrue(new IntakeCoral(intake));
+      // operatorController.x().whileTrue(new IntakeAlgae(intake));
+      // operatorController.y().whileTrue(new IntakeCoral(intake));
+
+      operatorController.x().whileTrue(new ManualElevatorUp(elevator));
+      operatorController.b().whileTrue(new ManualElevatorDown(elevator));
 
  
+      // elevator.setDefaultCommand(new ManualElevator(
+      //   elevator,
+      //   () -> getManipLeftY(),
+      //   () -> getManipRightY(),
+      //   () -> getManipRightTrigger(),
+      //   () -> getManipLeftTrigger()
+      // )
+      // );
+
+      
+
       elevator.setDefaultCommand(new ManualElevator(
         elevator,
-        () -> getManipLeftY(),
-        () -> getManipRightY(),
-        () -> getManipRightTrigger(),
-        () -> getManipLeftTrigger()
+        () -> getManipLeftY()
       )
       );
 
-      operatorController.leftBumper().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
+      // operatorController.leftBumper().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
 
   }
 
