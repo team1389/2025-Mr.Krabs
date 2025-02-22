@@ -25,4 +25,9 @@
 //         return elevatorArm.atTargetPosition();
 //     }
 
+//     @Override
+//     public void end(boolean interrupted){
+//         elevatorArm.holdPosition();
+//     }
+
 // }

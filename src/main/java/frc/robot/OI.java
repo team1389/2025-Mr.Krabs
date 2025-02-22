@@ -22,8 +22,6 @@ import frc.command.runClimberUp;
 // import frc.command.IntakeAlgae;
 // import frc.command.IntakeCoral;
 import frc.command.ManualElevator;
-import frc.command.ManualElevatorDown;
-import frc.command.ManualElevatorUp;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
 import frc.subsystems.ElevatorArmSubsystem;
@@ -122,10 +120,6 @@ public class OI
 
       // operatorController.x().whileTrue(new IntakeAlgae(intake));
       // operatorController.y().whileTrue(new IntakeCoral(intake));
-
-      operatorController.x().whileTrue(new ManualElevatorUp(elevator));
-      operatorController.b().whileTrue(new ManualElevatorDown(elevator));
-
  
       // elevator.setDefaultCommand(new ManualElevator(
       //   elevator,
@@ -149,7 +143,7 @@ public class OI
   }
 
   public double getManipLeftY(){
-    return operatorController.getLeftY();
+    return operatorController.getRawAxis(1);
   }
   public double getManipRightY(){
     return operatorController.getRightY();
