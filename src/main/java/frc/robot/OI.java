@@ -20,15 +20,18 @@ import frc.command.runClimberDown;
 import frc.command.runClimberUp;
 // import frc.command.SetElevatorArm;
 // import frc.command.IntakeAlgae;
-// import frc.command.IntakeCoral;
+import frc.command.IntakeCoral;
 import frc.command.ManualElevator;
+import frc.command.ManualWrist;
+import frc.command.SetElevator;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
 import frc.subsystems.ElevatorArmSubsystem;
-// import frc.subsystems.IntakeSubsystem;
+import frc.subsystems.IntakeSubsystem;
 import frc.subsystems.ElevatorArmSubsystem.ArmPosition;
 import frc.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
+import frc.command.OuttakeCoral;;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -42,10 +45,9 @@ public class OI
   final         CommandXboxController driveController = new CommandXboxController(0);
   final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
-  // private final ClimberSubsystem      climber    = new ClimberSubsystem();
   private final ElevatorArmSubsystem elevator = new ElevatorArmSubsystem();
   private final ClimberSubsystem      climber    = new ClimberSubsystem();
-  // private final IntakeSubsystem intake = new IntakeSubsystem();
+  private final IntakeSubsystem intake = new IntakeSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
                                                                                 
@@ -54,8 +56,8 @@ public class OI
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driveController.getLeftY() * -1,
-                                                                () -> driveController.getLeftX() * -1)
+                                                                () -> driveController.getLeftY(),// * -1,
+                                                                () -> driveController.getLeftX())// * -1)
                                                                 //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
                                                                 //Raw axis of rightTriggerAxis is 3 for some reason
                                                             .withControllerRotationAxis(driveController::getRightTriggerAxis)
@@ -85,6 +87,7 @@ public class OI
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
   }
+
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -119,7 +122,8 @@ public class OI
       operatorController.y().whileTrue(new runClimberUp(climber));
 
       // operatorController.x().whileTrue(new IntakeAlgae(intake));
-      // operatorController.y().whileTrue(new IntakeCoral(intake));
+      operatorController.rightBumper().whileTrue(new IntakeCoral(intake));
+      operatorController.leftBumper().whileTrue(new OuttakeCoral(intake));
  
       // elevator.setDefaultCommand(new ManualElevator(
       //   elevator,
@@ -138,6 +142,13 @@ public class OI
       )
       );
 
+      elevator.setDefaultCommand(new ManualWrist(
+        elevator,
+        () -> getManipRightY()
+      )
+      );
+
+      // operatorController.leftBumper().onTrue(new SetElevator(elevator, 20));
       // operatorController.leftBumper().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
 
   }
@@ -146,7 +157,7 @@ public class OI
     return operatorController.getRawAxis(1);
   }
   public double getManipRightY(){
-    return operatorController.getRightY();
+    return operatorController.getRawAxis(4);
   }
   public boolean getManipRightTrigger(){
     return operatorController.rightTrigger().getAsBoolean();

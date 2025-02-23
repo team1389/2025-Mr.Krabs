@@ -7,6 +7,7 @@ import java.util.Map;
 import com.revrobotics.RelativeEncoder;
 // import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 // import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
@@ -26,7 +27,9 @@ import frc.robot.RobotMap;
 
 public class ElevatorArmSubsystem extends SubsystemBase{
     private SparkFlex elevatorMotorRight, elevatorMotorLeft;
-    //, leftShoulderMotor, rightShoulderMotor, wristMotor
+    //, leftShoulderMotor, rightShoulderMotor, 
+    private SparkMax wristMotor;
+    // shoulder is a spark max
     double elevatorSpeed = 1;
 
     private RelativeEncoder shoulderRelEncoder, leftElevatorRelEncoder, rightElevatorRelEncoder; //-.3 to -110
@@ -69,7 +72,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
         elevatorMotorRight = new SparkFlex(RobotMap.MotorPorts.ELEVATOR_MOTOR_TWO, MotorType.kBrushless);
         // leftShoulderMotor = new SparkFlex(RobotMap.MotorPorts.LEFT_SHOULDER_MOTOR, MotorType.kBrushless);
         // rightShoulderMotor = new SparkFlex(RobotMap.MotorPorts.RIGHT_SHOULDER_MOTOR, MotorType.kBrushless);
-        // wristMotor = new SparkFlex(RobotMap.MotorPorts.WRIST_MOTOR, MotorType.kBrushless);
+        wristMotor = new SparkMax(RobotMap.MotorPorts.WRIST_MOTOR, MotorType.kBrushless);
 
         // shoulderRelEncoder = leftShoulderMotor.getEncoder();
         leftElevatorRelEncoder = elevatorMotorLeft.getEncoder();
@@ -133,7 +136,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
     //     leftShoulderMotor.set(arm1Speed);
     //     rightShoulderMotor.set(arm1Speed);
     // }
-    // public void setManualWrist(double arm2Speed){wristMotor.set(arm2Speed);}
+    public void setManualWrist(double arm2Speed){wristMotor.set(arm2Speed);}
 
 
     // public void setSpeed(SparkFlex motor, double speed, double maxSpeed){
@@ -168,7 +171,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
     // }
 
     // public void setElevator(double setpoint){
-    //     double speed = elevatorPid.calculate(getElevatorPos(), setpoint);
+    //     double speed = elevatorPid.calculate(getRightRelElevatorPos(), setpoint);
     //     setSpeed(elevatorMotor, speed, RobotMap.ArmConstants.ELEVATOR_MAX_SPEED);
     // }
 
@@ -191,10 +194,10 @@ public class ElevatorArmSubsystem extends SubsystemBase{
     //     shoulderRelEncoder.setPosition(0);
     // }
 
-    // public void moveElevator(double power){
-    //     elevatorMotorLeft.setVoltage(MathUtil.clamp(power, -12, 12));
-    //     elevatorMotorRight.setVoltage(MathUtil.clamp(power, -12, 12));
-    // }
+    public void moveElevator(double power){
+        elevatorMotorLeft.setVoltage(MathUtil.clamp(power, -12, 12));
+        elevatorMotorRight.setVoltage(MathUtil.clamp(power, -12, 12));
+    }
     // public void moveShoulder(double power){ 
     //     if((shoulderTarget > 90 || shoulderTarget < 0) && power > 0){ //TODO
     //         leftShoulderMotor.setVoltage(0);
@@ -216,18 +219,30 @@ public class ElevatorArmSubsystem extends SubsystemBase{
     //     // SmartDashboard.putBoolean("Shoulder: Too High or Too Low", false);
     // }
 
-    // public boolean atTargetPosition(){
-    //     boolean elevatorClose = Math.abs(getElevatorPos() - elevatorTarget) < 0.05;
-    // //    boolean shoulderClose = Math.abs(getShoulderPos() - shoulderTarget) < 0.05;
-    //     boolean shoulderClose = Math.abs(getShoulderRelPos() - shoulderTarget) < 0.05;
-    //     boolean wristClose = Math.abs(getWristPos() - wristTarget) < 0.05;
+    public boolean atTargetPosition(){
+        boolean elevatorClose = Math.abs(getRightRelElevatorPos() - elevatorTarget) < 0.05;
+    //    boolean shoulderClose = Math.abs(getShoulderPos() - shoulderTarget) < 0.05;
+        // boolean shoulderClose = Math.abs(getShoulderRelPos() - shoulderTarget) < 0.05;
+        // boolean wristClose = Math.abs(getWristPos() - wristTarget) < 0.05;
     
-    //     SmartDashboard.putBoolean("Elevator At Target", elevatorClose);
-    //     SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
-    //     SmartDashboard.putBoolean("Wrist At Target", wristClose);
+        SmartDashboard.putBoolean("Elevator At Target", elevatorClose);
+        // SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
+        // SmartDashboard.putBoolean("Wrist At Target", wristClose);
     
-    //     return elevatorClose && shoulderClose && wristClose;
-    // }
+        return elevatorClose;// && shoulderClose && wristClose;
+    }
+
+    public boolean atTargetPosition(double height){
+        boolean elevatorClose = Math.abs(getRightRelElevatorPos() - height) < .05;
+        SmartDashboard.putBoolean("Elevator At Target", elevatorClose);
+        return elevatorClose;
+    }
+
+    public void setElevator(double height){
+        height = MathUtil.clamp(height, 0, 110);
+        double power = elevatorPid.calculate(getRightRelElevatorPos(), height);
+        moveElevator(power);
+    }
 
     public void setRadians(){
 
@@ -235,7 +250,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
-    //      double elevatorPower = elevatorPid.calculate(getElevatorPos(), elevatorTarget);
+    //      double elevatorPower = elevatorPid.calculate(getRightRelElevatorPos(), elevatorTarget);
     //     double shoulderPower = shoulderPid.calculate(getShoulderRelPos(), shoulderTarget) + shoulderFF.calculate(shoulderTarget, 0); // for limit switch
     // //    double shoulderPower = shoulderPid.calculate(getShoulderPos(), shoulderTarget) + shoulderFF.calculate(shoulderTarget, 0); // add FF 
     //     double wristPower = wristPid.calculate(getWristPos(), wristTarget) + wristFF.calculate(wristTarget, 0); // add FF TODO
@@ -250,7 +265,7 @@ public class ElevatorArmSubsystem extends SubsystemBase{
 
         // -.3 to -110
 
-        if(getLeftRelElevatorPos() > .5 || getLeftRelElevatorPos() < -110){
+        if(getRightRelElevatorPos() < 0 || getRightRelElevatorPos() > 50){
             stop();
         }
 

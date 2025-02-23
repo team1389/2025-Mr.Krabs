@@ -6,11 +6,11 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.subsystems.ElevatorArmSubsystem;
 
-public class ManualElevator extends Command{
+public class ManualWrist extends Command{
     ElevatorArmSubsystem elevatorArm;
     Supplier<Double> power;
 
-    public ManualElevator(ElevatorArmSubsystem elevatorArm, Supplier<Double> power){
+    public ManualWrist(ElevatorArmSubsystem elevatorArm, Supplier<Double> power){
         this.elevatorArm = elevatorArm;
         this.power = power;
         addRequirements(elevatorArm);
@@ -18,10 +18,7 @@ public class ManualElevator extends Command{
 
     @Override
     public void execute(){
-        // if(elevatorArm.getRightRelElevatorPos() < 0 || elevatorArm.getRightRelElevatorPos() > 50){
-        //     elevatorArm.stop();
-        // } else{
-        elevatorArm.setManualElevator(MathUtil.clamp(power.get(), -1, 1));//}
+        elevatorArm.setManualWrist(MathUtil.clamp(power.get(), -1, 1));//}
     }
 
 }

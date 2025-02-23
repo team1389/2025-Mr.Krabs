@@ -84,8 +84,8 @@ public static final String INTAKE_MOTOR = null;
     public static final int ELEVATOR_MOTOR_TWO = 17; 
     // public static final int LEFT_SHOULDER_MOTOR = 12;
     // public static final int RIGHT_SHOULDER_MOTOR = 13;
-    // public static final int WRIST_MOTOR = 14;
+    public static final int WRIST_MOTOR = 14;
     // public static final int intakeAlgaeMotor = 15;
-    // public static final int intakeCoralMotor = 16;
+    public static final int intakeCoralMotor = 16;
   }
 }
