@@ -14,12 +14,8 @@ public class ClimberSubsystem extends SubsystemBase{
         climberMotor = new SparkFlex(RobotMap.MotorPorts.climberMotor, MotorType.kBrushless);
     }
 
-    public void spinForwards(){
-        climberMotor.set(-RobotMap.ClimberConstants.CLIMBER_SPEED);
-    }
-
-    public void spinBackwards(){
-        climberMotor.set(RobotMap.ClimberConstants.CLIMBER_SPEED);
+    public void setSpeed(double climberSpeed){
+        climberMotor.set(climberSpeed);
     }
 
     public void stop(){

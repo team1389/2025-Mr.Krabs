@@ -4,13 +4,13 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.subsystems.ElevatorArmSubsystem;
+import frc.subsystems.ElevatorArm;
 
 public class ManualWrist extends Command{
-    ElevatorArmSubsystem elevatorArm;
+    ElevatorArm elevatorArm;
     Supplier<Double> power;
 
-    public ManualWrist(ElevatorArmSubsystem elevatorArm, Supplier<Double> power){
+    public ManualWrist(ElevatorArm elevatorArm, Supplier<Double> power){
         this.elevatorArm = elevatorArm;
         this.power = power;
         addRequirements(elevatorArm);

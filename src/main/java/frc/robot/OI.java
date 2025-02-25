@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.io.File;
+import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -12,26 +13,29 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.command.runClimberDown;
-import frc.command.runClimberUp;
+import frc.command.MoveClimber;
 // import frc.command.SetElevatorArm;
+import frc.command.SetElevator;
 // import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
-import frc.command.ManualElevator;
+import frc.command.ManualElevatorArm;
 import frc.command.ManualWrist;
-import frc.command.SetElevator;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
-import frc.subsystems.ElevatorArmSubsystem;
+import frc.subsystems.ElevatorArm;
 import frc.subsystems.IntakeSubsystem;
-import frc.subsystems.ElevatorArmSubsystem.ArmPosition;
+import frc.subsystems.ElevatorArm;
+import frc.subsystems.ElevatorArm.ArmPosition;
 import frc.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
-import frc.command.OuttakeCoral;;
+import frc.command.OuttakeCoral;
+import frc.command.RunManualShoulder;;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -45,7 +49,7 @@ public class OI
   final         CommandXboxController driveController = new CommandXboxController(0);
   final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
-  private final ElevatorArmSubsystem elevator = new ElevatorArmSubsystem();
+  private final ElevatorArm elevatorArm = new ElevatorArm();
   private final ClimberSubsystem      climber    = new ClimberSubsystem();
   private final IntakeSubsystem intake = new IntakeSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -118,12 +122,18 @@ public class OI
       // operatorController.a().whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.y().whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.x().whileTrue(Commands.run(climber::spinForwards, climber));
-      operatorController.a().whileTrue(new runClimberDown(climber));
-      operatorController.y().whileTrue(new runClimberUp(climber));
+      // operatorController.a().whileTrue(new MoveClimber(climber, 1));
+      // operatorController.y().whileTrue(new MoveClimber(climber, -1));
 
       // operatorController.x().whileTrue(new IntakeAlgae(intake));
-      operatorController.rightBumper().whileTrue(new IntakeCoral(intake));
-      operatorController.leftBumper().whileTrue(new OuttakeCoral(intake));
+      // operatorController.leftBumper().whileTrue(new IntakeCoral(intake));
+      operatorController.rightBumper().whileTrue(new OuttakeCoral(intake));
+
+      // operatorController.rightTrigger().whileTrue(new RunManualShoulder(elevatorArm, 1));
+      // operatorController.leftTrigger().whileTrue(new RunManualShoulder(elevatorArm, -1));
+
+      operatorController.a().whileTrue(new RunManualShoulder(elevatorArm, 1));
+      operatorController.y().whileTrue(new RunManualShoulder(elevatorArm, -1));
  
       // elevator.setDefaultCommand(new ManualElevator(
       //   elevator,
@@ -134,21 +144,15 @@ public class OI
       // )
       // );
 
-      
 
-      elevator.setDefaultCommand(new ManualElevator(
-        elevator,
+      elevatorArm.setDefaultCommand(new ManualElevatorArm(
+        elevatorArm,
+        () -> getManipRightY(),
         () -> getManipLeftY()
       )
       );
 
-      elevator.setDefaultCommand(new ManualWrist(
-        elevator,
-        () -> getManipRightY()
-      )
-      );
-
-      // operatorController.leftBumper().onTrue(new SetElevator(elevator, 20));
+      operatorController.leftBumper().onTrue(new SetElevator(elevatorArm, 20));
       // operatorController.leftBumper().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
 
   }
@@ -159,8 +163,8 @@ public class OI
   public double getManipRightY(){
     return operatorController.getRawAxis(4);
   }
-  public boolean getManipRightTrigger(){
-    return operatorController.rightTrigger().getAsBoolean();
+  public double getManipRightTrigger(){
+    return operatorController.getRightTriggerAxis();
   }
   public boolean getManipLeftTrigger(){
     return operatorController.leftTrigger().getAsBoolean();
