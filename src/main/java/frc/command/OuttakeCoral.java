@@ -1,5 +1,6 @@
 package frc.command;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.subsystems.IntakeSubsystem;
 
@@ -8,11 +9,13 @@ public class OuttakeCoral extends Command {
 
     public OuttakeCoral(IntakeSubsystem intakeSub) {
         this.intakeSub = intakeSub;
+        SmartDashboard.putBoolean("IsCoralIn", intakeSub.isCoralIn());
     }
 
     @Override
     public void execute() {
         intakeSub.outtakeCoral();
+        SmartDashboard.putBoolean("IsCoralIn", intakeSub.isCoralIn());
     }
 
     @Override

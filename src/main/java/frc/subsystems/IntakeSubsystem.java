@@ -1,16 +1,19 @@
 package frc.subsystems;
 
 import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class IntakeSubsystem extends SubsystemBase {
     // private SparkFlex algaeIntake;
     private SparkMax coralIntake;
+    private SparkLimitSwitch coralLimitSwitch;
     double speed = 0.5;
     // private DigitalInput coralLS, algaeLS;
 
@@ -18,6 +21,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public IntakeSubsystem() {
         // algaeIntake = new SparkFlex(RobotMap.MotorPorts.intakeAlgaeMotor, MotorType.kBrushless);
         coralIntake = new SparkMax(RobotMap.MotorPorts.intakeCoralMotor, MotorType.kBrushless);
+        coralLimitSwitch = coralIntake.getReverseLimitSwitch();
         // coralLS = new DigitalInput(RobotMap.IntakeConstants.CORAL_LIMIT_SWITCH);
         // algaeLS = new DigitalInput(RobotMap.IntakeConstants.ALGAE_LIMIT_SWITCH);
     }
@@ -49,4 +53,8 @@ public class IntakeSubsystem extends SubsystemBase {
     // public boolean ifCoral() {
     //     return coralLS.get();
     // }
+
+    public boolean isCoralIn() {
+        return coralLimitSwitch.isPressed();
+    }
 }
