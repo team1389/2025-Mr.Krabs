@@ -7,7 +7,7 @@ public class OuttakeCoral extends Command {
     public IntakeSubsystem intakeSub;
 
     public OuttakeCoral(IntakeSubsystem intakeSub) {
-        intakeSub = this.intakeSub;
+        this.intakeSub = intakeSub;
     }
 
     @Override
