@@ -35,7 +35,6 @@ public class ElevatorArm extends SubsystemBase{
     double elevatorSpeed = 1;
 
     private RelativeEncoder shoulderRelEncoder, leftElevatorRelEncoder, rightElevatorRelEncoder; //-.3 to -110
-    private AbsoluteEncoder wristAbsEncoder;
     // private DutyCycleEncoder wristEncoder;
 
     // private DigitalInput topLimitSwitch, bottomLimitSwitch;
