@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.MoveClimber;
 // import frc.command.SetElevatorArm;
 import frc.command.SetElevator;
-import frc.command.SetWrist;
+import frc.command.TestSetWrist;
 // import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
 import frc.command.ManualElevatorArm;
@@ -35,8 +35,9 @@ import frc.subsystems.ElevatorArm;
 import frc.subsystems.ElevatorArm.ArmPosition;
 import frc.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
-import frc.command.OuttakeCoral;
-import frc.command.RunManualShoulder;;
+// import frc.command.OuttakeCoral;
+import frc.command.RunManualShoulder;
+import frc.command.RunManualWrist;;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -62,10 +63,10 @@ public class OI
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driveController.getLeftY(),// * -1,
-                                                                () -> driveController.getLeftX())// * -1)
+                                                                () -> driveController.getLeftX())// * -1) 
                                                                 //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
                                                                 //Raw axis of rightTriggerAxis is 3 for some reason
-                                                            .withControllerRotationAxis(() -> driveController.getRightTriggerAxis() *-1)
+                                                            .withControllerRotationAxis(() -> driveController.getRightTriggerAxis() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -120,21 +121,27 @@ public class OI
       driveController.rightBumper().onTrue(Commands.none());
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
-      // operatorController.a().whileTrue(Commands.run(climber::spinForwards, climber));
-      // operatorController.y().whileTrue(Commands.run(climber::spinBackwards, climber));
+      // operatorController.rightBumper().whileTrue(Commands.run(climber::spinForwards, climber));
+      // operatorController.leftBumper().whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.x().whileTrue(Commands.run(climber::spinForwards, climber));
-      // operatorController.a().whileTrue(new MoveClimber(climber, 1));
-      // operatorController.y().whileTrue(new MoveClimber(climber, -1));
+      operatorController.rightBumper().whileTrue(new MoveClimber(climber, 1));
+      operatorController.leftBumper().whileTrue(new MoveClimber(climber, -1));
 
       // operatorController.x().whileTrue(new IntakeAlgae(intake));
-      operatorController.leftBumper().whileTrue(new IntakeCoral(intake));
-      operatorController.rightBumper().whileTrue(new OuttakeCoral(intake));
+      // operatorController.leftBumper().whileTrue(new IntakeCoral(intake));
+      // operatorController.rightBumper().whileTrue(new OuttakeCoral(intake));
 
       // operatorController.rightTrigger().whileTrue(new RunManualShoulder(elevatorArm, 1));
       // operatorController.leftTrigger().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
-      operatorController.a().whileTrue(new RunManualShoulder(elevatorArm, 1));
-      operatorController.y().whileTrue(new RunManualShoulder(elevatorArm, -1));
+      // operatorController.a().whileTrue(new RunManualShoulder(elevatorArm, .2));
+      // operatorController.y().whileTrue(new RunManualShoulder(elevatorArm, -.2));
+
+      operatorController.x().whileTrue(new RunManualWrist(elevatorArm, .2)); //smaller
+      operatorController.b().whileTrue(new RunManualWrist(elevatorArm, -.2)); //bigger
+
+      operatorController.a().whileTrue(new TestSetWrist(elevatorArm, .3));
+      operatorController.y().whileTrue(new TestSetWrist(elevatorArm, .5));
  
       // elevator.setDefaultCommand(new ManualElevator(
       //   elevator,

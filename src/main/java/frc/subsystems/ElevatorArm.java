@@ -6,6 +6,7 @@ import java.util.Map;
 import com.revrobotics.AbsoluteEncoder;
 // import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
 // import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
@@ -55,6 +56,8 @@ public class ElevatorArm extends SubsystemBase{
     private final ArmFeedforward shoulderFF = new ArmFeedforward(0,  1.75, 1.95); //ks is static friction, might not need it
     private final ArmFeedforward wristFF = new ArmFeedforward(0, 1.75, 1.95, 0); 
 
+    SparkAbsoluteEncoder wristAbsEncoder;
+
     private double elevatorTarget, shoulderTarget, wristTarget;
 
     public enum ArmPosition {
@@ -101,6 +104,8 @@ public class ElevatorArm extends SubsystemBase{
         // zeroShoulderRelEncoder();
         // setElevatorArm(ArmPosition.Starting);
         // leftElevatorRelEncoder.setPosition(0);
+
+        wristAbsEncoder = wristMotor.getAbsoluteEncoder();
     }
     // public void setInverted(SparkFlex motor){
     //     configs.inverted(true);
@@ -138,6 +143,10 @@ public class ElevatorArm extends SubsystemBase{
         // rightShoulderMotor.set(-arm1Speed);
     }
     public void setManualWrist(double arm2Speed){wristMotor.set(arm2Speed);}
+
+    public double getWristEncoder(){
+        return wristAbsEncoder.getPosition();
+    }
 
 
     // public void setSpeed(SparkFlex motor, double speed, double maxSpeed){
