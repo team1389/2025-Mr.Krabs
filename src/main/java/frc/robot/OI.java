@@ -31,11 +31,10 @@ import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
 import frc.subsystems.ElevatorArm;
 import frc.subsystems.IntakeSubsystem;
-import frc.subsystems.ElevatorArm;
 import frc.subsystems.ElevatorArm.ArmPosition;
 import frc.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
-// import frc.command.OuttakeCoral;
+import frc.command.OuttakeCoral;
 import frc.command.RunManualShoulder;
 import frc.command.RunManualWrist;;
 
@@ -124,24 +123,27 @@ public class OI
       // operatorController.rightBumper().whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.leftBumper().whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.x().whileTrue(Commands.run(climber::spinForwards, climber));
-      operatorController.rightBumper().whileTrue(new MoveClimber(climber, 1));
-      operatorController.leftBumper().whileTrue(new MoveClimber(climber, -1));
+      // operatorController.rightBumper().whileTrue(new MoveClimber(climber, 1));
+      // operatorController.leftBumper().whileTrue(new MoveClimber(climber, -1));
 
       // operatorController.x().whileTrue(new IntakeAlgae(intake));
-      // operatorController.leftBumper().whileTrue(new IntakeCoral(intake));
-      // operatorController.rightBumper().whileTrue(new OuttakeCoral(intake));
+      operatorController.leftBumper().whileTrue(new IntakeCoral(intake));
+      operatorController.rightBumper().whileTrue(new OuttakeCoral(intake));
 
       // operatorController.rightTrigger().whileTrue(new RunManualShoulder(elevatorArm, 1));
       // operatorController.leftTrigger().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
-      // operatorController.a().whileTrue(new RunManualShoulder(elevatorArm, .2));
-      // operatorController.y().whileTrue(new RunManualShoulder(elevatorArm, -.2));
+      operatorController.x().whileTrue(new RunManualShoulder(elevatorArm, .2));
+      operatorController.b().whileTrue(new RunManualShoulder(elevatorArm, -.2));
 
-      operatorController.x().whileTrue(new RunManualWrist(elevatorArm, .2)); //smaller
-      operatorController.b().whileTrue(new RunManualWrist(elevatorArm, -.2)); //bigger
+      // operatorController.x().whileTrue(new RunManualWrist(elevatorArm, .2)); //smaller
+      // operatorController.b().whileTrue(new RunManualWrist(elevatorArm, -.2)); //bigger
 
       operatorController.a().whileTrue(new TestSetWrist(elevatorArm, .3));
       operatorController.y().whileTrue(new TestSetWrist(elevatorArm, .5));
+
+      operatorController.button(13).whileTrue(new MoveClimber(climber, 1));
+      operatorController.button(12).whileTrue(new MoveClimber(climber, -1));
  
       // elevator.setDefaultCommand(new ManualElevator(
       //   elevator,

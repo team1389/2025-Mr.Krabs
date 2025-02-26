@@ -35,7 +35,7 @@ public class ElevatorArm extends SubsystemBase{
     double elevatorSpeed = 1;
 
     private RelativeEncoder shoulderRelEncoder, leftElevatorRelEncoder, rightElevatorRelEncoder; //-.3 to -110
-    private AbsoluteEncoder wristAbsEncoder;
+    // private AbsoluteEncoder wristAbsEncoder;
     // private DutyCycleEncoder wristEncoder;
 
     // private DigitalInput topLimitSwitch, bottomLimitSwitch;
@@ -56,7 +56,7 @@ public class ElevatorArm extends SubsystemBase{
     private final ArmFeedforward shoulderFF = new ArmFeedforward(0,  1.75, 1.95); //ks is static friction, might not need it
     private final ArmFeedforward wristFF = new ArmFeedforward(0, 1.75, 1.95, 0); 
 
-    SparkAbsoluteEncoder wristAbsEncoder;
+    private SparkAbsoluteEncoder wristAbsEncoder;
 
     private double elevatorTarget, shoulderTarget, wristTarget;
 
