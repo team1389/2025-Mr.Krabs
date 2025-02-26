@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.MoveClimber;
 // import frc.command.SetElevatorArm;
 import frc.command.SetElevator;
+import frc.command.SetWrist;
 // import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
 import frc.command.ManualElevatorArm;
@@ -64,7 +65,7 @@ public class OI
                                                                 () -> driveController.getLeftX())// * -1)
                                                                 //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
                                                                 //Raw axis of rightTriggerAxis is 3 for some reason
-                                                            .withControllerRotationAxis(driveController::getRightTriggerAxis)
+                                                            .withControllerRotationAxis(() -> driveController.getRightTriggerAxis() *-1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -126,7 +127,7 @@ public class OI
       // operatorController.y().whileTrue(new MoveClimber(climber, -1));
 
       // operatorController.x().whileTrue(new IntakeAlgae(intake));
-      // operatorController.leftBumper().whileTrue(new IntakeCoral(intake));
+      operatorController.leftBumper().whileTrue(new IntakeCoral(intake));
       operatorController.rightBumper().whileTrue(new OuttakeCoral(intake));
 
       // operatorController.rightTrigger().whileTrue(new RunManualShoulder(elevatorArm, 1));
@@ -152,7 +153,7 @@ public class OI
       )
       );
 
-      operatorController.leftBumper().onTrue(new SetElevator(elevatorArm, 20));
+      // operatorController.leftBumper().onTrue(new SetElevator(elevatorArm, 20));
       // operatorController.leftBumper().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
 
   }
