@@ -35,7 +35,7 @@ import frc.subsystems.ElevatorArm;
 import frc.subsystems.ElevatorArm.ArmPosition;
 import frc.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
-import frc.command.OuttakeCoral;
+// import frc.command.OuttakeCoral;
 import frc.command.RunManualShoulder;
 import frc.command.RunManualWrist;;
 
@@ -160,7 +160,7 @@ public class OI
       )
       );
 
-      operatorController.leftBumper().onTrue(new SetElevator(elevatorArm, 20));
+      // operatorController.leftBumper().onTrue(new SetElevator(elevatorArm, 20));
       // operatorController.leftBumper().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
 
   }
