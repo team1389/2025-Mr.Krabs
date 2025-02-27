@@ -169,7 +169,6 @@ public class OI
       );
 
       // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 20));
-      operatorController.button(10).onTrue(new (elevator, ArmPosition.Starting));
 
   }
 
