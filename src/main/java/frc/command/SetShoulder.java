@@ -3,27 +3,27 @@ package frc.command;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.subsystems.ElevatorArm;
 
-public class SetWrist extends Command{
-    public ElevatorArm wrist;
+public class SetShoulder extends Command{
+    public ElevatorArm shoulder;
     public double position;
 
-    public SetWrist(ElevatorArm wrist, double position){
-        this.wrist = wrist;
+    public SetShoulder(ElevatorArm shoulder, double position){
+        this.shoulder = shoulder;
         this.position = position;
     }
 
     @Override
     public void execute(){
-        wrist.setWrist(position);
+        shoulder.setShoulder(position);
     }
 
     @Override
     public boolean isFinished(){
-        return wrist.atWristTargetPosition(position);
+        return shoulder.atShoulderTargetPosition(position);
     }
 
     @Override
     public void end(boolean interrupted){
-        wrist.setManualWrist(0);
+        shoulder.setManualShoulder(0);
     }
 }

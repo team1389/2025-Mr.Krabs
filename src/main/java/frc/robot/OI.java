@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.MoveClimber;
 // import frc.command.SetElevatorArm;
 import frc.command.SetElevator;
+import frc.command.SetShoulder;
+import frc.command.SetWrist;
 import frc.command.TestSetWrist;
 // import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
@@ -127,23 +129,27 @@ public class OI
       // operatorController.leftBumper().whileTrue(new MoveClimber(climber, -1));
 
       // operatorController.x().whileTrue(new IntakeAlgae(intake));
-      operatorController.leftBumper().whileTrue(new IntakeCoral(intake));
-      operatorController.rightBumper().whileTrue(new OuttakeCoral(intake));
+      operatorController.x().whileTrue(new IntakeCoral(intake));
+      operatorController.b().whileTrue(new OuttakeCoral(intake));
 
       // operatorController.rightTrigger().whileTrue(new RunManualShoulder(elevatorArm, 1));
       // operatorController.leftTrigger().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
-      operatorController.x().whileTrue(new RunManualShoulder(elevatorArm, .2));
-      operatorController.b().whileTrue(new RunManualShoulder(elevatorArm, -.2));
+      operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, .2));
+      operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -.2));
 
       // operatorController.x().whileTrue(new RunManualWrist(elevatorArm, .2)); //smaller
       // operatorController.b().whileTrue(new RunManualWrist(elevatorArm, -.2)); //bigger
 
-      operatorController.a().whileTrue(new TestSetWrist(elevatorArm, .3));
-      operatorController.y().whileTrue(new TestSetWrist(elevatorArm, .5));
+      // operatorController.a().whileTrue(new TestSetWrist(elevatorArm, .3));
+      operatorController.a().onTrue(new SetWrist(elevatorArm, .3));
+
+      operatorController.y().whileTrue(new TestSetWrist(elevatorArm, .3));
 
       operatorController.button(13).whileTrue(new MoveClimber(climber, 1));
       operatorController.button(12).whileTrue(new MoveClimber(climber, -1));
+
+      operatorController.button(9).whileTrue(new SetShoulder(elevatorArm, 0));
  
       // elevator.setDefaultCommand(new ManualElevator(
       //   elevator,
@@ -162,7 +168,7 @@ public class OI
       )
       );
 
-      // operatorController.leftBumper().onTrue(new SetElevator(elevatorArm, 20));
+      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 20));
       // operatorController.leftBumper().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
 
   }
