@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.MoveClimber;
 // import frc.command.SetElevatorArm;
 import frc.command.SetElevator;
+import frc.command.SetElevatorArm;
 import frc.command.SetShoulder;
 import frc.command.SetWrist;
 import frc.command.TestSetWrist;
@@ -146,10 +147,10 @@ public class OI
 
       operatorController.y().whileTrue(new TestSetWrist(elevatorArm, .3));
 
-      operatorController.button(13).whileTrue(new MoveClimber(climber, 1));
-      operatorController.button(12).whileTrue(new MoveClimber(climber, -1));
+      operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
+      operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
 
-      operatorController.button(9).whileTrue(new SetShoulder(elevatorArm, 0));
+      operatorController.button(9).whileTrue(new SetShoulder(elevatorArm, 0)); //ellipses
  
       // elevator.setDefaultCommand(new ManualElevator(
       //   elevator,
@@ -168,7 +169,8 @@ public class OI
       )
       );
 
-      // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 20));
+      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 20)); //Menu
+      operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
   }
 

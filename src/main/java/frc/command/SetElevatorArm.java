@@ -1,32 +1,38 @@
-// package frc.command;
+package frc.command;
 
-// import edu.wpi.first.wpilibj2.command.Command;
-// import frc.subsystems.ElevatorArm;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.subsystems.ElevatorArm.ArmPosition;
+import frc.subsystems.ElevatorArm;
 
-// public class SetElevatorArm extends Command{
-//     private ElevatorArm elevatorArm;
-//     private ArmPosition target;
+public class SetElevatorArm extends Command{
+    private ElevatorArm elevatorArm;
+    private ArmPosition target;
 
-//     public SetElevatorArm(ElevatorArmSubsystem elevatorArm, ArmPosition target) {
-//         this.elevatorArm = elevatorArm;
-//         this.target = target;
+    public SetElevatorArm(ElevatorArm elevatorArm, ArmPosition target) {
+        this.elevatorArm = elevatorArm;
+        this.target = target;
 
-//         addRequirements(elevatorArm);
-//     }
+        addRequirements(elevatorArm);
+    }
 
-//     @Override
-//     public void execute(){
-//         elevatorArm.setElevatorArm(target);
-//     }
+    // public void initilize(){
+    //     
+    // }
 
-//     @Override
-//     public boolean isFinished() {
-//         return elevatorArm.atTargetPosition();
-//     }
+    @Override
+    public void execute(){
+        elevatorArm.setElevatorArm(target);
+    }
 
-//     @Override
-//     public void end(boolean interrupted){
-//         elevatorArm.holdPosition();
-//     }
+    @Override
+    public boolean isFinished() {
+        return elevatorArm.atTargetPosition();
+    }
 
-// }
+    @Override
+    public void end(boolean interrupted){
+        elevatorArm.stop();
+        // elevatorArm.holdPosition();
+    }
+
+}
