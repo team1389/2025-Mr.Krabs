@@ -142,7 +142,7 @@ public class OI
       // operatorController.b().whileTrue(new RunManualWrist(elevatorArm, -.2)); //bigger
 
       // operatorController.a().whileTrue(new TestSetWrist(elevatorArm, .3));
-      operatorController.a().onTrue(new SetWrist(elevatorArm, .3));
+      // operatorController.a().onTrue(new SetWrist(elevatorArm, .3));
 
       operatorController.y().whileTrue(new TestSetWrist(elevatorArm, .3));
 
@@ -168,8 +168,8 @@ public class OI
       )
       );
 
-      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 20));
-      // operatorController.leftBumper().onTrue(new SetElevatorArm(elevator, ArmPosition.Starting));
+      // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 20));
+      operatorController.button(10).onTrue(new (elevator, ArmPosition.Starting));
 
   }
 

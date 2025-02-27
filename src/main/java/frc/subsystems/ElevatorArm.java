@@ -154,7 +154,17 @@ public class ElevatorArm extends SubsystemBase{
         // rightShoulderMotor.set(-arm1Speed);
     }
     public void setManualWrist(double arm2Speed){
-        wristMotor.set(arm2Speed);}
+        MathUtil.clamp(arm2Speed, -0.3, 0.3);
+        if (getWristEncoder() < 0.025 && arm2Speed > 0){
+            wristMotor.set(0);
+        }
+        else if (getWristEncoder() > 0.975 && arm2Speed < 0){
+            wristMotor.set(0);
+        }
+        else{
+            wristMotor.set(arm2Speed);
+        }
+    }
 
     public double getWristEncoder(){
         return wristAbsEncoder.getPosition();
