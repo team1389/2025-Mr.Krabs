@@ -96,11 +96,11 @@ public class ElevatorArm extends SubsystemBase{
         // topLimitSwitch = new DigitalInput(RobotMap.ArmConstants.TOP_LIMIT_SWITCH);
         // bottomLimitSwitch = new DigitalInput(RobotMap.ArmConstants.BOTTOM_LIMIT_SWITCH);
 
-        positionMap.put(ArmPosition.Starting, new double[] {0,0,0});
+        positionMap.put(ArmPosition.Starting, new double[] {20, 0, .65});
         positionMap.put(ArmPosition.L1, new double[] {0,0,0});
         positionMap.put(ArmPosition.L2, new double[] {0,0,0});
         positionMap.put(ArmPosition.L3, new double[] {0,0,0});
-        positionMap.put(ArmPosition.L4, new double[] {0,0,0});
+        positionMap.put(ArmPosition.L4, new double[] {0, 0.3557, 0});
         positionMap.put(ArmPosition.Feeder, new double[] {0,0,0});
         positionMap.put(ArmPosition.Net, new double[] {0,0,0});
 
@@ -186,12 +186,12 @@ public class ElevatorArm extends SubsystemBase{
         return wristAbsEncoder.getPosition();
     }
 
-    // public void setElevatorArm(ArmPosition pos){
-    //     double[] targets = positionMap.get(pos);
-    //     elevatorTarget = targets[0];
-    //     shoulderTarget = targets[1];
-    //     wristTarget = targets[2];
-    // }
+    public void setElevatorArm(ArmPosition pos){
+        double[] targets = positionMap.get(pos);
+        elevatorTarget = targets[0];
+        shoulderTarget = targets[1];
+        wristTarget = targets[2];
+    }
 
     public void setElevator(double setpoint){
         if(ifElevatorTooLow()){
@@ -230,13 +230,12 @@ public class ElevatorArm extends SubsystemBase{
     }
 
 
-    // public void stop(){
-    //     elevatorMotorLeft.set(0);
-    //     elevatorMotorRight.set(0);
-    //     // leftShoulderMotor.set(0);
-    //     // rightShoulderMotor.set(0);
-    //     // wristMotor.set(0);
-    // }
+    public void stop(){
+        elevatorMotorLeft.set(0);
+        elevatorMotorRight.set(0);
+        leftShoulderMotor.set(0);
+        wristMotor.set(0);
+    }
 
     public boolean ifElevatorTooHigh(){
         return rightElevatorRelEncoder.getPosition() > 100;
@@ -268,43 +267,43 @@ public class ElevatorArm extends SubsystemBase{
     //     shoulderRelEncoder.setPosition(0);
     // }
 
-    // public void moveElevator(double power){
-    //     elevatorMotorLeft.setVoltage(MathUtil.clamp(power, -12, 12));
-    //     elevatorMotorRight.setVoltage(MathUtil.clamp(power, -12, 12));
-    // }
-    // public void moveShoulder(double power){ 
-    //     if((shoulderTarget > 90 || shoulderTarget < 0) && power > 0){ //TODO
-    //         leftShoulderMotor.setVoltage(0);
-    //         rightShoulderMotor.setVoltage(0);
-    //         SmartDashboard.putBoolean("Shoulder: Too High or Too Low", true);
-    //         return;
-    //     }
-    //     leftShoulderMotor.setVoltage(MathUtil.clamp(power, -12, 12));
-    //     rightShoulderMotor.setVoltage(MathUtil.clamp(power, -12, 12));
-    //     // SmartDashboard.putBoolean("Shoulder: Too High or Too Low", false);
-    // }
-    // public void moveWrist(double power){
-    //     if((wristTarget > 90 || wristTarget < 0) && power > 0){ //TODO
-    //         wristMotor.setVoltage(0);
-    //         SmartDashboard.putBoolean("Wrist: Too High or Too Low", true);
-    //         return;
-    //     }
-    //     wristMotor.setVoltage(MathUtil.clamp(power, -12, 12));
-    //     // SmartDashboard.putBoolean("Shoulder: Too High or Too Low", false);
-    // }
+    public void moveElevator(double power){
+        elevatorMotorLeft.setVoltage(MathUtil.clamp(power, -12, 12));
+        elevatorMotorRight.setVoltage(-MathUtil.clamp(power, -12, 12));
+    }
+    public void moveShoulder(double power){ 
+        // if((shoulderTarget > 90 || shoulderTarget < 0) && power > 0){ //TODO
+        //     leftShoulderMotor.setVoltage(0);
+        //     rightShoulderMotor.setVoltage(0);
+        //     SmartDashboard.putBoolean("Shoulder: Too High or Too Low", true);
+        //     return;
+        // }
+        leftShoulderMotor.setVoltage(MathUtil.clamp(power, -12, 12));
+        // rightShoulderMotor.setVoltage(MathUtil.clamp(power, -12, 12));
+        // SmartDashboard.putBoolean("Shoulder: Too High or Too Low", false);
+    }
+    public void moveWrist(double power){
+        // if((wristTarget > 90 || wristTarget < 0) && power > 0){ //TODO
+        //     wristMotor.setVoltage(0);
+        //     SmartDashboard.putBoolean("Wrist: Too High or Too Low", true);
+        //     return;
+        // }
+        wristMotor.setVoltage(MathUtil.clamp(power, -12, 12));
+        // SmartDashboard.putBoolean("Shoulder: Too High or Too Low", false);
+    }
 
-    // public boolean atTargetPosition(){
-    //     boolean elevatorClose = Math.abs(getRightRelElevatorPos() - elevatorTarget) < 0.05;
-    // //    boolean shoulderClose = Math.abs(getShoulderPos() - shoulderTarget) < 0.05;
-    //     // boolean shoulderClose = Math.abs(getShoulderRelPos() - shoulderTarget) < 0.05;
-    //     // boolean wristClose = Math.abs(getWristPos() - wristTarget) < 0.05;
+    public boolean atTargetPosition(){
+        boolean elevatorClose = Math.abs(getRightRelElevatorPos() - elevatorTarget) < 0.5;
+    //    boolean shoulderClose = Math.abs(getShoulderPos() - shoulderTarget) < 0.05;
+        boolean shoulderClose = Math.abs(getShoulderRelPos() - shoulderTarget) < 0.05;
+        boolean wristClose = Math.abs(getWristPos() - wristTarget) < 0.005;
     
-    //     SmartDashboard.putBoolean("Elevator At Target", elevatorClose);
-    //     // SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
-    //     // SmartDashboard.putBoolean("Wrist At Target", wristClose);
+        SmartDashboard.putBoolean("Elevator Target", elevatorClose);
+        SmartDashboard.putBoolean("Shoulder Target", shoulderClose);
+        SmartDashboard.putBoolean("Wrist Target", wristClose);
     
-    //     return elevatorClose;// && shoulderClose && wristClose;
-    // }
+        return elevatorClose && shoulderClose && wristClose;
+    }
 
     public boolean atTargetPosition(double height){
         boolean elevatorClose = Math.abs(getRightRelElevatorPos() - height) < .5;
@@ -324,6 +323,16 @@ public class ElevatorArm extends SubsystemBase{
         return shoulderClose;
     }
 
+    public void moveElevatorArm(){
+        double elevatorPower = elevatorPid.calculate(getRightRelElevatorPos(), elevatorTarget);
+        double shoulderPower = shoulderPid.calculate(getShoulderRelPos(), shoulderTarget);// + shoulderFF.calculate(shoulderTarget, 0); // for limit switch
+        double wristPower = wristPid.calculate(getWristPos(), wristTarget);
+
+        moveElevator(elevatorPower);
+        moveShoulder(shoulderPower);
+        moveWrist(wristPower);
+    }
+
     // public void setElevator(double height){
     //     height = MathUtil.clamp(height, 0, 110);
     //     double power = elevatorPid.calculate(getRightRelElevatorPos(), height);
@@ -338,14 +347,13 @@ public class ElevatorArm extends SubsystemBase{
     public void periodic(){
 
         SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
-    //      double elevatorPower = elevatorPid.calculate(getRightRelElevatorPos(), elevatorTarget);
-        // double shoulderPower = shoulderPid.calculate(getShoulderRelPos(), shoulderTarget) + shoulderFF.calculate(shoulderTarget, 0); // for limit switch
-    // //    double shoulderPower = shoulderPid.calculate(getShoulderPos(), shoulderTarget) + shoulderFF.calculate(shoulderTarget, 0); // add FF 
-    //     double wristPower = wristPid.calculate(getWristPos(), wristTarget) + wristFF.calculate(wristTarget, 0); // add FF TODO
+        double elevatorPower = elevatorPid.calculate(getRightRelElevatorPos(), elevatorTarget);
+        double shoulderPower = shoulderPid.calculate(getShoulderRelPos(), shoulderTarget);// + shoulderFF.calculate(shoulderTarget, 0); // for limit switch
+        double wristPower = wristPid.calculate(getWristPos(), wristTarget);// + wristFF.calculate(wristTarget, 0); // add FF TODO
 
-    //     moveElevator(elevatorPower);
-    //     moveShoulder(shoulderPower);
-    //     moveWrist(wristPower);
+        moveElevator(elevatorPower);
+        moveShoulder(shoulderPower);
+        moveWrist(wristPower);
 
         // if(topLimitSwitch.get()){
         //     shoulderRelEncoder.setPosition(0);
@@ -361,7 +369,7 @@ public class ElevatorArm extends SubsystemBase{
         // SmartDashboard.getNumber("I Shoulder", 0), 
         // SmartDashboard.getNumber("D Shoulder", 1));
 
-        wristPid.setP(SmartDashboard.getNumber("P Wrist set", 5));
+        wristPid.setP(SmartDashboard.getNumber("P Wrist", 5));
         wristPid.setI(SmartDashboard.getNumber("I Wrist", 0));
         wristPid.setD(SmartDashboard.getNumber("D Wrist", 1));
 
