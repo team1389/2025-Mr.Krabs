@@ -44,7 +44,7 @@ public class ElevatorArm extends SubsystemBase{
     // private DigitalInput topLimitSwitch, bottomLimitSwitch;
     SparkFlexConfig configs = new SparkFlexConfig();
 
-    private final TrapezoidProfile.Constraints elevatorConstraints = new TrapezoidProfile.Constraints(20, 10); //TODO
+    private final TrapezoidProfile.Constraints elevatorConstraints = new TrapezoidProfile.Constraints(2.5, 2.5); //TODO
     private ProfiledPIDController elevatorPid = new ProfiledPIDController(2.28, 0, 0, elevatorConstraints);
     // private PIDController elevatorPid = new PIDController(2.28, 0, 0);
 
@@ -52,8 +52,8 @@ public class ElevatorArm extends SubsystemBase{
     private ProfiledPIDController shoulderPid = new ProfiledPIDController(1, 0, 0, arm1Constraints);
     // private PIDController shoulderPid = new PIDController(2, 2, 0);
 
-    private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(.3, .3); //TODO
-                                                                                                                                // private ProfiledPIDController wristPid = new ProfiledPIDController(.003, 0, 1, wristConstraints);
+    private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3, 3); //TODO
+    // private ProfiledPIDController wristPid = new ProfiledPIDController(.003, 0, 1, wristConstraints);
     private PIDController wristPid = new PIDController(2, 0, 0);
 
     //TODO
@@ -204,14 +204,17 @@ public class ElevatorArm extends SubsystemBase{
         wristTarget = targets[2];
     }
 
-    public void setElevator(double setpoint){
+    public void setElevator(double goal){
         if(ifElevatorTooLow()){
             SmartDashboard.putBoolean("in set elevator low", true);
             return;
         }
         SmartDashboard.putBoolean("in set elevator low", false);
-        double speed = -((elevatorPid.calculate(getRightRelElevatorPos(), setpoint)));// + elevatorFF.calculate(20));
-        setManualElevator(MathUtil.clamp(speed, -.3, .3));
+
+        elevatorPid.setGoal(goal);
+        double speed = -((elevatorPid.calculate(getRightRelElevatorPos())));
+        double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
+        moveElevator(speed + FF);
     }
 
     public void setShoulder(double setpoint){
