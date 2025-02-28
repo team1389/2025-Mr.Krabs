@@ -44,12 +44,12 @@ public class ElevatorArm extends SubsystemBase{
     // private DigitalInput topLimitSwitch, bottomLimitSwitch;
     SparkFlexConfig configs = new SparkFlexConfig();
 
-    private final TrapezoidProfile.Constraints elevatorConstraints = new TrapezoidProfile.Constraints(2.5, 2.5); //TODO
-    private ProfiledPIDController elevatorPid = new ProfiledPIDController(2.28, 0, 0, elevatorConstraints);
-    // private PIDController elevatorPid = new PIDController(2.28, 0, 0);
+    private final TrapezoidProfile.Constraints elevatorConstraints = new TrapezoidProfile.Constraints(50, 30); //TODO
+    // private ProfiledPIDController elevatorPid = new ProfiledPIDController(0, 0, 0, elevatorConstraints);
+    private PIDController elevatorPid = new PIDController(2.28, 0, 0);
 
     private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(.3, .3); //TODO
-    private ProfiledPIDController shoulderPid = new ProfiledPIDController(1, 0, 0, arm1Constraints);
+    private ProfiledPIDController shoulderPid = new ProfiledPIDController(0, 0, 0, arm1Constraints);
     // private PIDController shoulderPid = new PIDController(2, 2, 0);
 
     private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3, 3); //TODO
@@ -57,7 +57,8 @@ public class ElevatorArm extends SubsystemBase{
     private PIDController wristPid = new PIDController(2, 0, 0);
 
     //TODO
-    private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, 2.28, 3.07, .41);
+    // private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, 2.28, 3.07, .41);
+    private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, 2.28, 0, 0);
     private final ArmFeedforward shoulderFF = new ArmFeedforward(0,  1.75, 1.95); //ks is static friction, might not need it
     private final ArmFeedforward wristFF = new ArmFeedforward(0, 1.75, 1.95, 0); 
 
@@ -114,9 +115,13 @@ public class ElevatorArm extends SubsystemBase{
 
         wristPid.setTolerance(0.005);
 
-        SmartDashboard.putNumber("P Shoulder", 2);
-        SmartDashboard.putNumber("I Shoulder", 2);
-        SmartDashboard.putNumber("D Shoulder", 1);
+        // SmartDashboard.putNumber("P Elevator", 0);
+        // SmartDashboard.putNumber("I Elevator", 0);
+        // SmartDashboard.putNumber("D Elevator", 0);
+        // SmartDashboard.putNumber("K Elevator", 0);
+        // SmartDashboard.putNumber("G Elevator", 0);
+        // SmartDashboard.putNumber("A Elevator", 0);
+
     }
     // public void setInverted(SparkFlex motor){
     //     configs.inverted(true);
@@ -205,16 +210,16 @@ public class ElevatorArm extends SubsystemBase{
     }
 
     public void setElevator(double goal){
-        if(ifElevatorTooLow()){
-            SmartDashboard.putBoolean("in set elevator low", true);
-            return;
-        }
-        SmartDashboard.putBoolean("in set elevator low", false);
+        // if(ifElevatorTooLow()){
+        //     SmartDashboard.putBoolean("in set elevator low", true);
+        //     return;
+        // }
+        // SmartDashboard.putBoolean("in set elevator low", false);
 
-        elevatorPid.setGoal(goal);
-        double speed = -((elevatorPid.calculate(getRightRelElevatorPos())));
-        double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
-        moveElevator(speed + FF);
+        // elevatorPid.setGoal(goal);
+        double speed = -((elevatorPid.calculate(getRightRelElevatorPos(), goal)));
+        // double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
+        setManualElevator(MathUtil.clamp(speed, -.3, .3));
     }
 
     public void setShoulder(double setpoint){
@@ -322,7 +327,7 @@ public class ElevatorArm extends SubsystemBase{
     }
 
     public boolean atTargetPosition(double height){
-        boolean elevatorClose = Math.abs(getRightRelElevatorPos() - height) < .05;
+        boolean elevatorClose = Math.abs(getRightRelElevatorPos() - height) < .5;
         SmartDashboard.putBoolean("Elevator At Target", elevatorClose);
         return elevatorClose;
     }
@@ -389,6 +394,10 @@ public class ElevatorArm extends SubsystemBase{
         shoulderPid.setI(SmartDashboard.getNumber("I Shoulder", 0));
         shoulderPid.setD(SmartDashboard.getNumber("D Shoulder", 0));
 
+        // elevatorPid.setP(SmartDashboard.getNumber("P Elevator", 0));
+        // elevatorPid.setP(SmartDashboard.getNumber("I Elevator", 0));
+        // elevatorPid.setP(SmartDashboard.getNumber("D Elevator", 0));
+
         
 
         SmartDashboard.putNumber("Left Elevator Pos", getLeftRelElevatorPos());
@@ -396,6 +405,13 @@ public class ElevatorArm extends SubsystemBase{
     // //    SmartDashboard.putNumber("Shoulder Position", getShoulderPos());
         SmartDashboard.putNumber("Shoulder Rel Pos", getShoulderRelPos());
         SmartDashboard.putNumber("Wrist Position", getWristPos());
+
+        // SmartDashboard.putNumber("P Elevator", 0);
+        // SmartDashboard.putNumber("I Elevator", 0);
+        // SmartDashboard.putNumber("D Elevator", 0);
+        // SmartDashboard.putNumber("K Elevator", 0);
+        // SmartDashboard.putNumber("G Elevator", 0);
+        // SmartDashboard.putNumber("A Elevator", 0);
      //   SmartDashboard.putNumber("Arm1 FF", shoulderFF.get());
     }
 }
