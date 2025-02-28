@@ -130,8 +130,8 @@ public class OI
       // operatorController.leftBumper().whileTrue(new MoveClimber(climber, -1));
 
       // operatorController.x().whileTrue(new IntakeAlgae(intake));
-      operatorController.x().whileTrue(new IntakeCoral(intake));
-      operatorController.b().whileTrue(new OuttakeCoral(intake));
+      // operatorController.x().whileTrue(new IntakeCoral(intake));
+      // operatorController.b().whileTrue(new OuttakeCoral(intake));
 
       // operatorController.rightTrigger().whileTrue(new RunManualShoulder(elevatorArm, 1));
       // operatorController.leftTrigger().whileTrue(new RunManualShoulder(elevatorArm, -1));
@@ -150,7 +150,12 @@ public class OI
       operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
       operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
 
+      //starting pos for testing
       operatorController.button(9).whileTrue(new SetShoulder(elevatorArm, 0)); //ellipses
+      //mid pos for testing
+      operatorController.x().whileTrue(new SetShoulder(elevatorArm, .475)); //ellipses
+      //high pos for testing
+      operatorController.b().whileTrue(new SetShoulder(elevatorArm, .93)); //ellipses
  
       // elevator.setDefaultCommand(new ManualElevator(
       //   elevator,

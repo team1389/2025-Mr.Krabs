@@ -48,8 +48,8 @@ public class ElevatorArm extends SubsystemBase{
     private ProfiledPIDController elevatorPid = new ProfiledPIDController(2.28, 0, 0, elevatorConstraints);
     // private PIDController elevatorPid = new PIDController(2.28, 0, 0);
 
-    private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(.3, .3); //TODO
-    private ProfiledPIDController shoulderPid = new ProfiledPIDController(1, 0, 0, arm1Constraints);
+    private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(.4, .3); //TODO
+    private ProfiledPIDController shoulderPid = new ProfiledPIDController(.75, .2, 0, arm1Constraints);
     // private PIDController shoulderPid = new PIDController(2, 2, 0);
 
     private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3, 3); //TODO
@@ -221,8 +221,9 @@ public class ElevatorArm extends SubsystemBase{
         // if(ifShoulderTooLow()){
         //     return;
         // }
+        shoulderPid.setTolerance(0.001);
         double speed = ((shoulderPid.calculate(getShoulderRelPos(), setpoint)));// + elevatorFF.calculate(20));
-        setManualShoulder(MathUtil.clamp(speed, -.3, .3));
+        setManualShoulder(MathUtil.clamp(speed, -.4, .4));
     }
 
     public void setWrist(double setpoint){
@@ -259,13 +260,14 @@ public class ElevatorArm extends SubsystemBase{
         return rightElevatorRelEncoder.getPosition() < 0;
     }
 
+    //what is this bro
     public boolean ifShoulderTooLow(){
         return rightElevatorRelEncoder.getPosition() < 0;
     }
 
     // public boolean ifWristTooFar(){
     //     return rightElevatorRelEncoder.getPosition() > 100; //TODO
-    // }
+    // }ma
 
     // public boolean ifWristTooLow(){
     //     return rightElevatorRelEncoder.getPosition() < 0; //TODO
@@ -382,10 +384,6 @@ public class ElevatorArm extends SubsystemBase{
         // shoulderPid.setPID(SmartDashboard.getNumber("P Shoulder", 5), 
         // SmartDashboard.getNumber("I Shoulder", 0), 
         // SmartDashboard.getNumber("D Shoulder", 1));
-
-        shoulderPid.setP(SmartDashboard.getNumber("P Shoulder", 4));
-        shoulderPid.setI(SmartDashboard.getNumber("I Shoulder", 0));
-        shoulderPid.setD(SmartDashboard.getNumber("D Shoulder", 0));
 
         
 
