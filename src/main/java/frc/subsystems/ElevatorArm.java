@@ -48,9 +48,9 @@ public class ElevatorArm extends SubsystemBase{
     private ProfiledPIDController elevatorPid = new ProfiledPIDController(2.28, 0, 0, elevatorConstraints);
     // private PIDController elevatorPid = new PIDController(2.28, 0, 0);
 
-    private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(3, 3); //TODO
-    private ProfiledPIDController shoulderPid = new ProfiledPIDController(5, 0, 1, arm1Constraints);
-    // private PIDController shoulderPid = new PIDController(5, 2, 0);
+    private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(.3, .3); //TODO
+    private ProfiledPIDController shoulderPid = new ProfiledPIDController(1, 0, 0, arm1Constraints);
+    // private PIDController shoulderPid = new PIDController(2, 2, 0);
 
     private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3, 3); //TODO
     // private ProfiledPIDController wristPid = new ProfiledPIDController(.003, 0, 1, wristConstraints);
@@ -114,9 +114,9 @@ public class ElevatorArm extends SubsystemBase{
 
         wristPid.setTolerance(0.005);
 
-        SmartDashboard.putNumber("P Wrist set", .3);
-        SmartDashboard.putNumber("I Wrist", .5);
-        SmartDashboard.putNumber("D Wrist", 0);
+        SmartDashboard.putNumber("P Shoulder", 2);
+        SmartDashboard.putNumber("I Shoulder", 2);
+        SmartDashboard.putNumber("D Shoulder", 1);
     }
     // public void setInverted(SparkFlex motor){
     //     configs.inverted(true);
@@ -154,16 +154,17 @@ public class ElevatorArm extends SubsystemBase{
         // rightShoulderMotor.set(-arm1Speed);
     }
     public void setManualWrist(double arm2Speed){
-        MathUtil.clamp(arm2Speed, -0.3, 0.3);
-        if (getWristEncoder() < 0.025 && arm2Speed > 0){
-            wristMotor.set(0);
-        }
-        else if (getWristEncoder() > 0.975 && arm2Speed < 0){
-            wristMotor.set(0);
-        }
-        else{
-            wristMotor.set(arm2Speed);
-        }
+        // MathUtil.clamp(arm2Speed, -0.3, 0.3);
+        // if (getWristEncoder() < 0.025 && arm2Speed > 0){
+        //     wristMotor.set(0);
+        // }
+        // else if (getWristEncoder() > 0.975 && arm2Speed < 0){
+        //     wristMotor.set(0);
+        // }
+        // else{
+        //     wristMotor.set(arm2Speed);
+        // }
+        wristMotor.set(arm2Speed);
     }
 
     public double getWristEncoder(){
@@ -321,19 +322,19 @@ public class ElevatorArm extends SubsystemBase{
     }
 
     public boolean atTargetPosition(double height){
-        boolean elevatorClose = Math.abs(getRightRelElevatorPos() - height) < .5;
+        boolean elevatorClose = Math.abs(getRightRelElevatorPos() - height) < .05;
         SmartDashboard.putBoolean("Elevator At Target", elevatorClose);
         return elevatorClose;
     }
 
     public boolean atWristTargetPosition(double height){
-        boolean wristClose = Math.abs(getWristPos() - height) < .005;
+        boolean wristClose = Math.abs(getWristPos() - height) < .1;
         SmartDashboard.putBoolean("Wrist At Target", wristClose);
         return wristClose;
     }
 
     public boolean atShoulderTargetPosition(double height){
-        shoulderClose = Math.abs(getShoulderRelPos() - height) < .25;
+        shoulderClose = Math.abs(getShoulderRelPos() - height) < .05;
         // SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
         return shoulderClose;
     }
@@ -362,13 +363,13 @@ public class ElevatorArm extends SubsystemBase{
     public void periodic(){
 
         SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
-        double elevatorPower = elevatorPid.calculate(getRightRelElevatorPos(), elevatorTarget);
-        double shoulderPower = shoulderPid.calculate(getShoulderRelPos(), shoulderTarget);// + shoulderFF.calculate(shoulderTarget, 0); // for limit switch
-        double wristPower = wristPid.calculate(getWristPos(), wristTarget);// + wristFF.calculate(wristTarget, 0); // add FF TODO
+        // double elevatorPower = elevatorPid.calculate(getRightRelElevatorPos(), elevatorTarget);
+        // double shoulderPower = shoulderPid.calculate(getShoulderRelPos(), shoulderTarget);// + shoulderFF.calculate(shoulderTarget, 0); // for limit switch
+        // double wristPower = wristPid.calculate(getWristPos(), wristTarget);// + wristFF.calculate(wristTarget, 0); // add FF TODO
 
-        moveElevator(elevatorPower);
-        moveShoulder(shoulderPower);
-        moveWrist(wristPower);
+        // moveElevator(elevatorPower);
+        // moveShoulder(shoulderPower);
+        // moveWrist(wristPower);
 
         // if(topLimitSwitch.get()){
         //     shoulderRelEncoder.setPosition(0);
@@ -384,9 +385,9 @@ public class ElevatorArm extends SubsystemBase{
         // SmartDashboard.getNumber("I Shoulder", 0), 
         // SmartDashboard.getNumber("D Shoulder", 1));
 
-        wristPid.setP(SmartDashboard.getNumber("P Wrist", 5));
-        wristPid.setI(SmartDashboard.getNumber("I Wrist", 0));
-        wristPid.setD(SmartDashboard.getNumber("D Wrist", 1));
+        shoulderPid.setP(SmartDashboard.getNumber("P Shoulder", 4));
+        shoulderPid.setI(SmartDashboard.getNumber("I Shoulder", 0));
+        shoulderPid.setD(SmartDashboard.getNumber("D Shoulder", 0));
 
         
 
