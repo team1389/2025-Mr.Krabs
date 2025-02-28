@@ -222,8 +222,10 @@ public class ElevatorArm extends SubsystemBase{
         //     return;
         // }
         shoulderPid.setTolerance(0.001);
-        double speed = ((shoulderPid.calculate(getShoulderRelPos(), setpoint)));// + elevatorFF.calculate(20));
-        setManualShoulder(MathUtil.clamp(speed, -.4, .4));
+        double speed = ((shoulderPid.calculate(getShoulderRelPos(), setpoint)));
+        double FF = shoulderFF.calculate(shoulderPid.getSetpoint().position, shoulderPid.getSetpoint().velocity);
+        
+        setManualShoulder(MathUtil.clamp(speed + FF, -.4, .4));
     }
 
     public void setWrist(double setpoint){
