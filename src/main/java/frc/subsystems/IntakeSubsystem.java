@@ -14,7 +14,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // private SparkFlex algaeIntake;
     private SparkMax coralIntake;
     private SparkLimitSwitch coralLimitSwitch;
-    double speed = 0.5;
+    double speed = 1;
     // private DigitalInput coralLS, algaeLS;
 
 

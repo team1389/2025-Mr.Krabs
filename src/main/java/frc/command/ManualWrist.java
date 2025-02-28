@@ -18,7 +18,7 @@ public class ManualWrist extends Command{
 
     @Override
     public void execute(){
-        elevatorArm.setManualWrist(MathUtil.clamp(power.get(), -1, 1));//}
+        elevatorArm.setManualWrist(MathUtil.clamp(power.get(), -.3, .3));//}
     }
 
 }

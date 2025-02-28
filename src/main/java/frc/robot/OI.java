@@ -136,16 +136,16 @@ public class OI
       // operatorController.rightTrigger().whileTrue(new RunManualShoulder(elevatorArm, 1));
       // operatorController.leftTrigger().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
-      operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, .2));
-      operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -.2));
+      operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
+      operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
       // operatorController.x().whileTrue(new RunManualWrist(elevatorArm, .2)); //smaller
       // operatorController.b().whileTrue(new RunManualWrist(elevatorArm, -.2)); //bigger
 
       // operatorController.a().whileTrue(new TestSetWrist(elevatorArm, .3));
-      // operatorController.a().onTrue(new SetWrist(elevatorArm, .3));
+      operatorController.y().onTrue(new SetWrist(elevatorArm, .8));
 
-      operatorController.y().whileTrue(new TestSetWrist(elevatorArm, .3));
+      // operatorController.y().whileTrue(new TestSetWrist(elevatorArm, .3));
 
       operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
       operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
@@ -164,13 +164,13 @@ public class OI
 
       elevatorArm.setDefaultCommand(new ManualElevatorArm(
         elevatorArm,
-        () -> getManipRightY(),
+        () -> -getManipRightY(),
         () -> getManipLeftY()
       )
       );
 
       operatorController.button(10).onTrue(new SetElevator(elevatorArm, 20)); //Menu
-      operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
+      // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
   }
 

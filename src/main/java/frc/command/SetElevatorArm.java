@@ -15,13 +15,13 @@ public class SetElevatorArm extends Command{
         addRequirements(elevatorArm);
     }
 
-    // public void initilize(){
-    //     
-    // }
+    public void initilize(){
+        elevatorArm.setElevatorArm(target);
+    }
 
     @Override
     public void execute(){
-        elevatorArm.setElevatorArm(target);
+        elevatorArm.moveElevatorArm();
     }
 
     @Override
