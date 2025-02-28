@@ -49,8 +49,8 @@ public class ElevatorArm extends SubsystemBase{
     // private PIDController elevatorPid = new PIDController(2.28, 0, 0);
 
     private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(3, 3); //TODO
-    // private ProfiledPIDController shoulderPid = new ProfiledPIDController(5, 0, 1, arm1Constraints);
-    private PIDController shoulderPid = new PIDController(5, 2, 0);
+    private ProfiledPIDController shoulderPid = new ProfiledPIDController(5, 0, 1, arm1Constraints);
+    // private PIDController shoulderPid = new PIDController(5, 2, 0);
 
     private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3, 3); //TODO
     // private ProfiledPIDController wristPid = new ProfiledPIDController(.003, 0, 1, wristConstraints);
@@ -220,8 +220,10 @@ public class ElevatorArm extends SubsystemBase{
         // if(ifShoulderTooLow()){
         //     return;
         // }
-        double speed = ((shoulderPid.calculate(getShoulderRelPos(), setpoint)));// + elevatorFF.calculate(20));
-        setManualShoulder(MathUtil.clamp(speed, -1, 1));
+        double speed = ((shoulderPid.calculate(getShoulderRelPos(), setpoint)));
+        double FF = shoulderFF.calculate(shoulderPid.getSetpoint().position, shoulderPid.getSetpoint().velocity);
+        
+        setManualShoulder(MathUtil.clamp(speed + FF, -.3, .3));
     }
 
     public void setWrist(double setpoint){
