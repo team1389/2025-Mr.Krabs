@@ -21,4 +21,9 @@ public class SetElevator extends Command{
     public boolean isFinished(){
         return elevator.atTargetPosition(height);
     }
+
+    @Override
+    public void end(boolean interrupted){
+        elevator.setManualElevator(0);
+    }
 }
