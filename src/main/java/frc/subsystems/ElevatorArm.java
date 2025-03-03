@@ -4,14 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.revrobotics.AbsoluteEncoder;
-// import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
-// import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-// import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -19,7 +16,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -29,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class ElevatorArm extends SubsystemBase{
-    private SparkFlex elevatorMotorRight, elevatorMotorLeft, leftShoulderMotor, rightShoulderMotor;
+    private SparkFlex elevatorMotorRight, leftShoulderMotor, rightShoulderMotor, elevatorMotorLeft;
     private SparkMax wristMotor; //.12 to .85
     // shoulder is a spark max
     double elevatorSpeed = 1;
@@ -45,11 +41,11 @@ public class ElevatorArm extends SubsystemBase{
     SparkFlexConfig configs = new SparkFlexConfig();
 
     private final TrapezoidProfile.Constraints elevatorConstraints = new TrapezoidProfile.Constraints(50, 30); //TODO
-    // private ProfiledPIDController elevatorPid = new ProfiledPIDController(0, 0, 0, elevatorConstraints);
-    private PIDController elevatorPid = new PIDController(2.28, 0, 0);
+    private ProfiledPIDController elevatorPid = new ProfiledPIDController(.75, 0, 0, elevatorConstraints);
+    // private PIDController elevatorPid = new PIDController(.25, 0, 0);
 
     private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(.4, .3); //TODO
-    private ProfiledPIDController shoulderPid = new ProfiledPIDController(.75, .2, 0, arm1Constraints);
+    private ProfiledPIDController shoulderPid = new ProfiledPIDController(.75, 0, 0, arm1Constraints);
     // private PIDController shoulderPid = new PIDController(2, 2, 0);
 
     private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3, 3); //TODO
@@ -58,7 +54,7 @@ public class ElevatorArm extends SubsystemBase{
 
     //TODO
     // private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, 2.28, 3.07, .41);
-    private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, 2.28, 0, 0);
+    private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, .013, .5, .01);
     private final ArmFeedforward shoulderFF = new ArmFeedforward(0,  1.75, 1.95); //ks is static friction, might not need it
     private final ArmFeedforward wristFF = new ArmFeedforward(0, 1.75, 1.95, 0); 
 
@@ -87,7 +83,7 @@ public class ElevatorArm extends SubsystemBase{
         wristMotor = new SparkMax(RobotMap.MotorPorts.WRIST_MOTOR, MotorType.kBrushless);
 
         shoulderRelEncoder = leftShoulderMotor.getEncoder();
-        leftElevatorRelEncoder = elevatorMotorLeft.getEncoder();
+        // leftElevatorRelEncoder = elevatorMotorLeft.getEncoder();
         rightElevatorRelEncoder = elevatorMotorRight.getEncoder();
         wristAbsEncoder = wristMotor.getAbsoluteEncoder();
         // elevatorEncoder = new DutyCycleEncoder(0, Math.PI, 0); // 0 to PI
@@ -101,7 +97,7 @@ public class ElevatorArm extends SubsystemBase{
         positionMap.put(ArmPosition.L1, new double[] {0,0,0});
         positionMap.put(ArmPosition.L2, new double[] {0,0,0});
         positionMap.put(ArmPosition.L3, new double[] {0,0,0});
-        positionMap.put(ArmPosition.L4, new double[] {0, 0.3557, 0});
+        positionMap.put(ArmPosition.L4, new double[] {0, 0, 0});
         positionMap.put(ArmPosition.Feeder, new double[] {0,0,0});
         positionMap.put(ArmPosition.Net, new double[] {0,0,0});
 
@@ -143,15 +139,15 @@ public class ElevatorArm extends SubsystemBase{
 
 
     public void setManualElevator(double elevatorSpeed){
-        elevatorMotorLeft.set(elevatorSpeed);
+        // elevatorMotorLeft.set(elevatorSpeed);
         elevatorMotorRight.set(-elevatorSpeed);
     }
     public void setManualElevatorUp(){
-        elevatorMotorLeft.set(elevatorSpeed);
+        // elevatorMotorLeft.set(elevatorSpeed);
         elevatorMotorRight.set(-elevatorSpeed);
     }
     public void setManualElevatorDown(){
-        elevatorMotorLeft.set(-elevatorSpeed);
+        // elevatorMotorLeft.set(-elevatorSpeed);
         elevatorMotorRight.set(elevatorSpeed);
     }
     public void setManualShoulder(double arm1Speed){
@@ -185,9 +181,9 @@ public class ElevatorArm extends SubsystemBase{
     // public double getElevatorPos(){
     //     return elevatorEncoder.get();
     // }
-    public double getLeftRelElevatorPos(){
-        return leftElevatorRelEncoder.getPosition();
-    }
+    // public double getLeftRelElevatorPos(){
+    //     return leftElevatorRelEncoder.getPosition();
+    // }
     public double getRightRelElevatorPos(){
         return rightElevatorRelEncoder.getPosition();
     }
@@ -217,16 +213,19 @@ public class ElevatorArm extends SubsystemBase{
         // SmartDashboard.putBoolean("in set elevator low", false);
 
         // elevatorPid.setGoal(goal);
-        double speed = -((elevatorPid.calculate(getRightRelElevatorPos(), goal)));
-        // double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
-        setManualElevator(MathUtil.clamp(speed, -.3, .3));
+        // elevatorPid.setTolerance(.001);
+        double speed = ((elevatorPid.calculate(getRightRelElevatorPos(), goal)));
+        double FF = -elevatorFF.calculate(elevatorPid.getSetpoint().position, elevatorPid.getSetpoint().velocity);
+        elevatorMotorRight.set(speed + FF);
+        // setManualElevator((speed + FF));
+        SmartDashboard.putNumber("Elevator Goal", goal);
     }
 
     public void setShoulder(double setpoint){
         // if(ifShoulderTooLow()){
         //     return;
         // }
-        shoulderPid.setTolerance(0.001);
+        // shoulderPid.setTolerance(0.001);
         double speed = ((shoulderPid.calculate(getShoulderRelPos(), setpoint)));
         double FF = shoulderFF.calculate(shoulderPid.getSetpoint().position, shoulderPid.getSetpoint().velocity);
         
@@ -253,7 +252,7 @@ public class ElevatorArm extends SubsystemBase{
 
 
     public void stop(){
-        elevatorMotorLeft.set(0);
+        // elevatorMotorLeft.set(0);
         elevatorMotorRight.set(0);
         leftShoulderMotor.set(0);
         wristMotor.set(0);
@@ -291,7 +290,7 @@ public class ElevatorArm extends SubsystemBase{
     // }
 
     public void moveElevator(double power){
-        elevatorMotorLeft.setVoltage(MathUtil.clamp(power, -12, 12));
+        // elevatorMotorLeft.setVoltage(MathUtil.clamp(power, -12, 12));
         elevatorMotorRight.setVoltage(-MathUtil.clamp(power, -12, 12));
     }
     public void moveShoulder(double power){ 
@@ -402,11 +401,14 @@ public class ElevatorArm extends SubsystemBase{
 
         
 
-        SmartDashboard.putNumber("Left Elevator Pos", getLeftRelElevatorPos());
+        // SmartDashboard.putNumber("Left Elevator Pos", getLeftRelElevatorPos());
         SmartDashboard.putNumber("Right Elevator Pos", getRightRelElevatorPos());
     // //    SmartDashboard.putNumber("Shoulder Position", getShoulderPos());
         SmartDashboard.putNumber("Shoulder Rel Pos", getShoulderRelPos());
         SmartDashboard.putNumber("Wrist Position", getWristPos());
+
+        SmartDashboard.putNumber("Elevator error", elevatorPid.getAccumulatedError());
+        SmartDashboard.putNumber("Elevator Position error", elevatorPid.getPositionError());
 
         // SmartDashboard.putNumber("P Elevator", 0);
         // SmartDashboard.putNumber("I Elevator", 0);
