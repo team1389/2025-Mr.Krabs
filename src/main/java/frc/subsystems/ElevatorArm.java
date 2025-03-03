@@ -41,11 +41,11 @@ public class ElevatorArm extends SubsystemBase{
     SparkFlexConfig configs = new SparkFlexConfig();
 
     private final TrapezoidProfile.Constraints elevatorConstraints = new TrapezoidProfile.Constraints(50, 30); //TODO
-    private ProfiledPIDController elevatorPid = new ProfiledPIDController(.75, 0, 0, elevatorConstraints);
+    private ProfiledPIDController elevatorPid = new ProfiledPIDController(.5, 0, 0, elevatorConstraints);
     // private PIDController elevatorPid = new PIDController(.25, 0, 0);
 
-    private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(.4, .3); //TODO
-    private ProfiledPIDController shoulderPid = new ProfiledPIDController(.75, 0, 0, arm1Constraints);
+    private final TrapezoidProfile.Constraints shoulderConstraints = new TrapezoidProfile.Constraints(.4, .3); //TODO
+    private ProfiledPIDController shoulderPid = new ProfiledPIDController(.75, 0, 0, shoulderConstraints);
     // private PIDController shoulderPid = new PIDController(2, 2, 0);
 
     private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3, 3); //TODO
@@ -54,7 +54,7 @@ public class ElevatorArm extends SubsystemBase{
 
     //TODO
     // private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, 2.28, 3.07, .41);
-    private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, .013, .5, .01);
+    private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, .02, .5, 0);
     private final ArmFeedforward shoulderFF = new ArmFeedforward(0,  1.75, 1.95); //ks is static friction, might not need it
     private final ArmFeedforward wristFF = new ArmFeedforward(0, 1.75, 1.95, 0); 
 
@@ -215,7 +215,7 @@ public class ElevatorArm extends SubsystemBase{
         // elevatorPid.setGoal(goal);
         // elevatorPid.setTolerance(.001);
         double speed = ((elevatorPid.calculate(getRightRelElevatorPos(), goal)));
-        double FF = -elevatorFF.calculate(elevatorPid.getSetpoint().position, elevatorPid.getSetpoint().velocity);
+        double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
         elevatorMotorRight.set(speed + FF);
         // setManualElevator((speed + FF));
         SmartDashboard.putNumber("Elevator Goal", goal);
