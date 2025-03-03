@@ -156,8 +156,9 @@ public class OI
       operatorController.x().whileTrue(new SetShoulder(elevatorArm, .475)); //ellipses
       //high pos for testing
       operatorController.b().whileTrue(new SetShoulder(elevatorArm, .93)); //ellipses
+
  
-      // elevator.setDefaultCommand(new ManualElevator(
+      // elevator.setDefaultCommand(new ManualElevator(f
       //   elevator,
       //   () -> getManipLeftY(),
       //   () -> getManipRightY(),
