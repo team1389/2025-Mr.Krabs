@@ -68,7 +68,7 @@ public class OI
                                                                 () -> driveController.getLeftX())// * -1) 
                                                                 //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
                                                                 //Raw axis of rightTriggerAxis is 3 for some reason
-                                                            .withControllerRotationAxis(() -> driveController.getRightTriggerAxis() * -1)
+                                                            .withControllerRotationAxis(() -> driveController.getRightTriggerAxis())
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -107,9 +107,12 @@ public class OI
   private void configureBindings()
   {
     //RESERVE DRIVE B FOR AUTO ALIGN
-    Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle, () -> driveController.b().getAsBoolean());
-    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity, () -> driveController.b().getAsBoolean());
-    Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented, () -> driveController.b().getAsBoolean());
+    // Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle, () -> driveController.button(2).getAsBoolean());
+    // Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity, () -> driveController.button(2).getAsBoolean());
+    // Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented, () -> driveController.button(2).getAsBoolean());
+    Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle);
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+    Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented);
     Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngle);
 
@@ -121,6 +124,7 @@ public class OI
       driveController.back().whileTrue(Commands.none());
       driveController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driveController.rightBumper().onTrue(Commands.none());
+      driveController.b().onTrue(Commands.runOnce(drivebase::toggleAlign));
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.rightBumper().whileTrue(Commands.run(climber::spinForwards, climber));
@@ -156,8 +160,9 @@ public class OI
       operatorController.x().whileTrue(new SetShoulder(elevatorArm, -7)); //ellipses
       //high pos for testing
       operatorController.b().whileTrue(new SetShoulder(elevatorArm, .93)); //ellipses
+
  
-      // elevator.setDefaultCommand(new ManualElevator(
+      // elevator.setDefaultCommand(new ManualElevator(f
       //   elevator,
       //   () -> getManipLeftY(),
       //   () -> getManipRightY(),

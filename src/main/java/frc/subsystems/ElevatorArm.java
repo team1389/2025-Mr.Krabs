@@ -64,14 +64,11 @@ public class ElevatorArm extends SubsystemBase{
                                                                             new Constraints(RobotMap.ArmConstants.ElevatorMaxVelocity, 
                                                                                             RobotMap.ArmConstants.ElevatorMaxAccerlation));
     // private PIDController elevatorPid = new PIDController(.25, 0, 0);
-    private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(RobotMap.ArmConstants.ElevatorS,
-                                                                            RobotMap.ArmConstants.ElevatorG, 
-                                                                            RobotMap.ArmConstants.ElevatorV, 
-                                                                            RobotMap.ArmConstants.ElevatorA);
 
+    private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(.5, .3); //TODO
+    // private ProfiledPIDController shoulderPid = new ProfiledPIDController(.5, 0, 0, arm1Constraints);
+    private ProfiledPIDController shoulderPid = new ProfiledPIDController(0, 0, 0, arm1Constraints);
 
-    private final TrapezoidProfile.Constraints shoulderConstraints = new TrapezoidProfile.Constraints(.4, .3); //TODO
-    private ProfiledPIDController shoulderPid = new ProfiledPIDController(.75, 0, 0, shoulderConstraints);
     // private PIDController shoulderPid = new PIDController(2, 2, 0);
 
     private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3, 3); //TODO
@@ -80,7 +77,8 @@ public class ElevatorArm extends SubsystemBase{
 
     //TODO
     // private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, 2.28, 3.07, .41);
-    private final ArmFeedforward shoulderFF = new ArmFeedforward(0,  1.75, 1.95); //ks is static friction, might not need it
+    private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, .02, .5, 0);
+    private final ArmFeedforward shoulderFF = new ArmFeedforward(0,  0, 0); //ks is static friction, might not need it
     private final ArmFeedforward wristFF = new ArmFeedforward(0, 1.75, 1.95, 0); 
 
     private SparkAbsoluteEncoder wristAbsEncoder;
@@ -314,7 +312,8 @@ public class ElevatorArm extends SubsystemBase{
         double speed = ((shoulderPid.calculate(getShoulderRelPos(), setpoint)));
         double FF = shoulderFF.calculate(shoulderPid.getSetpoint().position, shoulderPid.getSetpoint().velocity);
         
-        setManualShoulder(MathUtil.clamp(speed + FF, -.4, .4));
+        // setManualShoulder(MathUtil.clamp(speed + FF, -.4, .4));
+        setManualShoulder(speed + FF);
     }
 
     public void setWrist(double setpoint){

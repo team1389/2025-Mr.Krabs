@@ -39,10 +39,13 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import frc.robot.RobotMap;
 import frc.util.LimelightHelpers;
 import swervelib.SwerveController;
@@ -62,11 +65,18 @@ public class SwerveSubsystem extends SubsystemBase
    */
   private final SwerveDrive         swerveDrive;
 
+  public boolean commandAlign = false;
+
+  public double alignRot = 0;
+
+  public double count=0;
+
   // VisionSubsystem visionSubsystem = new VisionSubsystem();
   /**
    * AprilTag field layout.
    */
-  private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
+
+  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
   /**
    * Enable vision odometry updates while driving.
    */
@@ -152,8 +162,39 @@ public class SwerveSubsystem extends SubsystemBase
       // vision.updatePoseEstimation(swerveDrive);
     }
 
-    // alignTx = visionSubsystem.getAlignTX();
+    alignTx = visionSubsystem.getAlignTX();
+
+    if(getAlignTx() != 0){
+      alignRot =  -(0.1 * getAlignTx()) + Math.toRadians( 25);
+    }
+    SmartDashboard.putNumber("AlignTxSwerve", alignTx);
+    SmartDashboard.putBoolean("CommandAlign", commandAlign);
   }
+
+  public double getAlignTx(){
+    return visionSubsystem.getAlignTX();
+  }
+
+  /**
+   * Drive the robot given a chassis field oriented velocity.
+   *
+   * @param velocity Velocity according to the field.
+   */
+  public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity)
+  {
+    count++;
+    if(commandAlign){
+      SmartDashboard.putBoolean("Algining", true);
+        velocity.get().omegaRadiansPerSecond = alignRot;
+    }
+    SmartDashboard.putBoolean("Algining", false);
+    SmartDashboard.putNumber("dreiveDC", count);
+    return run(() -> {
+      swerveDrive.driveFieldOriented(velocity.get());
+    });
+  }
+
+
 
   @Override
   public void simulationPeriodic()
@@ -480,6 +521,10 @@ public class SwerveSubsystem extends SubsystemBase
                       false); // Open loop is disabled since it shouldn't be used most of the time.
   }
 
+  public void toggleAlign(){
+    commandAlign = !commandAlign;
+  }
+
   /**
    * Drive the robot given a chassis field oriented velocity.
    *
@@ -490,25 +535,7 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.driveFieldOriented(velocity);
   }
 
-  /**
-   * Drive the robot given a chassis field oriented velocity.
-   *
-   * @param velocity Velocity according to the field.
-   */
-  public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity, Supplier<Boolean> isAutoAlign)
-  {
-    if(alignTx != 0){
-      //former code that worked
-      // if(isAutoAlign.get() || commandAlign){
-      if(isAutoAlign.get()){
-        //may have to create an object and set it directly. Ex: ChassisSpeeds temp = velocity.get();
-        velocity.get().omegaRadiansPerSecond = -(0.1 * alignTx) + Math.toRadians( 25); 
-      }
-    }
-    return run(() -> {
-      swerveDrive.driveFieldOriented(velocity.get());
-    });
-  }
+  
 
   /**
    * Drive according to the chassis robot oriented velocity.
