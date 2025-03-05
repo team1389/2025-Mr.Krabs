@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class IntakeSubsystem extends SubsystemBase {
-    // private SparkFlex algaeIntake;
+    private SparkFlex algaeIntake;
     private SparkMax coralIntake;
     private SparkLimitSwitch coralLimitSwitch;
     double speed = 1;

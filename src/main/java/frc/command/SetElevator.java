@@ -14,7 +14,8 @@ public class SetElevator extends Command{
 
     @Override
     public void execute(){
-        elevator.setElevator(height);
+        elevator.moveToSetpoint();
+        // elevator.setElevator(height);
     }
 
     @Override

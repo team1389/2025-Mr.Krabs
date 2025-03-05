@@ -153,7 +153,7 @@ public class OI
       //starting pos for testing
       operatorController.button(9).whileTrue(new SetShoulder(elevatorArm, 0)); //ellipses
       //mid pos for testing
-      operatorController.x().whileTrue(new SetShoulder(elevatorArm, .475)); //ellipses
+      operatorController.x().whileTrue(new SetShoulder(elevatorArm, -7)); //ellipses
       //high pos for testing
       operatorController.b().whileTrue(new SetShoulder(elevatorArm, .93)); //ellipses
  
