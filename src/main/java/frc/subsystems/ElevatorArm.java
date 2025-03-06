@@ -47,7 +47,7 @@ public class ElevatorArm extends SubsystemBase{
     boolean shoulderClose = false;
     private final DCMotor elevatorGearbox = DCMotor.getNeoVortex(1);
     private SparkFlexSim elevatorMotorSim;
-    private RelativeEncoder shoulderRelEncoder, leftElevatorRelEncoder, rightElevatorRelEncoder; //-.3 to -110
+    private RelativeEncoder shoulderRelEncoder, rightElevatorRelEncoder; //-.3 to -110
     // private AbsoluteEncoder wristAbsEncoder;
     // private DutyCycleEncoder wristEncoder;
     public static final SparkFlexConfig elevatorConfig = new SparkFlexConfig();
@@ -77,7 +77,7 @@ public class ElevatorArm extends SubsystemBase{
 
     //TODO
     // private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, 2.28, 3.07, .41);
-    private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, .02, .5, 0);
+    private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0.02, .9, 3.8, .17);
     private final ArmFeedforward shoulderFF = new ArmFeedforward(0,  0, 0); //ks is static friction, might not need it
     private final ArmFeedforward wristFF = new ArmFeedforward(0, 1.75, 1.95, 0); 
 
@@ -106,7 +106,6 @@ public class ElevatorArm extends SubsystemBase{
         wristMotor = new SparkMax(RobotMap.MotorPorts.WRIST_MOTOR, MotorType.kBrushless);
 
         shoulderRelEncoder = leftShoulderMotor.getEncoder();
-        // leftElevatorRelEncoder = elevatorMotorLeft.getEncoder();
         rightElevatorRelEncoder = elevatorMotorRight.getEncoder();
         wristAbsEncoder = wristMotor.getAbsoluteEncoder();
         // elevatorEncoder = new DutyCycleEncoder(0, Math.PI, 0); // 0 to PI
@@ -130,20 +129,19 @@ public class ElevatorArm extends SubsystemBase{
        // setInverted(elevatorMotorLeft);
         // zeroShoulderRelEncoder();
         // setElevatorArm(ArmPosition.Starting);
-        // leftElevatorRelEncoder.setPosition(0);
 
             elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
             elevatorConfig
                 .closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // Set PID values for position control
-                .p(.5)
+                .p(3)
                 .outputRange(-1, 1)
                 .maxMotion
                 // Set MAXMotion parameters for position control
-                .maxVelocity(4200)
-                .maxAcceleration(6000)
-                .allowedClosedLoopError(0.05);
+                .maxVelocity(42000)
+                .maxAcceleration(60000)
+                .allowedClosedLoopError(0.5);
 
         elevatorMotorRight.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -250,12 +248,7 @@ public class ElevatorArm extends SubsystemBase{
     //     motor.set(setSpeed);
     // }
 
-    // public double getElevatorPos(){
-    //     return elevatorEncoder.get();
-    // }
-    // public double getLeftRelElevatorPos(){
-    //     return leftElevatorRelEncoder.getPosition();
-    // }
+
     public double getRightRelElevatorPos(){
         return rightElevatorRelEncoder.getPosition();
     }
@@ -287,16 +280,26 @@ public class ElevatorArm extends SubsystemBase{
         // elevatorPid.setGoal(goal);
         // elevatorPid.setTolerance(.001);
         double speed = ((elevatorPid.calculate(getRightRelElevatorPos(), goal)));
-        // double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
-        elevatorMotorRight.set(speed);
+        double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
+        // elevatorMotorRight.setVoltage(MathUtil.clamp(speed);
+        elevatorMotorRight.set(speed+FF);
         // setManualElevator((speed + FF));
         SmartDashboard.putNumber("Elevator Goal", goal);
     }
 
-    public void moveToSetpoint() {
+    public void moveToSetpoint(double goal) {
     elevatorClosedLoopController.setReference(
-        20, ControlType.kMAXMotionPositionControl);
+        goal, ControlType.kPosition);
         SmartDashboard.putBoolean("in closedLoop Elevator", true);
+    }
+
+    public void reachGoal(double goal){
+        double voltsOutput = MathUtil.clamp(
+            elevatorFF.calculateWithVelocities(getVelocityMetersPerSecond(), elevatorPid.getSetpoint().velocity)
+            + elevatorPid.calculate(getPositionMeters(), goal), 
+            -7, 
+            7);
+            elevatorMotorRight.setVoltage(voltsOutput);
     }
 
     public void moveToSetpointShoulder(double goal){
@@ -412,7 +415,7 @@ public class ElevatorArm extends SubsystemBase{
     }
 
     public boolean atTargetPosition(double height){
-        boolean elevatorClose = Math.abs(getRightRelElevatorPos() - height) < .05;
+        boolean elevatorClose = Math.abs(getRightRelElevatorPos() - height) < .5;
         SmartDashboard.putBoolean("Elevator At Target", elevatorClose);
         return elevatorClose;
     }
@@ -449,8 +452,20 @@ public class ElevatorArm extends SubsystemBase{
 
     }
 
+    public double getVelocityMetersPerSecond() {
+        return (rightElevatorRelEncoder.getVelocity() /60) * (2*Math.PI * RobotMap.ArmConstants.ElevatorDrumRadius)
+        / RobotMap.ArmConstants.ElevatorGearing;
+    }
+
+    public double getPositionMeters(){
+        return rightElevatorRelEncoder.getPosition() * (2*Math.PI * RobotMap.ArmConstants.ElevatorDrumRadius)
+        / RobotMap.ArmConstants.ElevatorGearing;
+    }
+
     @Override
     public void periodic(){
+        SmartDashboard.putNumber("elevator M/S", getVelocityMetersPerSecond());
+        SmartDashboard.putNumber("elevator position M", getPositionMeters());
 
         SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
         // double elevatorPower = elevatorPid.calculate(getRightRelElevatorPos(), elevatorTarget);

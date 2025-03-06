@@ -64,16 +64,16 @@ public static final String INTAKE_MOTOR = null;
     public static final double ElevatorP = 5;
     public static final double ElevatorI = 0;
     public static final double ElevatorD = 0;
-    public static final double ElevatorMaxVelocity = Meters.of(4).per(Second).in(MetersPerSecond);
-    public static final double ElevatorMaxAccerlation = Meters.of(6).per(Second).per(Second).in(MetersPerSecondPerSecond);
+    public static final double ElevatorMaxVelocity = 4000;//Meters.of(2).per(Second).in(MetersPerSecond);
+    public static final double ElevatorMaxAccerlation = 6200;//Meters.of(3).per(Second).per(Second).in(MetersPerSecondPerSecond);
 
-    public static final double ElevatorS = .02;
+    public static final double ElevatorS = .02; //.02
     public static final double ElevatorG = .9;
-    public static final double ElevatorV = 3.8;
-    public static final double ElevatorA = .17;
+    public static final double ElevatorV = 3.8; //3.8
+    public static final double ElevatorA = .17; //.17
     public static final double ElevatorRampRate = .1;
 
-    public static final double ElevatorGearing = 16;
+    public static final double ElevatorGearing = 21.3;
     public static final double ElevatorCarriageMass = 6.8;
     public static final double ElevatorDrumRadius = Units.inchesToMeters(1);
     public static final double ElevatorMinHeight = Units.inchesToMeters(54); //meters
