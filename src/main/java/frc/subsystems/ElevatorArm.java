@@ -281,8 +281,8 @@ public class ElevatorArm extends SubsystemBase{
         // elevatorPid.setTolerance(.001);
         double speed = ((elevatorPid.calculate(getRightRelElevatorPos(), goal)));
         double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
-        // elevatorMotorRight.setVoltage(MathUtil.clamp(speed);
-        elevatorMotorRight.set(speed+FF);
+        elevatorMotorRight.setVoltage(MathUtil.clamp(speed+FF, -7, 7));
+        // elevatorMotorRight.set(speed+FF);
         // setManualElevator((speed + FF));
         SmartDashboard.putNumber("Elevator Goal", goal);
     }

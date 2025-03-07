@@ -61,11 +61,11 @@ public static final String INTAKE_MOTOR = null;
     public static final int TOP_LIMIT_SWITCH = 0;
     public static final int BOTTOM_LIMIT_SWITCH = 1;
 
-    public static final double ElevatorP = 5;
-    public static final double ElevatorI = 0;
-    public static final double ElevatorD = 0;
-    public static final double ElevatorMaxVelocity = 4000;//Meters.of(2).per(Second).in(MetersPerSecond);
-    public static final double ElevatorMaxAccerlation = 6200;//Meters.of(3).per(Second).per(Second).in(MetersPerSecondPerSecond);
+    public static final double ElevatorP = 3;
+    public static final double ElevatorI = 0; //1
+    public static final double ElevatorD = .05; //.05
+    public static final double ElevatorMaxVelocity = 40000;//Meters.of(2).per(Second).in(MetersPerSecond);
+    public static final double ElevatorMaxAccerlation = 62000;//Meters.of(3).per(Second).per(Second).in(MetersPerSecondPerSecond);
 
     public static final double ElevatorS = .02; //.02
     public static final double ElevatorG = .9;
