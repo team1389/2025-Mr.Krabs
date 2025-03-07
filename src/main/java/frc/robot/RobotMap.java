@@ -64,13 +64,13 @@ public static final String INTAKE_MOTOR = null;
     public static final double ElevatorP = 3;
     public static final double ElevatorI = 0; //1
     public static final double ElevatorD = .05; //.05
-    public static final double ElevatorMaxVelocity = 40000;//Meters.of(2).per(Second).in(MetersPerSecond);
-    public static final double ElevatorMaxAccerlation = 62000;//Meters.of(3).per(Second).per(Second).in(MetersPerSecondPerSecond);
+    public static final double ElevatorMaxVelocity = 4000;//Meters.of(.42).per(Second).in(MetersPerSecond); TODO try comments, prev 40000
+    public static final double ElevatorMaxAccerlation = 6200;//Meters.of(10.34).per(Second).per(Second).in(MetersPerSecondPerSecond);, prev 62000
 
     public static final double ElevatorS = .02; //.02
-    public static final double ElevatorG = .9;
-    public static final double ElevatorV = 3.8; //3.8
-    public static final double ElevatorA = .17; //.17
+    public static final double ElevatorG = .05;          //TODO try 0.05, prev .9
+    public static final double ElevatorV = 21.28; //3.8   //TODO try 21.28, prev 3.8
+    public static final double ElevatorA = .01; //.17   // TODO try 0.01, prev .17
     public static final double ElevatorRampRate = .1;
 
     public static final double ElevatorGearing = 21.3;

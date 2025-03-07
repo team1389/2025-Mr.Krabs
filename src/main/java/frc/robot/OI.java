@@ -179,7 +179,7 @@ public class OI
       )
       );
 
-      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 20)); //Menu
+      operatorController.button(10).onTrue(new SetElevator(elevatorArm, .2)); //Menu
       // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
   }
