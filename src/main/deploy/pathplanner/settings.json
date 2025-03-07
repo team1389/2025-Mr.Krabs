@@ -5,9 +5,11 @@
   "pathFolders": [
     "Close",
     "Far",
-    "Middle",
-    "From Top Feeder",
     "From Bottom Feeder",
+    "From Top Feeder",
+    "Middle",
+    "New Folder",
+    "scoot",
     "To Bottom Feeder",
     "To Top Feeder"
   ],
@@ -17,7 +19,7 @@
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
-  "robotMass": 39.88,
+  "robotMass": 60.78,
   "robotMOI": 10.0,
   "robotTrackwidth": 0.546,
   "driveWheelRadius": 0.051,
