@@ -1,5 +1,5 @@
 package frc.subsystems;
-
+//lol
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -8,21 +8,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 //landon motor systems are the best
 public class ClimberSubsystem extends SubsystemBase{
-    private SparkFlex spinnyMotor;
+    private SparkFlex climberMotor;
 
     public ClimberSubsystem() {
-        spinnyMotor = new SparkFlex(RobotMap.MotorPorts.climberMotor, MotorType.kBrushless);
+        climberMotor = new SparkFlex(RobotMap.MotorPorts.climberMotor, MotorType.kBrushless);
     }
 
-    public void spinForwards(){
-        spinnyMotor.set(RobotMap.ClimberConstants.CLIMBER_SPEED);
+    public void setSpeed(double climberSpeed){
+        climberMotor.set(climberSpeed);
     }
-
-    public void spinBackwards(){
-        spinnyMotor.set(-RobotMap.ClimberConstants.CLIMBER_SPEED);
-    }
-
     public void stop(){
-        spinnyMotor.set(0);
+        climberMotor.set(0);
     }
 }

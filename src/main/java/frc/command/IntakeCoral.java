@@ -1,20 +1,30 @@
 package frc.command;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.subsystems.IntakeSubsystem;
 
 public class IntakeCoral extends Command{
-    public IntakeSubsystem intakesub;
+    public IntakeSubsystem intakeSub;
 
-    public IntakeCoral(IntakeSubsystem intakesubb) {
-        intakesub = intakesubb;
+    public IntakeCoral(IntakeSubsystem intakeSub) {
+        this.intakeSub = intakeSub;
+        SmartDashboard.putBoolean("IsCoralIn", intakeSub.isCoralIn());
     }
 
+    @Override
     public void execute() {
-        intakesub.suckCoral();
+        intakeSub.intakeCoral();
+        SmartDashboard.putBoolean("IsCoralIn", intakeSub.isCoralIn());
     }
 
+    @Override
     public void end(boolean interrupted) {
-        intakesub.stopCoral();
+        intakeSub.stopCoral();
     }
+
+    // @Override
+    // public boolean isFinished(){
+    //     return intakeSub.ifCoral();
+    // }
 }

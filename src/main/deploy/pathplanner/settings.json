@@ -25,7 +25,7 @@
   "driveWheelRadius": 0.051,
   "driveGearing": 4.71,
   "maxDriveSpeed": 125.0,
-  "driveMotorType": "vortex",
+  "driveMotorType": "krakenX60",
   "driveCurrentLimit": 40.0,
   "wheelCOF": 1.0,
   "flModuleX": 0.356,

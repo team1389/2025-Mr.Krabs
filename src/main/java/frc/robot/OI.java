@@ -4,26 +4,42 @@
 
 package frc.robot;
 
+import java.io.File;
+import java.util.function.BooleanSupplier;
+
 import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.command.ManualElevator;
-// import frc.command.exhaleCommand;
+import frc.command.MoveClimber;
+// import frc.command.SetElevatorArm;
+import frc.command.SetElevator;
+import frc.command.SetElevatorArm;
+import frc.command.SetShoulder;
+import frc.command.SetWrist;
+import frc.command.TestSetWrist;
+// import frc.command.IntakeAlgae;
+import frc.command.IntakeCoral;
+import frc.command.ManualElevatorArm;
+import frc.command.ManualWrist;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
-import frc.subsystems.ElevatorSubsystem;
+import frc.subsystems.ElevatorArm;
+import frc.subsystems.IntakeSubsystem;
+import frc.subsystems.ElevatorArm.ArmPosition;
 import frc.subsystems.SwerveSubsystem;
-
-import java.io.File;
 import swervelib.SwerveInputStream;
+import frc.command.OuttakeCoral;
+import frc.command.RunManualShoulder;
+import frc.command.RunManualWrist;;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -37,8 +53,9 @@ public class OI
   final         CommandXboxController driveController = new CommandXboxController(0);
   final        CommandXboxController operatorController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
+  private final ElevatorArm elevatorArm = new ElevatorArm();
   private final ClimberSubsystem      climber    = new ClimberSubsystem();
-  private final ElevatorSubsystem elevator = new ElevatorSubsystem();
+  private final IntakeSubsystem intake = new IntakeSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
                                                                                 
@@ -47,10 +64,11 @@ public class OI
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driveController.getLeftY() * -1,
-                                                                () -> driveController.getLeftX() * -1)
-                                                                //possible change to getRightY if issue persists
-                                                            .withControllerRotationAxis(driveController::getRightX)
+                                                                () -> driveController.getLeftY(),// * -1,
+                                                                () -> driveController.getLeftX())// * -1) 
+                                                                //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
+                                                                //Raw axis of rightTriggerAxis is 3 for some reason
+                                                            .withControllerRotationAxis(() -> driveController.getRightTriggerAxis())
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -67,33 +85,6 @@ public class OI
    */
   SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
                                                              .allianceRelativeControl(false);
-
-  SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                        () -> -driveController.getLeftY(),
-                                                                        () -> -driveController.getLeftX())
-                                                                    .withControllerRotationAxis(() -> driveController.getRawAxis(
-                                                                        2))
-                                                                    .deadband(OperatorConstants.DEADBAND)
-                                                                    .scaleTranslation(0.8)
-                                                                    .allianceRelativeControl(true);
-  // Derive the heading axis with math!
-  SwerveInputStream driveDirectAngleKeyboard     = driveAngularVelocityKeyboard.copy()
-                                                                               .withControllerHeadingAxis(() ->
-                                                                                                              Math.sin(
-                                                                                                                  driveController.getRawAxis(
-                                                                                                                      2) *
-                                                                                                                  Math.PI) *
-                                                                                                              (Math.PI *
-                                                                                                               2),
-                                                                                                          () ->
-                                                                                                              Math.cos(
-                                                                                                                  driveController.getRawAxis(
-                                                                                                                      2) *
-                                                                                                                  Math.PI) *
-                                                                                                              (Math.PI *
-                                                                                                               2))
-                                                                               .headingWhile(true);
-
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -105,6 +96,7 @@ public class OI
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
   }
 
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary predicate, or via the
@@ -115,42 +107,16 @@ public class OI
   private void configureBindings()
   {
     //RESERVE DRIVE B FOR AUTO ALIGN
-    Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle, () -> driveController.b().getAsBoolean());
-    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity, () -> driveController.b().getAsBoolean());
-    Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented, () -> driveController.b().getAsBoolean());
+    // Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle, () -> driveController.button(2).getAsBoolean());
+    // Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity, () -> driveController.button(2).getAsBoolean());
+    // Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented, () -> driveController.button(2).getAsBoolean());
+    Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle);
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+    Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented);
     Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngle);
-    Command driveFieldOrientedDirectAngleKeyboard      = drivebase.driveFieldOriented(driveDirectAngleKeyboard, () -> driveController.b().getAsBoolean());
-    Command driveFieldOrientedAnglularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard, () -> driveController.b().getAsBoolean());
-    Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(
-        driveDirectAngleKeyboard);
 
-    if (RobotBase.isSimulation())
-    {
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
-    } else
-    {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    }
-
-    if (Robot.isSimulation())
-    {
-      driveController.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-      driveController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
-
-    }
-    if (DriverStation.isTest())
-    {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
-
-      driveController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driveController.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-      driveController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driveController.back().whileTrue(drivebase.centerModulesCommand());
-      driveController.leftBumper().onTrue(Commands.none());
-      driveController.rightBumper().onTrue(Commands.none());
-    } else
-    {
+    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
       //EDIT YOUR COMMANDS HERE_______________________________________________________________________________________________________________________________
       //dont use driver B for aything else, its already used for auto align
       driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
@@ -158,20 +124,63 @@ public class OI
       driveController.back().whileTrue(Commands.none());
       driveController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driveController.rightBumper().onTrue(Commands.none());
-      operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
-      operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
+      driveController.b().onTrue(Commands.runOnce(drivebase::toggleAlign));
+      // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
+      // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
+      // operatorController.rightBumper().whileTrue(Commands.run(climber::spinForwards, climber));
+      // operatorController.leftBumper().whileTrue(Commands.run(climber::spinBackwards, climber));
+      // operatorController.x().whileTrue(Commands.run(climber::spinForwards, climber));
+      // operatorController.rightBumper().whileTrue(new MoveClimber(climber, 1));
+      // operatorController.leftBumper().whileTrue(new MoveClimber(climber, -1));
+
+      // operatorController.x().whileTrue(new IntakeAlgae(intake));
+      // operatorController.x().whileTrue(new IntakeCoral(intake));
+      // operatorController.b().whileTrue(new OuttakeCoral(intake));
+
+      // operatorController.rightTrigger().whileTrue(new RunManualShoulder(elevatorArm, 1));
+      // operatorController.leftTrigger().whileTrue(new RunManualShoulder(elevatorArm, -1));
+
+      operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
+      operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
+
+      // operatorController.x().whileTrue(new RunManualWrist(elevatorArm, .2)); //smaller
+      // operatorController.b().whileTrue(new RunManualWrist(elevatorArm, -.2)); //bigger
+
+      // operatorController.a().whileTrue(new TestSetWrist(elevatorArm, .3));
+      operatorController.y().onTrue(new SetWrist(elevatorArm, .8));
+
+      // operatorController.y().whileTrue(new TestSetWrist(elevatorArm, .3));
+
+      operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
+      operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
+
+      //starting pos for testing
+      operatorController.button(9).whileTrue(new SetShoulder(elevatorArm, 0)); //ellipses
+      //mid pos for testing
+      operatorController.x().whileTrue(new SetShoulder(elevatorArm, -7)); //ellipses
+      //high pos for testing
+      operatorController.b().whileTrue(new SetShoulder(elevatorArm, .93)); //ellipses
+
  
-      elevator.setDefaultCommand(new ManualElevator(
-        elevator,
-        () -> getManipLeftY(),
-        () -> getManipRightY(),
-        () -> getManipRightTrigger(),
-        () -> getManipLeftTrigger()
+      // elevator.setDefaultCommand(new ManualElevator(f
+      //   elevator,
+      //   () -> getManipLeftY(),
+      //   () -> getManipRightY(),
+      //   () -> getManipRightTrigger(),
+      //   () -> getManipLeftTrigger()
+      // )
+      // );
+
+
+      elevatorArm.setDefaultCommand(new ManualElevatorArm(
+        elevatorArm,
+        () -> -getManipRightY(),
+        () -> getManipLeftY()
       )
       );
 
-
-    }
+      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 20)); //Menu
+      // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
   }
 
@@ -179,10 +188,10 @@ public class OI
     return operatorController.getRawAxis(1);
   }
   public double getManipRightY(){
-    return operatorController.getRawAxis(3);
+    return operatorController.getRawAxis(4);
   }
-  public boolean getManipRightTrigger(){
-    return operatorController.rightTrigger().getAsBoolean();
+  public double getManipRightTrigger(){
+    return operatorController.getRightTriggerAxis();
   }
   public boolean getManipLeftTrigger(){
     return operatorController.leftTrigger().getAsBoolean();
