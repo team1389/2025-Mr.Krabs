@@ -134,8 +134,8 @@ public class OI
       // operatorController.leftBumper().whileTrue(new MoveClimber(climber, -1));
 
       // operatorController.x().whileTrue(new IntakeAlgae(intake));
-      // operatorController.x().whileTrue(new IntakeCoral(intake));
-      // operatorController.b().whileTrue(new OuttakeCoral(intake));
+      operatorController.x().whileTrue(new IntakeCoral(intake));
+      operatorController.b().whileTrue(new OuttakeCoral(intake));
 
       // operatorController.rightTrigger().whileTrue(new RunManualShoulder(elevatorArm, 1));
       // operatorController.leftTrigger().whileTrue(new RunManualShoulder(elevatorArm, -1));
@@ -146,8 +146,9 @@ public class OI
       // operatorController.x().whileTrue(new RunManualWrist(elevatorArm, .2)); //smaller
       // operatorController.b().whileTrue(new RunManualWrist(elevatorArm, -.2)); //bigger
 
-      // operatorController.a().whileTrue(new TestSetWrist(elevatorArm, .3));
-      operatorController.y().onTrue(new SetWrist(elevatorArm, .8));
+      operatorController.y().onTrue(new SetWrist(elevatorArm, 20));
+      // operatorController.y().onTrue(new SetWrist(elevatorArm, .5));
+
 
       // operatorController.y().whileTrue(new TestSetWrist(elevatorArm, .3));
 
@@ -155,11 +156,10 @@ public class OI
       operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
 
       //starting pos for testing
-      operatorController.button(9).whileTrue(new SetShoulder(elevatorArm, 0)); //ellipses
+      operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -10.01)); //ellipses
       //mid pos for testing
-      operatorController.x().whileTrue(new SetShoulder(elevatorArm, -7)); //ellipses
+      // operatorController.x().onTrue(new SetShoulder(elevatorArm, -10)); //ellipses
       //high pos for testing
-      operatorController.b().whileTrue(new SetShoulder(elevatorArm, .93)); //ellipses
 
  
       // elevator.setDefaultCommand(new ManualElevator(f
@@ -179,7 +179,7 @@ public class OI
       )
       );
 
-      operatorController.button(10).onTrue(new SetElevator(elevatorArm, .2)); //Menu
+      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //Menu
       // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
   }

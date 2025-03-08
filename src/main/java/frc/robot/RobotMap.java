@@ -64,8 +64,8 @@ public static final String INTAKE_MOTOR = null;
     public static final double ElevatorP = 3;
     public static final double ElevatorI = 0; //1
     public static final double ElevatorD = .05; //.05
-    public static final double ElevatorMaxVelocity = Meters.of(.42).per(Second).in(MetersPerSecond);// prev 40000
-    public static final double ElevatorMaxAccerlation = Meters.of(10.34).per(Second).per(Second).in(MetersPerSecondPerSecond);// prev 62000
+    public static final double ElevatorMaxVelocity = 40000;//Meters.of(.42).per(Second).in(MetersPerSecond);// prev 40000
+    public static final double ElevatorMaxAccerlation = 62000;//Meters.of(10.34).per(Second).per(Second).in(MetersPerSecondPerSecond);// prev 62000
 
     public static final double ElevatorS = .02; //.02
     public static final double ElevatorG = .05;          //TODO try 0.05, prev .9

@@ -20,12 +20,12 @@ public class TestSetWrist extends Command {
         pidController = new PIDController(pValue, iValue, dValue);
         pidController.setTolerance(.005);
         pidController.setSetpoint(targetAngle);
-        SmartDashboard.putNumber("WristAbsEncoder", elevatorArm.getWristEncoder());
+        SmartDashboard.putNumber("WristAbsEncoder", elevatorArm.getWristPos());
     }
 
     @Override
     public void execute() {
-        double currentAngle = elevatorArm.getWristEncoder();
+        double currentAngle = elevatorArm.getWristPos();
         double power = pidController.calculate(currentAngle);
 
         // Limit the power to prevent damage to the mechanism.  These values
