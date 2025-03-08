@@ -34,7 +34,6 @@ import edu.wpi.first.wpilibj.simulation.DIOSim;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class ElevatorArm extends SubsystemBase{
@@ -57,13 +56,11 @@ public class ElevatorArm extends SubsystemBase{
 
     // private DigitalInput topLimitSwitch, bottomLimitSwitch;
 
-    // private final TrapezoidProfile.Constraints elevatorConstraints = new TrapezoidProfile.Constraints(50, 30); //TODO
     private ProfiledPIDController elevatorPid = new ProfiledPIDController(RobotMap.ArmConstants.ElevatorP, 
                                                                             RobotMap.ArmConstants.ElevatorI, 
                                                                             RobotMap.ArmConstants.ElevatorD, 
                                                                             new Constraints(RobotMap.ArmConstants.ElevatorMaxVelocity, 
                                                                                             RobotMap.ArmConstants.ElevatorMaxAccerlation));
-    // private PIDController elevatorPid = new PIDController(.25, 0, 0);
 
     private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(.5, .3); //TODO
     // private ProfiledPIDController shoulderPid = new ProfiledPIDController(.5, 0, 0, arm1Constraints);
@@ -76,7 +73,6 @@ public class ElevatorArm extends SubsystemBase{
     private PIDController wristPid = new PIDController(2, 0, 0);
 
     //TODO
-    // private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0, 2.28, 3.07, .41);
     private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0.02, .9, 3.8, .17);
     private final ArmFeedforward shoulderFF = new ArmFeedforward(0,  0, 0); //ks is static friction, might not need it
     private final ArmFeedforward wristFF = new ArmFeedforward(0, 1.75, 1.95, 0); 
@@ -130,20 +126,20 @@ public class ElevatorArm extends SubsystemBase{
         // zeroShoulderRelEncoder();
         // setElevatorArm(ArmPosition.Starting);
 
-            elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
-            elevatorConfig
-                .closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                // Set PID values for position control
-                .p(3)
-                .outputRange(-1, 1)
-                .maxMotion
-                // Set MAXMotion parameters for position control
-                .maxVelocity(42000)
-                .maxAcceleration(60000)
-                .allowedClosedLoopError(0.5);
+        //     elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
+        //     elevatorConfig
+        //         .closedLoop
+        //         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        //         // Set PID values for position control
+        //         .p(3)
+        //         .outputRange(-1, 1)
+        //         .
+        //         // Set MAXMotion parameters for position control
+        //         // .maxVelocity(42000)
+        //         // .maxAcceleration(60000)
+        //         // .allowedClosedLoopError(0.5);
 
-        elevatorMotorRight.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        // elevatorMotorRight.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         shoulderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(30).voltageCompensation(12);
             shoulderConfig
@@ -281,8 +277,8 @@ public class ElevatorArm extends SubsystemBase{
         // elevatorPid.setTolerance(.001);
         double speed = ((elevatorPid.calculate(getRightRelElevatorPos(), goal)));
         double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
+        // elevatorMotorRight.setVoltage(MathUtil.clamp(speed+FF, -7, 7)); // try coast
         elevatorMotorRight.setVoltage(MathUtil.clamp(speed+FF, -7, 7));
-        // elevatorMotorRight.set(speed+FF);
         // setManualElevator((speed + FF));
         SmartDashboard.putNumber("Elevator Goal", goal);
     }
