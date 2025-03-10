@@ -37,6 +37,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -157,7 +158,6 @@ public class SwerveSubsystem extends SubsystemBase
   }
 
   public void updatePose(){
-
   }
 
   public Pose2d getRobotPose(){
@@ -184,11 +184,70 @@ public class SwerveSubsystem extends SubsystemBase
     }
     SmartDashboard.putNumber("RobotX", swerveDrive.getPose().getX());
     SmartDashboard.putNumber("RobotY", swerveDrive.getPose().getY());
-    SmartDashboard.putBoolean("Can Robot see april tag", visionSubsystem.canLimelightSeeTag());
+    SmartDashboard.putBoolean("Ready To Align (Needs to see april tag))", visionSubsystem.canLimelightSeeTag());
+    SmartDashboard.putBoolean("Are we the sus (red) alliance?", isRedAlliance());
   }
 
   public void addLLMeasurement(){
     swerveDrive.addVisionMeasurement(new Pose2d(visionSubsystem.getRobotPosition()[0], visionSubsystem.getRobotPosition()[1], swerveDrive.getYaw()), Timer.getFPGATimestamp());
+  }
+
+  public Command alignToReef(boolean isLeft){
+    if (visionSubsystem.getTargetID() == 6 || visionSubsystem.getTargetID() == 17){
+      if (isLeft){
+        return new PathPlannerAuto("Tag6-17Left");
+      }
+      else{
+        return new PathPlannerAuto("Tag6-17Right");
+      }
+    }
+    else if (visionSubsystem.getTargetID()==7 || visionSubsystem.getTargetID() == 18){
+      if (isLeft){
+        return new PathPlannerAuto("Tag7-18Left");
+      }
+      else{
+        return new PathPlannerAuto("Tag7-18Right");
+      }
+
+    }
+    else if (visionSubsystem.getTargetID()==8 || visionSubsystem.getTargetID() == 19){
+      if (isLeft){
+        return new PathPlannerAuto("Tag8-19Left");
+      }
+      else{
+        return new PathPlannerAuto("Tag8-19Right");
+      }
+      
+    }
+    else if (visionSubsystem.getTargetID()==9 || visionSubsystem.getTargetID() == 20){
+      if (isLeft){
+        return new PathPlannerAuto("Tag9-20Left");
+      }
+      else {
+        return new PathPlannerAuto("Tag9-20Right");
+      }
+      
+    }
+    else if (visionSubsystem.getTargetID()==10 || visionSubsystem.getTargetID() == 21){
+      if (isLeft){
+        return new PathPlannerAuto("Tag10-21Left");
+      }
+      else{
+        return new PathPlannerAuto("Tag10-21Right");
+      }
+      
+    }
+    else if (visionSubsystem.getTargetID()==11 || visionSubsystem.getTargetID() == 22){
+      if(isLeft){
+        return new PathPlannerAuto("Tag11-22Left");
+      }
+      else{
+        return new PathPlannerAuto("Tag11-22Right");
+      }
+    }
+    else{
+      return Commands.none();
+    }
   }
 
   public double getAlignTx(){
@@ -320,6 +379,7 @@ public class SwerveSubsystem extends SubsystemBase
     // Create a path following command using AutoBuilder. This will also trigger event markers.
     return new PathPlannerAuto(pathName);
   }
+  
 
   /**
    * Use PathPlanner Path finding to go to a point on the field.
