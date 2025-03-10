@@ -184,7 +184,7 @@ public class SwerveSubsystem extends SubsystemBase
     }
     SmartDashboard.putNumber("RobotX", swerveDrive.getPose().getX());
     SmartDashboard.putNumber("RobotY", swerveDrive.getPose().getY());
-    SmartDashboard.putBoolean("Can Robot see april tag", visionSubsystem.canLimelightSeeTag());
+    SmartDashboard.putBoolean("Ready To Align (Needs to see april tag))", visionSubsystem.canLimelightSeeTag());
     SmartDashboard.putBoolean("Are we the sus (red) alliance?", isRedAlliance());
   }
 
