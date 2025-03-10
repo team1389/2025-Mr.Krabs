@@ -119,8 +119,9 @@ public class OI
       driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driveController.start().whileTrue(Commands.none());
       driveController.back().whileTrue(Commands.none());
-      driveController.leftBumper().onTrue(Commands.runOnce(() -> drivebase.alignToReef(true)));
-      driveController.rightBumper().onTrue(Commands.runOnce(() -> drivebase.alignToReef(false)));
+
+      driveController.leftBumper().onTrue(drivebase.alignToReef(true));
+      driveController.rightBumper().onTrue(drivebase.alignToReef(false));
       driveController.b().onTrue(Commands.runOnce(drivebase::toggleAlign));
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
