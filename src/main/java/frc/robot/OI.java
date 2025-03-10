@@ -20,9 +20,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.MoveClimber;
-// import frc.command.SetElevatorArm;
-import frc.command.SetElevator;
 import frc.command.SetElevatorArm;
+import frc.command.SetElevator;
 import frc.command.SetShoulder;
 import frc.command.SetWrist;
 // import frc.command.IntakeAlgae;
@@ -137,13 +136,20 @@ public class OI
       operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
       operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
-      operatorController.y().onTrue(new SetWrist(elevatorArm, .5));
-      operatorController.a().onTrue(new SetWrist(elevatorArm, .2));
+      // operatorController.y().onTrue(new SetWrist(elevatorArm, 155.5));
+      operatorController.a().onTrue(new SetWrist(elevatorArm, 72.05));
+
+      // operatorController.y().onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting, 70, -10.01, 72.05));
 
       operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
       operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
 
       operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -10.01)); //ellipses
+
+      operatorController.y().onTrue(new SetShoulder(elevatorArm, -12.162));
+      operatorController.y().onTrue(new SetWrist(elevatorArm, 265));
+      operatorController.y().onTrue(new SetElevator(elevatorArm, 100));
+
 
  
       // elevator.setDefaultCommand(new ManualElevator(
@@ -163,8 +169,8 @@ public class OI
       )
       );
 
-      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 0)); //Menu
-      // operatorController.button(9).onTrue(new SetElevator(elevatorArm, 70)); //elippses
+      // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 0)); //Menu
+      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //elippses
       // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
   }
