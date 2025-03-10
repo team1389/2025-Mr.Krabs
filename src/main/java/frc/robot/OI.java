@@ -127,7 +127,7 @@ public class OI
       driveController.leftBumper().onTrue(drivebase.alignToReef(true));
       driveController.rightBumper().onTrue(drivebase.alignToReef(false));
 
-      
+
       driveController.b().onTrue(Commands.runOnce(drivebase::toggleAlign));
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
@@ -203,7 +203,7 @@ public class OI
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    return drivebase.getAutonomousCommand("Simple Single Piece Auto");
   }
 
   public void setMotorBrake(boolean brake)
