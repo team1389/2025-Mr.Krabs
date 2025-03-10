@@ -45,7 +45,7 @@
     "rotation": -127.2348339815746
   },
   "reversed": false,
-  "folder": "scoot",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0.0,
     "rotation": -137.293

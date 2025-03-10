@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -119,9 +120,10 @@ public class OI
       driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driveController.start().whileTrue(Commands.none());
       driveController.back().whileTrue(Commands.none());
-      driveController.leftBumper().onTrue(Commands.runOnce(() -> drivebase.alignToReef(true)));
-      driveController.rightBumper().onTrue(Commands.runOnce(() -> drivebase.alignToReef(false)));
-      driveController.b().onTrue(Commands.runOnce(drivebase::toggleAlign));
+
+      //Was creating a command of a command. Might work now. 
+      driveController.leftBumper().onTrue(drivebase.alignToReef(true));
+      driveController.rightBumper().onTrue(drivebase.alignToReef(false));
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.rightBumper().whileTrue(Commands.run(climber::spinForwards, climber));
@@ -196,7 +198,7 @@ public class OI
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    return drivebase.getAutonomousCommand("location 7 to bottom feeder");
   }
 
   public void setMotorBrake(boolean brake)

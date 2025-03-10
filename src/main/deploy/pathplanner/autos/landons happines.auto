@@ -11,21 +11,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "do thing"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "location 2 to top feeder"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "consume"
           }
         },
         {
@@ -35,21 +23,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "do thihg"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "location 1 to top feeder"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "comnsue"
           }
         },
         {
@@ -59,33 +35,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "do thing"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "location 12 to top feeder"
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "consume"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "top feeder to location 11"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "do thing"
           }
         }
       ]
