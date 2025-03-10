@@ -9,6 +9,7 @@
       "/SmartDashboard/IMU": "Alerts",
       "/SmartDashboard/JSON": "Alerts",
       "/SmartDashboard/Motors": "Alerts",
+      "/SmartDashboard/PathPlanner": "Alerts",
       "/SmartDashboard/Pigeon IMU [0]": "Gyro",
       "/SmartDashboard/Pigeon IMU [18]": "Gyro",
       "/SmartDashboard/Swerve Drive": "Alerts"
