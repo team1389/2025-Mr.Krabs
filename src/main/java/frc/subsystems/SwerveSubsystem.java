@@ -37,6 +37,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -71,11 +72,14 @@ public class SwerveSubsystem extends SubsystemBase
 
   public double count=0;
 
+  public double[] pos = new double[2];
+
   // VisionSubsystem visionSubsystem = new VisionSubsystem();
   /**
    * AprilTag field layout.
    */
 
+   //TODO:figure out a way to make this automatic
   private final VisionSubsystem visionSubsystem = new VisionSubsystem();
   /**
    * Enable vision odometry updates while driving.
@@ -152,6 +156,15 @@ public class SwerveSubsystem extends SubsystemBase
     // vision = new Vision(swerveDrive::getPose, swerveDrive.field);
   }
 
+  public void updatePose(){
+
+  }
+
+  public Pose2d getRobotPose(){
+    //TODO: get the rotation angle from gyro. Need to test this
+    return new Pose2d(visionSubsystem.getRobotPosition()[0], visionSubsystem.getRobotPosition()[1], swerveDrive.getPose().getRotation());
+  }
+
   @Override
   public void periodic()
   {
@@ -161,19 +174,27 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.updateOdometry();
       // vision.updatePoseEstimation(swerveDrive);
     }
-
-    alignTx = visionSubsystem.getAlignTX();
-
-    if(getAlignTx() != 0){
-      alignRot =  -(0.1 * getAlignTx()) + Math.toRadians( 25);
+    
+    //x
+    SmartDashboard.putNumber("limelightX", visionSubsystem.getRobotPosition()[0]);
+    //y
+    SmartDashboard.putNumber("limelightY", visionSubsystem.getRobotPosition()[1]);  
+    if (visionSubsystem.canLimelightSeeTag()){
+      addLLMeasurement();
     }
-    SmartDashboard.putNumber("AlignTxSwerve", alignTx);
-    SmartDashboard.putBoolean("CommandAlign", commandAlign);
+    SmartDashboard.putNumber("RobotX", swerveDrive.getPose().getX());
+    SmartDashboard.putNumber("RobotY", swerveDrive.getPose().getY());
+    SmartDashboard.putBoolean("Can Robot see april tag", visionSubsystem.canLimelightSeeTag());
+  }
+
+  public void addLLMeasurement(){
+    swerveDrive.addVisionMeasurement(new Pose2d(visionSubsystem.getRobotPosition()[0], visionSubsystem.getRobotPosition()[1], swerveDrive.getYaw()), Timer.getFPGATimestamp());
   }
 
   public double getAlignTx(){
     return visionSubsystem.getAlignTX();
   }
+
 
   /**
    * Drive the robot given a chassis field oriented velocity.
@@ -182,18 +203,10 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity)
   {
-    count++;
-    if(commandAlign){
-      SmartDashboard.putBoolean("Algining", true);
-        velocity.get().omegaRadiansPerSecond = alignRot;
-    }
-    SmartDashboard.putBoolean("Algining", false);
-    SmartDashboard.putNumber("dreiveDC", count);
     return run(() -> {
       swerveDrive.driveFieldOriented(velocity.get());
     });
   }
-
 
 
   @Override
