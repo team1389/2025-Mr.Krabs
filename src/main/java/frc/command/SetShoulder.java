@@ -14,7 +14,8 @@ public class SetShoulder extends Command{
 
     @Override
     public void execute(){
-        shoulder.setShoulder(position);
+        // shoulder.setShoulder(position);
+        shoulder.moveToSetpointShoulder(position);
     }
 
     @Override

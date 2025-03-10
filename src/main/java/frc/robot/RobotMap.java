@@ -8,6 +8,17 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
 
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
+
+import static edu.wpi.first.units.Units.*;
+
 public final class RobotMap
 {
 
@@ -49,6 +60,25 @@ public static final String INTAKE_MOTOR = null;
     public static final double ARM2_MAX_SPEED = 1;
     public static final int TOP_LIMIT_SWITCH = 0;
     public static final int BOTTOM_LIMIT_SWITCH = 1;
+
+    public static final double ElevatorP = 3;
+    public static final double ElevatorI = 0; //1
+    public static final double ElevatorD = .05; //.05
+    public static final double ElevatorMaxVelocity = 40000;//Meters.of(.42).per(Second).in(MetersPerSecond);// prev 40000
+    public static final double ElevatorMaxAccerlation = 62000;//Meters.of(10.34).per(Second).per(Second).in(MetersPerSecondPerSecond);// prev 62000
+
+    public static final double ElevatorS = .02; //.02
+    public static final double ElevatorG = .05;          //TODO try 0.05, prev .9
+    public static final double ElevatorV = 21.28; //3.8   //TODO try 21.28, prev 3.8
+    public static final double ElevatorA = .01; //.17   // TODO try 0.01, prev .17
+    public static final double ElevatorRampRate = .1;
+
+    public static final double ElevatorGearing = 21.3;
+    public static final double ElevatorCarriageMass = 6.8;
+    public static final double ElevatorDrumRadius = Units.inchesToMeters(1);
+    public static final double ElevatorMinHeight = Units.inchesToMeters(54); //meters
+    public static final double ElevatorMaxHeight = Units.inchesToMeters(80);
+
   }
 
   public static class OperatorConstants
@@ -80,7 +110,7 @@ public static final String INTAKE_MOTOR = null;
   public static class MotorPorts{
     //TODO: add all motor ports
     public static final int climberMotor = 10;
-    public static final int ELEVATOR_MOTOR_ONE = 11;
+    public static final int ELEVATOR_MOTOR_ONE = 11; 
     public static final int ELEVATOR_MOTOR_TWO = 17; //right
     public static final int LEFT_SHOULDER_MOTOR = 12;
     public static final int RIGHT_SHOULDER_MOTOR = 13;

@@ -11,13 +11,13 @@ public class RunManualWrist extends Command {
     public RunManualWrist(ElevatorArm elevatorArm, double speed) {
         this.elevatorArm = elevatorArm;
         this.speed = speed;
-        SmartDashboard.putNumber("WristAbsEncoder", elevatorArm.getWristEncoder());
+        SmartDashboard.putNumber("WristAbsEncoder", elevatorArm.getWristPos());
     }
 
     @Override
     public void execute() {
         elevatorArm.setManualWrist(speed);
-        SmartDashboard.putNumber("WristAbsEncoder", elevatorArm.getWristEncoder());
+        SmartDashboard.putNumber("WristAbsEncoder", elevatorArm.getWristPos());
     }
 
     @Override
