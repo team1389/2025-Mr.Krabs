@@ -23,7 +23,6 @@ public class ManualElevatorArm extends Command{
         // if((elevatorArm.ifElevatorTooHigh() && (MathUtil.clamp(elevatorPower.get(), -1, 1) > 0)) ||
         // (elevatorArm.ifElevatorTooLow() && (MathUtil.clamp(elevatorPower.get(), -1, 1) < 0))){
             elevatorArm.setManualElevator(MathUtil.clamp(elevatorPower.get(), -1, 1));
-            SmartDashboard.putBoolean("in manual elevator", true);
         // }
         elevatorArm.setManualWrist(MathUtil.clamp(armPower.get(), -1, 1));
     }

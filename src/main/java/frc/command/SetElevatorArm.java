@@ -7,10 +7,12 @@ import frc.subsystems.ElevatorArm;
 public class SetElevatorArm extends Command{
     private ElevatorArm elevatorArm;
     private ArmPosition target;
+    double height, shoulder, wrist;
 
-    public SetElevatorArm(ElevatorArm elevatorArm, ArmPosition target) {
+    public SetElevatorArm(ElevatorArm elevatorArm, ArmPosition target, double height, double shoulder, double wrist) {
         this.elevatorArm = elevatorArm;
         this.target = target;
+        this.height = height;
 
         addRequirements(elevatorArm);
     }
@@ -21,7 +23,10 @@ public class SetElevatorArm extends Command{
 
     @Override
     public void execute(){
-        elevatorArm.moveElevatorArm();
+        // elevatorArm.moveElevatorArm();
+        elevatorArm.setElevator(height);
+        elevatorArm.moveToSetpointShoulder(shoulder);
+        // elevatorArm.setWrist(wrist);
     }
 
     @Override

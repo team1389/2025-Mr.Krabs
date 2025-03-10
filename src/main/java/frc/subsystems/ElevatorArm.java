@@ -8,6 +8,7 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.servohub.ServoHub.ResetMode;
 import com.revrobotics.sim.SparkFlexSim;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -42,15 +43,13 @@ public class ElevatorArm extends SubsystemBase{
     private SparkFlex elevatorMotorRight, leftShoulderMotor, rightShoulderMotor, elevatorMotorLeft;
     private SparkMax wristMotor; //.12 to .85
     // shoulder is a spark max
-    double elevatorSpeed = 1;   
+    double elevatorSpeed = 1;
 
-    double pS,iS,dS;
     boolean shoulderClose = false;
     private final DCMotor elevatorGearbox = DCMotor.getNeoVortex(1);
     private SparkFlexSim elevatorMotorSim;
-    private RelativeEncoder shoulderRelEncoder, rightElevatorRelEncoder; //-.3 to -110
+    private RelativeEncoder shoulderRelEncoder, rightElevatorRelEncoder, wristRelEncoder;
     // private AbsoluteEncoder wristAbsEncoder;
-    // private DutyCycleEncoder wristEncoder;
     public static final SparkFlexConfig elevatorConfig = new SparkFlexConfig();
     public static final SparkFlexConfig shoulderConfig = new SparkFlexConfig();
     public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
@@ -72,9 +71,9 @@ public class ElevatorArm extends SubsystemBase{
 
     // private PIDController shoulderPid = new PIDController(2, 2, 0);
 
-    private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3, 3); //TODO
-    // private ProfiledPIDController wristPid = new ProfiledPIDController(.003, 0, 1, wristConstraints);
-    private PIDController wristPid = new PIDController(.003, 0, 0);
+    private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3000, 4000); //TODO
+    private ProfiledPIDController wristPid = new ProfiledPIDController(.03, 0, 0, wristConstraints);
+    // private PIDController wristPid = new PIDController(.003, 0, 0);
 
     //TODO
     private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0.02, .9, 3.8, .17);
@@ -108,8 +107,10 @@ public class ElevatorArm extends SubsystemBase{
         shoulderRelEncoder = leftShoulderMotor.getEncoder();
         rightElevatorRelEncoder = elevatorMotorRight.getEncoder();
         wristAbsEncoder = wristMotor.getAbsoluteEncoder();
-        // elevatorEncoder = new DutyCycleEncoder(0, Math.PI, 0); // 0 to PI
-        // wristEncoder = new DutyCycleEncoder(1, Math.PI, 0);
+        wristRelEncoder = wristMotor.getEncoder();
+
+        // wristRelEncoder.setPosition(0);
+        wristRelEncoder.setPosition(wristAbsEncoder.getPosition() * 2*Math.PI* RobotMap.ArmConstants.WristGearRatio);
  
         //limit switch, classic JJ
         // topLimitSwitch = new DigitalInput(RobotMap.ArmConstants.TOP_LIMIT_SWITCH);
@@ -155,31 +156,35 @@ public class ElevatorArm extends SubsystemBase{
                 .outputRange(-1, 1)
                 .maxMotion
                 // Set MAXMotion parameters for position control
-                .maxVelocity(2000)
-                .maxAcceleration(10000)
+                .maxVelocity(5000) //2000
+                .maxAcceleration(100000) //10000
                 .allowedClosedLoopError(0.05);
 
         leftShoulderMotor.configure(shoulderConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        // wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
-        //     wristConfig
-        //         .closedLoop
-        //         .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-        //         .p(.5)
-        //         .outputRange(-1, 1)
-        //         .maxMotion
-        //         .maxVelocity(2000)
-        //         .maxAcceleration(10000)
-        //         .allowedClosedLoopError(.1);
+        wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
+            wristConfig
+                .closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .p(.5)
+                .outputRange(-1, 1)
+                .maxMotion
+                .maxVelocity(2000)
+                .maxAcceleration(10000)
+                .allowedClosedLoopError(1);
 
-        // wristMotor.configure(wristConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            // wristConfig
+            //     .softLimit
+            //         .forwardSoftLimit(.1)
+            //         .forwardSoftLimitEnabled(true)
+            //         .reverseSoftLimit(.6)
+            //         .reverseSoftLimitEnabled(true);
+
+        wristMotor.configure(wristConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         // SparkFlexConfig config = new SparkFlexConfig();
         // config.smartCurrentLimit(40)
         //         .openLoopRampRate(RobotMap.ArmConstants.ElevatorRampRate);
-
-
-        wristPid.setTolerance(0.005);
 
         // SmartDashboard.putNumber("P Elevator", 0);
         // SmartDashboard.putNumber("I Elevator", 0);
@@ -225,14 +230,6 @@ public class ElevatorArm extends SubsystemBase{
         // elevatorMotorLeft.set(elevatorSpeed);
         elevatorMotorRight.set(-elevatorSpeed);
     }
-    public void setManualElevatorUp(){
-        // elevatorMotorLeft.set(elevatorSpeed);
-        elevatorMotorRight.set(-elevatorSpeed);
-    }
-    public void setManualElevatorDown(){
-        // elevatorMotorLeft.set(-elevatorSpeed);
-        elevatorMotorRight.set(elevatorSpeed);
-    }
     public void setManualShoulder(double arm1Speed){
         leftShoulderMotor.set(arm1Speed);
         // rightShoulderMotor.set(-arm1Speed);
@@ -252,24 +249,20 @@ public class ElevatorArm extends SubsystemBase{
     }
 
 
-    // public void setSpeed(SparkFlex motor, double speed, double maxSpeed){
-    //     double setSpeed = Math.max(-maxSpeed, Math.min(speed, maxSpeed));
-    //     motor.set(setSpeed);
-    // }
-
-
     public double getRightRelElevatorPos(){
         return rightElevatorRelEncoder.getPosition();
     }
-    // public double getShoulderPos(){
-    //     return shoulderEncoder.get();
-    // }
+
     public double getShoulderRelPos(){
         return shoulderRelEncoder.getPosition();
     }
 
     public double getWristPos(){
         return wristAbsEncoder.getPosition();
+    }
+
+    public double getWristRelPos(){
+        return wristRelEncoder.getPosition();
     }
 
     public void setElevatorArm(ArmPosition pos){
@@ -290,9 +283,8 @@ public class ElevatorArm extends SubsystemBase{
         // elevatorPid.setTolerance(.001);
         double speed = ((elevatorPid.calculate(getRightRelElevatorPos(), goal)));
         double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
-        // elevatorMotorRight.setVoltage(MathUtil.clamp(speed+FF, -7, 7)); // try coast
-        elevatorMotorRight.setVoltage(MathUtil.clamp(speed+FF, -7, 7));
-        // setManualElevator((speed + FF));
+        // elevatorMotorRight.setVoltage(MathUtil.clamp(speed+FF, -7, 7));
+        elevatorMotorRight.set(speed+FF);
         SmartDashboard.putNumber("Elevator Goal", goal);
     }
 
@@ -339,21 +331,14 @@ public class ElevatorArm extends SubsystemBase{
         // Limit the power to prevent damage to the mechanism.  These values
         // should be based on your hardware.
         // power = -MathUtil.clamp(power, -.3, .3); // Example: Limit between -1 and 1
-        double power = wristPid.calculate(getWristPos(), setpoint);
+        double power = -wristPid.calculate(getWristRelPos(), setpoint);
         wristMotor.set(MathUtil.clamp(power, -.3, .3));
-        // setManualWrist(power);
-        // if(ifElevatorTooLow()){
-        //     SmartDashboard.putBoolean("in set elevator low", true);
-        //     return;
-        // }
         // SmartDashboard.putBoolean("in set wrist low", false);
-        // double speed = wristPid.calculate(getWristPos(), setpoint);
-        // setManualWrist(MathUtil.clamp(speed, -.3, .3));
+
     }
 
 
     public void stop(){
-        // elevatorMotorLeft.set(0);
         elevatorMotorRight.set(0);
         leftShoulderMotor.set(0);
         wristMotor.set(0);
@@ -373,21 +358,11 @@ public class ElevatorArm extends SubsystemBase{
     }
 
     // public boolean ifWristTooFar(){
-    //     return rightElevatorRelEncoder.getPosition() > 100; //TODO
-    // }ma
-
-    // public boolean ifWristTooLow(){
-    //     return rightElevatorRelEncoder.getPosition() < 0; //TODO
+    //     return rightElevatorRelEncoder.getPosition() > 100;
     // }
 
-    // public void zeroShoulderRelEncoder(){
-    //     while(!topLimitSwitch.get()){
-    //         leftShoulderMotor.set(.3);
-    //         rightShoulderMotor.set(-.3);
-    //     }
-    //     leftShoulderMotor.set(0);
-    //     rightShoulderMotor.set(0);
-    //     shoulderRelEncoder.setPosition(0);
+    // public boolean ifWristTooLow(){
+    //     return rightElevatorRelEncoder.getPosition() < 0;
     // }
 
     public void moveElevator(double power){
@@ -416,14 +391,9 @@ public class ElevatorArm extends SubsystemBase{
     }
 
     public boolean atTargetPosition(){
-        boolean elevatorClose = Math.abs(getRightRelElevatorPos() - elevatorTarget) < 0.5;
-    //  boolean shoulderClose = Math.abs(getShoulderPos() - shoulderTarget) < 0.05;
-        boolean shoulderClose = Math.abs(getShoulderRelPos() - shoulderTarget) < 0.05;
-        boolean wristClose = Math.abs(getWristPos() - wristTarget) < 0.005;
-    
-        SmartDashboard.putBoolean("Elevator Target", elevatorClose);
-        SmartDashboard.putBoolean("Shoulder Target", shoulderClose);
-        SmartDashboard.putBoolean("Wrist Target", wristClose);
+        boolean elevatorClose = atTargetPosition(elevatorTarget);
+        boolean shoulderClose = atShoulderTargetPosition(shoulderTarget);
+        boolean wristClose = atWristTargetPosition(wristTarget);
     
         return elevatorClose && shoulderClose && wristClose;
     }
@@ -434,8 +404,8 @@ public class ElevatorArm extends SubsystemBase{
         return elevatorClose;
     }
 
-    public boolean atWristTargetPosition(double height){
-        boolean wristClose = Math.abs(getWristPos() - height) < .05;
+    public boolean  atWristTargetPosition(double height){
+        boolean wristClose = Math.abs(getWristRelPos() - height) < 1;
         SmartDashboard.putBoolean("Wrist At Target", wristClose);
         return wristClose;
     }
@@ -447,13 +417,9 @@ public class ElevatorArm extends SubsystemBase{
     }
 
     public void moveElevatorArm(){
-        double elevatorPower = elevatorPid.calculate(getRightRelElevatorPos(), elevatorTarget);
-        double shoulderPower = shoulderPid.calculate(getShoulderRelPos(), shoulderTarget);// + shoulderFF.calculate(shoulderTarget, 0); // for limit switch
-        double wristPower = wristPid.calculate(getWristPos(), wristTarget);
-
-        moveElevator(elevatorPower);
-        moveShoulder(shoulderPower);
-        moveWrist(wristPower);
+        setElevator(elevatorTarget);
+        moveToSetpointShoulder(shoulderTarget);
+        setWrist(wristTarget);
     }
 
     // public void setElevator(double height){
@@ -461,10 +427,6 @@ public class ElevatorArm extends SubsystemBase{
     //     double power = elevatorPid.calculate(getRightRelElevatorPos(), height);
     //     moveElevator(power);
     // }
-
-    public void setRadians(){
-
-    }
 
     public double getVelocityMetersPerSecond() {
         return (rightElevatorRelEncoder.getVelocity() /60) * (2*Math.PI * RobotMap.ArmConstants.ElevatorDrumRadius)
@@ -478,10 +440,11 @@ public class ElevatorArm extends SubsystemBase{
 
     @Override
     public void periodic(){
+        wristRelEncoder.setPosition(wristAbsEncoder.getPosition() * 2*Math.PI* RobotMap.ArmConstants.WristGearRatio);
         SmartDashboard.putNumber("wrist acc error", wristPid.getAccumulatedError());
-        SmartDashboard.putNumber("wrist error", wristPid.getError());
+        SmartDashboard.putNumber("wrist error", wristPid.getPositionError());
 
-        SmartDashboard.putNumber("elevator M/S", getVelocityMetersPerSecond());
+        SmartDashboard.putNumber("elevator M per S", getVelocityMetersPerSecond());
         SmartDashboard.putNumber("elevator position M", getPositionMeters());
 
         SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
@@ -517,11 +480,10 @@ public class ElevatorArm extends SubsystemBase{
 
         
 
-        // SmartDashboard.putNumber("Left Elevator Pos", getLeftRelElevatorPos());
         SmartDashboard.putNumber("Right Elevator Pos", getRightRelElevatorPos());
-    // //    SmartDashboard.putNumber("Shoulder Position", getShoulderPos());
         SmartDashboard.putNumber("Shoulder Rel Pos", getShoulderRelPos());
-        SmartDashboard.putNumber("Wrist Position", getWristPos());
+        SmartDashboard.putNumber("Wrist Abs Position", getWristPos());
+        SmartDashboard.putNumber("Wrist Rel Pos", getWristRelPos());
 
         SmartDashboard.putNumber("Elevator error", elevatorPid.getAccumulatedError());
         SmartDashboard.putNumber("Elevator Position error", elevatorPid.getPositionError());
