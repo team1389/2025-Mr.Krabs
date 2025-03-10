@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 
-import static edu.wpi.first.units.Units.*;
-
 public final class RobotMap
 {
 
@@ -68,9 +66,9 @@ public static final String INTAKE_MOTOR = null;
     public static final double ElevatorMaxAccerlation = 62000;//Meters.of(10.34).per(Second).per(Second).in(MetersPerSecondPerSecond);// prev 62000
 
     public static final double ElevatorS = .02; //.02
-    public static final double ElevatorG = .05;          //TODO try 0.05, prev .9
-    public static final double ElevatorV = 21.28; //3.8   //TODO try 21.28, prev 3.8
-    public static final double ElevatorA = .01; //.17   // TODO try 0.01, prev .17
+    public static final double ElevatorG = .05;          //prev .9
+    public static final double ElevatorV = 21.28; //3.8   //prev 3.8
+    public static final double ElevatorA = .01; //.17   // prev .17
     public static final double ElevatorRampRate = .1;
 
     public static final double ElevatorGearing = 21.3;
@@ -78,6 +76,8 @@ public static final String INTAKE_MOTOR = null;
     public static final double ElevatorDrumRadius = Units.inchesToMeters(1);
     public static final double ElevatorMinHeight = Units.inchesToMeters(54); //meters
     public static final double ElevatorMaxHeight = Units.inchesToMeters(80);
+
+    public static final double WristGearRatio = 80;
 
   }
 

@@ -25,7 +25,6 @@ import frc.command.SetElevator;
 import frc.command.SetElevatorArm;
 import frc.command.SetShoulder;
 import frc.command.SetWrist;
-import frc.command.TestSetWrist;
 // import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
 import frc.command.ManualElevatorArm;
@@ -39,7 +38,6 @@ import frc.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import frc.command.OuttakeCoral;
 import frc.command.RunManualShoulder;
-import frc.command.RunManualWrist;;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -133,36 +131,22 @@ public class OI
       // operatorController.rightBumper().whileTrue(new MoveClimber(climber, 1));
       // operatorController.leftBumper().whileTrue(new MoveClimber(climber, -1));
 
-      // operatorController.x().whileTrue(new IntakeAlgae(intake));
       operatorController.x().whileTrue(new IntakeCoral(intake));
       operatorController.b().whileTrue(new OuttakeCoral(intake));
-
-      // operatorController.rightTrigger().whileTrue(new RunManualShoulder(elevatorArm, 1));
-      // operatorController.leftTrigger().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
       operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
       operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
-      // operatorController.x().whileTrue(new RunManualWrist(elevatorArm, .2)); //smaller
-      // operatorController.b().whileTrue(new RunManualWrist(elevatorArm, -.2)); //bigger
-
-      operatorController.y().onTrue(new SetWrist(elevatorArm, 20));
-      // operatorController.y().onTrue(new SetWrist(elevatorArm, .5));
-
-
-      // operatorController.y().whileTrue(new TestSetWrist(elevatorArm, .3));
+      operatorController.y().onTrue(new SetWrist(elevatorArm, .5));
+      operatorController.a().onTrue(new SetWrist(elevatorArm, .2));
 
       operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
       operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
 
-      //starting pos for testing
       operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -10.01)); //ellipses
-      //mid pos for testing
-      // operatorController.x().onTrue(new SetShoulder(elevatorArm, -10)); //ellipses
-      //high pos for testing
 
  
-      // elevator.setDefaultCommand(new ManualElevator(f
+      // elevator.setDefaultCommand(new ManualElevator(
       //   elevator,
       //   () -> getManipLeftY(),
       //   () -> getManipRightY(),
@@ -179,7 +163,8 @@ public class OI
       )
       );
 
-      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //Menu
+      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 0)); //Menu
+      // operatorController.button(9).onTrue(new SetElevator(elevatorArm, 70)); //elippses
       // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
   }
