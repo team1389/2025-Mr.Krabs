@@ -24,9 +24,11 @@ import frc.command.SetElevatorArm;
 import frc.command.SetElevator;
 import frc.command.SetShoulder;
 import frc.command.SetWrist;
+import frc.command.TimedOuttakeCoral;
 // import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
-// import frc.command.ManualElevatorArm;
+// import frc.command.L4Action;
+import frc.command.ManualElevatorArm;
 import frc.command.ManualWrist;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
@@ -91,6 +93,7 @@ public class OI
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+    NamedCommands.registerCommand("L4", new L4Action(intake, elevatorArm));
   }
 
 
@@ -119,8 +122,12 @@ public class OI
       driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driveController.start().whileTrue(Commands.none());
       driveController.back().whileTrue(Commands.none());
-      driveController.leftBumper().onTrue(Commands.runOnce(() -> drivebase.alignToReef(true)));
-      driveController.rightBumper().onTrue(Commands.runOnce(() -> drivebase.alignToReef(false)));
+
+      //should theoritically work. Untested with the modifications to how it is called
+      driveController.leftBumper().onTrue(drivebase.alignToReef(true));
+      driveController.rightBumper().onTrue(drivebase.alignToReef(false));
+
+
       driveController.b().onTrue(Commands.runOnce(drivebase::toggleAlign));
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
@@ -196,7 +203,7 @@ public class OI
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    return drivebase.getAutonomousCommand("Simple Single Piece Auto");
   }
 
   public void setMotorBrake(boolean brake)
