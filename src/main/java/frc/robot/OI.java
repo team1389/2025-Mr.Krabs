@@ -97,12 +97,12 @@ public class OI
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
-    // NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-    // NamedCommands.registerCommand("L4", new L4Action(intake, elevatorArm)); //TODO change wrist for all
-    // NamedCommands.registerCommand("StartingPos", new StartingPos(elevatorArm));
-    // NamedCommands.registerCommand("Feeder", new Feeder(intake, elevatorArm));
-    // NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
-    // NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
+    NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+    NamedCommands.registerCommand("L4", new L4Action(intake, elevatorArm)); //TODO change wrist for all
+    NamedCommands.registerCommand("StartingPos", new StartingPos(elevatorArm));
+    NamedCommands.registerCommand("Feeder", new Feeder(intake, elevatorArm));
+    NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
+    NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
   }
 
 

@@ -9,10 +9,10 @@ import frc.subsystems.IntakeSubsystem;
 public class L4Action extends SequentialCommandGroup{
     public L4Action(IntakeSubsystem intake, ElevatorArm elevatorArm){
         addCommands(
+            new SetWrist(elevatorArm, 265),
             new ParallelCommandGroup(
-                //runs l4 sequence
+                // runs l4 sequence
                 new SetShoulder(elevatorArm, -12.162),
-                new SetWrist(elevatorArm, 265),
                 new SetElevator(elevatorArm, 117.5555)
             )
             // new TimedOuttakeCoral(intake)
