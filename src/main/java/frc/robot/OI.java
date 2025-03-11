@@ -124,29 +124,12 @@ public class OI
       //Was creating a command of a command. Might work now. 
       driveController.leftBumper().onTrue(drivebase.alignToReef(true));
       driveController.rightBumper().onTrue(drivebase.alignToReef(false));
-      // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
-      // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
-      // operatorController.rightBumper().whileTrue(Commands.run(climber::spinForwards, climber));
-      // operatorController.leftBumper().whileTrue(Commands.run(climber::spinBackwards, climber));
-      // operatorController.x().whileTrue(Commands.run(climber::spinForwards, climber));
-      // operatorController.rightBumper().whileTrue(new MoveClimber(climber, 1));
-      // operatorController.leftBumper().whileTrue(new MoveClimber(climber, -1));
 
       operatorController.rightBumper().whileTrue(new IntakeCoral(intake));
       operatorController.leftBumper().whileTrue(new OuttakeCoral(intake));
 
-      // operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
-      // operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
-
-      // operatorController.y().onTrue(new SetWrist(elevatorArm, 155.5));
-      // operatorController.a().onTrue(new SetWrist(elevatorArm, 72.05));
-
-      // operatorController.y().onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting, 70, -10.01, 72.05));
-
       operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
       operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
-
-      // operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -10.01)); //ellipses
 
       operatorController.b().onTrue(new SetShoulder(elevatorArm, -12.162)); //L4
       operatorController.b().onTrue(new SetWrist(elevatorArm, 265));
