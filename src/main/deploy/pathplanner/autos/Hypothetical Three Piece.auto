@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Far Side 1 piece location 2"
+            "pathName": "Close Side 1 piece location 3"
           }
         },
         {
@@ -19,55 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "location 2 to top feeder"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "top feeder to location 1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "location 1 to top feeder"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "top feeder to location 12"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "location 12 to top feeder"
+            "pathName": "location 3 to top feeder"
           }
         },
         {
@@ -80,6 +32,30 @@
           "type": "path",
           "data": {
             "pathName": "top feeder to location 11"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "location 11 to top feeder"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "top feeder to location 12"
           }
         },
         {
