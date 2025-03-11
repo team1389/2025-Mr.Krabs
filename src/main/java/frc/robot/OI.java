@@ -26,7 +26,7 @@ import frc.command.SetShoulder;
 import frc.command.SetWrist;
 // import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
-import frc.command.ManualElevatorArm;
+// import frc.command.ManualElevatorArm;
 import frc.command.ManualWrist;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
@@ -146,9 +146,9 @@ public class OI
 
       operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -10.01)); //ellipses
 
-      operatorController.y().onTrue(new SetShoulder(elevatorArm, -12.162));
-      operatorController.y().onTrue(new SetWrist(elevatorArm, 265));
-      operatorController.y().onTrue(new SetElevator(elevatorArm, 100));
+      // operatorController.y().onTrue(new SetShoulder(elevatorArm, -12.162));
+      operatorController.y().onTrue(new SetWrist(elevatorArm, -90));
+      // operatorController.y().onTrue(new SetElevator(elevatorArm, 100));
 
 
  
@@ -162,12 +162,12 @@ public class OI
       // );
 
 
-      elevatorArm.setDefaultCommand(new ManualElevatorArm(
-        elevatorArm,
-        () -> -getManipRightY(),
-        () -> getManipLeftY()
-      )
-      );
+      // elevatorArm.setDefaultCommand(new ManualElevatorArm(
+      //   elevatorArm,
+      //   () -> -getManipRightY(),
+      //   () -> getManipLeftY()
+      // )
+      // );
 
       // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 0)); //Menu
       operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //elippses
