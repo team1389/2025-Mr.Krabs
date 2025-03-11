@@ -139,14 +139,14 @@ public class OI
       // operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
       // operatorController.y().onTrue(new SetWrist(elevatorArm, 155.5));
-      operatorController.a().onTrue(new SetWrist(elevatorArm, 72.05));
+      // operatorController.a().onTrue(new SetWrist(elevatorArm, 72.05));
 
       // operatorController.y().onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting, 70, -10.01, 72.05));
 
       operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
       operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
 
-      operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -10.01)); //ellipses
+      // operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -10.01)); //ellipses
 
       operatorController.b().onTrue(new SetShoulder(elevatorArm, -12.162)); //L4
       operatorController.b().onTrue(new SetWrist(elevatorArm, 265));
@@ -164,9 +164,9 @@ public class OI
       operatorController.x().onTrue(new SetWrist(elevatorArm, 79.09802));
       operatorController.x().onTrue(new SetElevator(elevatorArm, 71.4531));
 
-      operatorController.y().onTrue(new SetShoulder(elevatorArm, .208)); //starting
-      operatorController.y().onTrue(new SetWrist(elevatorArm, 62.95));
-      operatorController.y().onTrue(new SetElevator(elevatorArm, .5177));
+      operatorController.button(9).onTrue(new SetShoulder(elevatorArm, .208)); //starting
+      operatorController.button(9).onTrue(new SetWrist(elevatorArm, 62.95)); //ellipses
+      operatorController.button(9).onTrue(new SetElevator(elevatorArm, .5177));
 
 
  
@@ -180,15 +180,15 @@ public class OI
       // );
 
 
-      elevatorArm.setDefaultCommand(new ManualElevatorArm(
-        elevatorArm,
-        () -> -getManipRightY(),
-        () -> getManipLeftY()
-      )
-      );
+      // elevatorArm.setDefaultCommand(new ManualElevatorArm(
+      //   elevatorArm,
+      //   () -> -getManipRightY(),
+      //   () -> getManipLeftY()
+      // )
+      // );
 
       // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 0)); //Menu
-      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //menu
+      // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //menu
       // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
   }
