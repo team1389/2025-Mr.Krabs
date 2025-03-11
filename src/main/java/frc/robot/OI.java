@@ -132,11 +132,11 @@ public class OI
       // operatorController.rightBumper().whileTrue(new MoveClimber(climber, 1));
       // operatorController.leftBumper().whileTrue(new MoveClimber(climber, -1));
 
-      operatorController.x().whileTrue(new IntakeCoral(intake));
-      operatorController.b().whileTrue(new OuttakeCoral(intake));
+      operatorController.rightBumper().whileTrue(new IntakeCoral(intake));
+      operatorController.leftBumper().whileTrue(new OuttakeCoral(intake));
 
-      operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
-      operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
+      // operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
+      // operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
       // operatorController.y().onTrue(new SetWrist(elevatorArm, 155.5));
       operatorController.a().onTrue(new SetWrist(elevatorArm, 72.05));
@@ -148,9 +148,17 @@ public class OI
 
       operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -10.01)); //ellipses
 
-      operatorController.y().onTrue(new SetShoulder(elevatorArm, -12.162));
-      operatorController.y().onTrue(new SetWrist(elevatorArm, 265));
-      operatorController.y().onTrue(new SetElevator(elevatorArm, 100));
+      operatorController.b().onTrue(new SetShoulder(elevatorArm, -12.162));
+      operatorController.b().onTrue(new SetWrist(elevatorArm, 265));
+      operatorController.b().onTrue(new SetElevator(elevatorArm, 117.555));
+
+      operatorController.x().onTrue(new SetShoulder(elevatorArm, .208));
+      operatorController.x().onTrue(new SetWrist(elevatorArm, 62.95));
+      operatorController.x().onTrue(new SetElevator(elevatorArm, 0.5177));
+
+      operatorController.a().onTrue(new SetShoulder(elevatorArm, .19503));
+      operatorController.a().onTrue(new SetWrist(elevatorArm, 74.13));
+      operatorController.a().onTrue(new SetElevator(elevatorArm, 0.5177));
 
 
  
@@ -172,7 +180,7 @@ public class OI
       );
 
       // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 0)); //Menu
-      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //elippses
+      operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //menu
       // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
   }
