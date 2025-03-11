@@ -14,8 +14,8 @@ public class SetWrist extends Command{
 
     @Override
     public void execute(){
-        wrist.moveToSetpointWrist(position);
-        // wrist.setWrist(position);
+        // wrist.moveToSetpointWrist(position);
+        wrist.setWrist(position);
     }
 
     @Override

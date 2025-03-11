@@ -13,8 +13,8 @@ public class L2 extends SequentialCommandGroup{
                 new SetShoulder(elevatorArm, .03976),
                 new SetWrist(elevatorArm, 265), //TODO change
                 new SetElevator(elevatorArm, 32.9788)
-            ),
-            new TimedOuttakeCoral(intake)
+            )
+            // new TimedOuttakeCoral(intake)
         );
     }
 }

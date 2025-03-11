@@ -10,7 +10,7 @@ public class StartingPos extends SequentialCommandGroup{
         addCommands(
             new ParallelCommandGroup(
                 new SetShoulder(elevatorArm, .2018),
-                new SetWrist(elevatorArm, 265), //TODO change
+                new SetWrist(elevatorArm, 62.95), //TODO change
                 new SetElevator(elevatorArm, .5177)
             )
         );

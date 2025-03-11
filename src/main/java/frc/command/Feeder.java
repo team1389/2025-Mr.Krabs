@@ -11,7 +11,7 @@ public class Feeder extends SequentialCommandGroup{
         addCommands(
             new ParallelCommandGroup(
                 new SetShoulder(elevatorArm, .24577),
-                new SetWrist(elevatorArm, 265), //TODO change
+                new SetWrist(elevatorArm, 74.13), //TODO change
                 new SetElevator(elevatorArm, .5177)
             )
             // new IntakeCoral(intake)

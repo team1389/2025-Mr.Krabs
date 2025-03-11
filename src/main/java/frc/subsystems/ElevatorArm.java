@@ -133,20 +133,21 @@ public class ElevatorArm extends SubsystemBase{
         // zeroShoulderRelEncoder();
         // setElevatorArm(ArmPosition.Starting);
 
-            elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
-            elevatorConfig
-                .closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                // Set PID values for position control
-                .p(3)
-                .outputRange(-1, 1)
-                .maxMotion
-                // Set MAXMotion parameters for position control
-                .maxVelocity(42000)
-                .maxAcceleration(60000)
-                .allowedClosedLoopError(0.5);
+        //     elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
+        //     elevatorConfig
+        //         .closedLoop
+        //         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        //         // Set PID values for position control
+        //         .p(3)
+        //         .d(.1)
+        //         .outputRange(-1, 1)
+        //         .maxMotion
+        //         // Set MAXMotion parameters for position control
+        //         .maxVelocity(4200)
+        //         .maxAcceleration(3000)
+        //         .allowedClosedLoopError(0.5);
 
-        elevatorMotorRight.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        // elevatorMotorRight.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         shoulderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(30).voltageCompensation(12);
             shoulderConfig
@@ -163,26 +164,26 @@ public class ElevatorArm extends SubsystemBase{
 
         leftShoulderMotor.configure(shoulderConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
-            wristConfig
-                .closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .p(1)
-                .d(.2)
-                .outputRange(-1, 1)
-                .maxMotion
-                .maxVelocity(10000)
-                .maxAcceleration(1000)
-                .allowedClosedLoopError(.1);
+        // wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
+        //     wristConfig
+        //         .closedLoop
+        //         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        //         .p(1)
+        //         .d(.2)
+        //         .outputRange(-1, 1)
+        //         .maxMotion
+        //         .maxVelocity(10000)
+        //         .maxAcceleration(1000)
+        //         .allowedClosedLoopError(.1);
 
-            // wristConfig
-            //     .softLimit
-            //         .forwardSoftLimit(.1)
-            //         .forwardSoftLimitEnabled(true)
-            //         .reverseSoftLimit(.6)
-            //         .reverseSoftLimitEnabled(true);
+        //     // wristConfig
+        //     //     .softLimit
+        //     //         .forwardSoftLimit(.1)
+        //     //         .forwardSoftLimitEnabled(true)
+        //     //         .reverseSoftLimit(.6)
+        //     //         .reverseSoftLimitEnabled(true);
 
-        wristMotor.configure(wristConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        // wristMotor.configure(wristConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         // SparkFlexConfig config = new SparkFlexConfig();
         // config.smartCurrentLimit(40)
