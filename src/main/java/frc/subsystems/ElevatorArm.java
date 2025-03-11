@@ -133,20 +133,20 @@ public class ElevatorArm extends SubsystemBase{
         // zeroShoulderRelEncoder();
         // setElevatorArm(ArmPosition.Starting);
 
-        //     elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
-        //     elevatorConfig
-        //         .closedLoop
-        //         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        //         // Set PID values for position control
-        //         .p(3)
-        //         .outputRange(-1, 1)
-        //         .maxMotion
-        //         // Set MAXMotion parameters for position control
-        //         .maxVelocity(42000)
-        //         .maxAcceleration(60000)
-        //         .allowedClosedLoopError(0.5);
+            elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
+            elevatorConfig
+                .closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                // Set PID values for position control
+                .p(3)
+                .outputRange(-1, 1)
+                .maxMotion
+                // Set MAXMotion parameters for position control
+                .maxVelocity(42000)
+                .maxAcceleration(60000)
+                .allowedClosedLoopError(0.5);
 
-        // elevatorMotorRight.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        elevatorMotorRight.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         shoulderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(30).voltageCompensation(12);
             shoulderConfig
@@ -292,7 +292,7 @@ public class ElevatorArm extends SubsystemBase{
 
     public void moveToSetpoint(double goal) {
     elevatorClosedLoopController.setReference(
-        goal, ControlType.kPosition);
+        goal, ControlType.kMAXMotionPositionControl);
         SmartDashboard.putBoolean("in closedLoop Elevator", true);
     }
 
