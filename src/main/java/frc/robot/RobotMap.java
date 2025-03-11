@@ -77,7 +77,9 @@ public static final String INTAKE_MOTOR = null;
     public static final double ElevatorMinHeight = Units.inchesToMeters(54); //meters
     public static final double ElevatorMaxHeight = Units.inchesToMeters(80);
 
-    public static final double WristGearRatio = 81;
+    public static final double WRIST_FROM_DEGREES = 81.0/360.0; //gear ratio/360
+    public static final double ELEVATOR_FROM_DEGREES = 21.3/360.0;
+
 
   }
 

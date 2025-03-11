@@ -57,7 +57,6 @@ public class ElevatorArm extends SubsystemBase{
     private final SparkClosedLoopController shoulderClosedLoopController;
     private final SparkClosedLoopController wristClosedLoopController;
 
-    private final double WRIST_FROM_DEGREES = 81.0/360.0;
 
     // private DigitalInput topLimitSwitch, bottomLimitSwitch;
 
@@ -112,7 +111,6 @@ public class ElevatorArm extends SubsystemBase{
         wristRelEncoder = wristMotor.getEncoder();
         wristRelEncoder.setPosition(0);
 
-        // wristRelEncoder.setPosition(0);
         // wristRelEncoder.setPosition(wristAbsEncoder.getPosition() * 2*Math.PI* RobotMap.ArmConstants.WristGearRatio);
  
         //limit switch, classic JJ
@@ -142,11 +140,11 @@ public class ElevatorArm extends SubsystemBase{
         //         // Set PID values for position control
         //         .p(3)
         //         .outputRange(-1, 1)
-        //         .
+        //         .maxMotion
         //         // Set MAXMotion parameters for position control
-        //         // .maxVelocity(42000)
-        //         // .maxAcceleration(60000)
-        //         // .allowedClosedLoopError(0.5);
+        //         .maxVelocity(42000)
+        //         .maxAcceleration(60000)
+        //         .allowedClosedLoopError(0.5);
 
         // elevatorMotorRight.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -160,12 +158,12 @@ public class ElevatorArm extends SubsystemBase{
                 .maxMotion
                 // Set MAXMotion parameters for position control
                 .maxVelocity(5000) //2000
-                .maxAcceleration(100000) //10000
+                .maxAcceleration(10000) //10000
                 .allowedClosedLoopError(0.05);
 
         leftShoulderMotor.configure(shoulderConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        wristConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(20).voltageCompensation(12);
+        wristConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
             wristConfig
                 .closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -174,7 +172,7 @@ public class ElevatorArm extends SubsystemBase{
                 .outputRange(-1, 1)
                 .maxMotion
                 .maxVelocity(10000)
-                .maxAcceleration(10000)
+                .maxAcceleration(1000)
                 .allowedClosedLoopError(.1);
 
             // wristConfig
@@ -325,8 +323,8 @@ public class ElevatorArm extends SubsystemBase{
     }
 
     public void moveToSetpointWrist(double goal){
-        double setpoint = goal * WRIST_FROM_DEGREES;
-        wristClosedLoopController.setReference(setpoint, ControlType.kMAXMotionPositionControl);
+        double setpoint = goal * RobotMap.ArmConstants.WRIST_FROM_DEGREES;
+        wristClosedLoopController.setReference(goal, ControlType.kMAXMotionPositionControl);
         SmartDashboard.putNumber("Wrist setpoint", setpoint);
         SmartDashboard.putNumber("Wrist Goal", goal);
     }

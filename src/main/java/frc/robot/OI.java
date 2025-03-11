@@ -24,13 +24,16 @@ import frc.command.SetElevatorArm;
 import frc.command.SetElevator;
 import frc.command.SetShoulder;
 import frc.command.SetWrist;
+import frc.command.StartingPos;
 import frc.command.TimedOuttakeCoral;
+import frc.command.Feeder;
 // import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
+import frc.command.L2;
+import frc.command.L3;
 import frc.command.L4Action;
-// import frc.command.L4Action;
+import frc.command.ManualElevatorArm;
 // import frc.command.ManualElevatorArm;
-import frc.command.ManualWrist;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
 import frc.subsystems.ElevatorArm;
@@ -93,8 +96,12 @@ public class OI
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
-    NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-    NamedCommands.registerCommand("L4", new L4Action(intake, elevatorArm));
+    // NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+    // NamedCommands.registerCommand("L4", new L4Action(intake, elevatorArm)); //TODO change wrist for all
+    // NamedCommands.registerCommand("StartingPos", new StartingPos(elevatorArm));
+    // NamedCommands.registerCommand("Feeder", new Feeder(intake, elevatorArm));
+    // NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
+    // NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
   }
 
 
@@ -145,40 +152,40 @@ public class OI
       operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
       // operatorController.y().onTrue(new SetWrist(elevatorArm, 155.5));
-      operatorController.a().onTrue(new SetWrist(elevatorArm, 72.05));
+      // operatorController.a().onTrue(new SetWrist(elevatorArm, 72.05));
 
       // operatorController.y().onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting, 70, -10.01, 72.05));
 
-      operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
-      operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
+      // operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
+      // operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
 
-      operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -10.01)); //ellipses
+      operatorController.button(12).onTrue(new SetShoulder(elevatorArm, .2018)); //right trigger
+      operatorController.a().onTrue(new SetShoulder(elevatorArm, -12.162));
 
-      // operatorController.y().onTrue(new SetShoulder(elevatorArm, -12.162));
-      operatorController.y().onTrue(new SetWrist(elevatorArm, -90));
+      operatorController.y().onTrue(new SetWrist(elevatorArm, -20.25));
       // operatorController.y().onTrue(new SetElevator(elevatorArm, 100));
 
-
- 
-      // elevator.setDefaultCommand(new ManualElevator(
-      //   elevator,
-      //   () -> getManipLeftY(),
-      //   () -> getManipRightY(),
-      //   () -> getManipRightTrigger(),
-      //   () -> getManipLeftTrigger()
-      // )
-      // );
-
-
-      // elevatorArm.setDefaultCommand(new ManualElevatorArm(
-      //   elevatorArm,
-      //   () -> -getManipRightY(),
-      //   () -> getManipLeftY()
-      // )
-      // );
-
-      // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 0)); //Menu
+      operatorController.button(9).onTrue(new SetElevator(elevatorArm, 0.05)); //Menu
       operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //elippses
+
+      elevatorArm.setDefaultCommand(new ManualElevatorArm(
+        elevatorArm,
+        () -> -getManipRightY(),
+        () -> getManipLeftY()
+      )
+      );
+
+      //Micalea btn bindings
+      // operatorController.x().onTrue(new L2(intake, elevatorArm));
+      // operatorController.a().onTrue(new Feeder(intake, elevatorArm));
+      // operatorController.b().onTrue(new L4Action(intake, elevatorArm));
+      // operatorController.y().onTrue(new L3(intake, elevatorArm));
+      // // operatorController.button(9).onTrue(new L1(intake, elevatorArm)); // menu
+      // operatorController.rightBumper().onTrue(new MoveClimber(climber, -1)); //forward
+      // operatorController.leftBumper().onTrue(new MoveClimber(climber, 1));
+      // operatorController.button(12).onTrue(new IntakeCoral(intake)); //right trigger
+      // operatorController.button(13).onTrue(new OuttakeCoral(intake)); //left trigger
+      
       // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
   }

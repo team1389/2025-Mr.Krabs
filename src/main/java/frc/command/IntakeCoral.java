@@ -23,8 +23,8 @@ public class IntakeCoral extends Command{
         intakeSub.stopCoral();
     }
 
-    // @Override
-    // public boolean isFinished(){
-    //     return intakeSub.ifCoral();
-    // }
+    @Override
+    public boolean isFinished(){
+        return intakeSub.isCoralIn();
+    }
 }

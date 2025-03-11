@@ -6,14 +6,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.subsystems.ElevatorArm;
 import frc.subsystems.IntakeSubsystem;
 
-public class L4Action extends SequentialCommandGroup{
-    public L4Action(IntakeSubsystem intake, ElevatorArm elevatorArm){
+public class L3 extends SequentialCommandGroup{
+    public L3(IntakeSubsystem intake, ElevatorArm elevatorArm){
         addCommands(
             new ParallelCommandGroup(
-                //runs l4 sequence
-                new SetShoulder(elevatorArm, -12.162),
+                new SetShoulder(elevatorArm, .0057),
                 new SetWrist(elevatorArm, 265),
-                new SetElevator(elevatorArm, 117.5555)
+                new SetElevator(elevatorArm, 71.4531)
             ),
             new TimedOuttakeCoral(intake)
         );
