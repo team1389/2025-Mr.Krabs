@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -53,14 +54,14 @@ import frc.command.RunManualShoulder;
 public class OI
 {
   //Auto Chooser
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
-  //Auto
-  private final Command m_simpleAuto = drivebase.getAutonomousCommand("Simple Single Piece Auto");
-  //set default option
-  m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
-  m_chooser.addOption("Simple Auto 2 Auto", m_simpleAuto);
-  //post to smart dashboard
-  SmartDashboard.putData(m_chooser);
+  // SendableChooser<Command> m_chooser = new SendableChooser<>();
+  // //Auto
+  // private final Command m_simpleAuto = drivebase.getAutonomousCommand("Simple Single Piece Auto");
+  // //set default option
+  // m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
+  // m_chooser.addOption("Simple Auto 2 Auto", m_simpleAuto);
+  // //post to smart dashboard
+  // SmartDashboard.putData(m_chooser);
   
   //Add auto options
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -159,8 +160,8 @@ public class OI
       // operatorController.x().whileTrue(new IntakeCoral(intake));
       // operatorController.b().whileTrue(new OuttakeCoral(intake));
 
-      // operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
-      // operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
+      operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
+      operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
       // operatorController.y().onTrue(new SetWrist(elevatorArm, 155.5));
       // operatorController.a().onTrue(new SetWrist(elevatorArm, 72.05));
@@ -203,8 +204,8 @@ public class OI
       operatorController.button(14).onTrue(new StartingPos(elevatorArm));
       operatorController.button(12).onTrue(new MoveClimber(climber, 1)); //forward
       operatorController.button(13).onTrue(new MoveClimber(climber, -1));
-      operatorController.rightBumper().onTrue(new IntakeCoral(intake)); //right trigger
-      operatorController.leftBumper().onTrue(new OuttakeCoral(intake)); //left trigger
+      // operatorController.rightBumper().onTrue(new IntakeCoral(intake)); //right trigger
+      // operatorController.leftBumper().onTrue(new OuttakeCoral(intake)); //left trigger
       
       // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
@@ -228,11 +229,11 @@ public class OI
    *
    * @return the command to run in autonomous
    */
-  // public Command getAutonomousCommand()
-  // {
-  //   // An example command will be run in autonomous
-  //   return drivebase.getAutonomousCommand("Simple Single Piece Auto");
-  // }
+  public Command getAutonomousCommand()
+  {
+    // An example command will be run in autonomous
+    return drivebase.getAutonomousCommand("Simple Single Piece Auto");
+  }
   
 
   
