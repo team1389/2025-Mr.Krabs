@@ -24,7 +24,11 @@ public class Robot extends TimedRobot
   private OI m_OI;
 
   private Timer disabledTimer;
-
+  //Things for auto chooser
+  public Command getAutonomousCommand() {
+    return m_chooser.getSelected();
+  }
+  //Back to normal
   public Robot()
   {
     instance = this;
@@ -99,12 +103,10 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit()
   {
-    // m_OI.setMotorBrake(true);
-    m_autonomousCommand = m_OI.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null)
-    {
+    if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
   }
