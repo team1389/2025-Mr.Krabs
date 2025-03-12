@@ -111,7 +111,7 @@ public class ElevatorArm extends SubsystemBase{
         wristRelEncoder = wristMotor.getEncoder();
         wristRelEncoder.setPosition(0);
 
-        // wristRelEncoder.setPosition(wristAbsEncoder.getPosition() * 2*Math.PI* RobotMap.ArmConstants.WristGearRatio);
+        wristRelEncoder.setPosition(wristAbsEncoder.getPosition() * 2*Math.PI* RobotMap.ArmConstants.WristGearRatio);
  
         //limit switch, classic JJ
         // topLimitSwitch = new DigitalInput(RobotMap.ArmConstants.TOP_LIMIT_SWITCH);
@@ -435,7 +435,7 @@ public class ElevatorArm extends SubsystemBase{
         // SmartDashboard.putNumber("Wrist Velocity", wristMotor);
         SmartDashboard.putNumber("Wrist Current", wristMotor.getOutputCurrent());
 
-        // wristRelEncoder.setPosition(wristAbsEncoder.getPosition() * 2*Math.PI* RobotMap.ArmConstants.WristGearRatio);
+        wristRelEncoder.setPosition(wristAbsEncoder.getPosition() * 2*Math.PI* RobotMap.ArmConstants.WristGearRatio);
         SmartDashboard.putNumber("wrist acc error", wristPid.getAccumulatedError());
         SmartDashboard.putNumber("wrist error", wristPid.getPositionError());
 

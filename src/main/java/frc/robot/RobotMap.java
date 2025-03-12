@@ -80,7 +80,7 @@ public static final String INTAKE_MOTOR = null;
     public static final double WRIST_FROM_DEGREES = 81.0/360.0; //gear ratio/360
     public static final double ELEVATOR_FROM_DEGREES = 21.3/360.0;
 
-
+    public static final double WristGearRatio = 48;
   }
 
   public static class OperatorConstants
