@@ -148,17 +148,25 @@ public class OI
 
       operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -10.01)); //ellipses
 
-      operatorController.b().onTrue(new SetShoulder(elevatorArm, -12.162));
+      operatorController.b().onTrue(new SetShoulder(elevatorArm, -12.162)); //L4
       operatorController.b().onTrue(new SetWrist(elevatorArm, 265));
       operatorController.b().onTrue(new SetElevator(elevatorArm, 117.555));
 
-      operatorController.x().onTrue(new SetShoulder(elevatorArm, .208));
-      operatorController.x().onTrue(new SetWrist(elevatorArm, 62.95));
-      operatorController.x().onTrue(new SetElevator(elevatorArm, 0.5177));
+      operatorController.y().onTrue(new SetShoulder(elevatorArm, .03976)); //L2
+      operatorController.y().onTrue(new SetWrist(elevatorArm, 79.09802));
+      operatorController.y().onTrue(new SetElevator(elevatorArm, 32.9788));
 
-      operatorController.a().onTrue(new SetShoulder(elevatorArm, .19503));
+      operatorController.a().onTrue(new SetShoulder(elevatorArm, .19503)); //Feeder
       operatorController.a().onTrue(new SetWrist(elevatorArm, 74.13));
       operatorController.a().onTrue(new SetElevator(elevatorArm, 0.5177));
+
+      operatorController.x().onTrue(new SetShoulder(elevatorArm, 0.0057)); //L3
+      operatorController.x().onTrue(new SetWrist(elevatorArm, 79.09802));
+      operatorController.x().onTrue(new SetElevator(elevatorArm, 71.4531));
+
+      operatorController.y().onTrue(new SetShoulder(elevatorArm, .208)); //starting
+      operatorController.y().onTrue(new SetWrist(elevatorArm, 62.95));
+      operatorController.y().onTrue(new SetElevator(elevatorArm, .5177));
 
 
  
