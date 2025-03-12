@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -53,15 +54,7 @@ import frc.command.RunManualShoulder;
  */
 public class OI
 {
-  //Auto Chooser
-  // SendableChooser<Command> m_chooser = new SendableChooser<>();
-  // //Auto
-  // private final Command m_simpleAuto = drivebase.getAutonomousCommand("Simple Single Piece Auto");
-  // //set default option
-  // m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
-  // m_chooser.addOption("Simple Auto 2 Auto", m_simpleAuto);
-  // //post to smart dashboard
-  // SmartDashboard.putData(m_chooser);
+ 
   
   //Add auto options
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -103,6 +96,13 @@ public class OI
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
+
+    //Auto Chooser
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  //Auto
+  private final Command m_simpleAuto = drivebase.getAutonomousCommand("Simple Single Piece Auto");
+  private final Command m_simpleDualAuto = drivebase.getAutonomousCommand("Simple Dual Piece Auto");
+  //set default option
   public OI()
   {
     // Configure the trigger bindings
@@ -114,6 +114,10 @@ public class OI
     NamedCommands.registerCommand("Feeder", new Feeder(intake, elevatorArm));
     NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
     NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
+    m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
+    m_chooser.addOption("Simple Auto 2 Auto", m_simpleDualAuto);
+  //post to smart dashboard
+    SmartDashboard.putData(m_chooser);
   }
 
 
@@ -232,7 +236,8 @@ public class OI
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("Simple Single Piece Auto");
+    // return drivebase.getAutonomousCommand("Simple Single Piece Auto");
+    return m_chooser.getSelected();
   }
   
 
