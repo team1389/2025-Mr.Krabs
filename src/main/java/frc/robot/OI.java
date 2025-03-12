@@ -52,7 +52,17 @@ import frc.command.RunManualShoulder;
  */
 public class OI
 {
-
+  //Auto Chooser
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  //Auto
+  private final Command m_simpleAuto = drivebase.getAutonomousCommand("Simple Single Piece Auto");
+  //set default option
+  m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
+  m_chooser.addOption("Simple Auto 2 Auto", m_simpleAuto);
+  //post to smart dashboard
+  SmartDashboard.putData(m_chooser);
+  
+  //Add auto options
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driveController = new CommandXboxController(0);
   final        CommandXboxController operatorController = new CommandXboxController(1);
@@ -218,11 +228,14 @@ public class OI
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand()
-  {
-    // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("Simple Single Piece Auto");
-  }
+  // public Command getAutonomousCommand()
+  // {
+  //   // An example command will be run in autonomous
+  //   return drivebase.getAutonomousCommand("Simple Single Piece Auto");
+  // }
+  
+
+  
 
   public void setMotorBrake(boolean brake)
   {
