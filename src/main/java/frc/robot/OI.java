@@ -98,7 +98,7 @@ public class OI
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-    NamedCommands.registerCommand("L4", new L4Action(intake, elevatorArm)); //TODO change wrist for all
+    NamedCommands.registerCommand("L4", new L4Action(elevatorArm, ArmPosition.L4)); //TODO change wrist for all
     NamedCommands.registerCommand("StartingPos", new StartingPos(elevatorArm));
     NamedCommands.registerCommand("Feeder", new Feeder(intake, elevatorArm));
     NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
@@ -176,10 +176,18 @@ public class OI
       )
       );
 
+      operatorController.x().onTrue(new SetElevator(elevatorArm, 117.5555));
+      operatorController.x().onTrue(new SetWrist(elevatorArm, 265));
+      operatorController.x().onTrue(new SetShoulder(elevatorArm, -12.162));
+
+      operatorController.a().onTrue(new SetElevator(elevatorArm, .24577));
+      operatorController.a().onTrue(new SetWrist(elevatorArm, 74.13));
+      operatorController.a().onTrue(new SetShoulder(elevatorArm, .19503));
+
       //Micalea btn bindings
-      operatorController.x().onTrue(new L2(intake, elevatorArm));
-      operatorController.a().onTrue(new Feeder(intake, elevatorArm));
-      operatorController.b().onTrue(new L4Action(intake, elevatorArm));
+      // operatorController.x().onTrue(new L2(intake, elevatorArm));
+      // operatorController.a().onTrue(new Feeder(intake, elevatorArm));
+      operatorController.b().onTrue(new L4Action(elevatorArm, ArmPosition.L4));
       operatorController.y().onTrue(new L3(intake, elevatorArm));
       // operatorController.button(9).onTrue(new L1(intake, elevatorArm)); // menu
       operatorController.button(14).onTrue(new StartingPos(elevatorArm));

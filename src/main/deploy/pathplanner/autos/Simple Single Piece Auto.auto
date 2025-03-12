@@ -5,15 +5,28 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Close Side 1 piece location 3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Close Side 1 piece location 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "L4"
+            "name": "Outtake"
           }
         }
       ]

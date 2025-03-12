@@ -83,7 +83,7 @@ public class ElevatorArm extends SubsystemBase{
 
     private SparkAbsoluteEncoder wristAbsEncoder;
 
-    private double elevatorTarget, shoulderTarget, wristTarget;
+    public double elevatorTarget, shoulderTarget, wristTarget;
 
     public enum ArmPosition {
         Starting,
@@ -124,7 +124,7 @@ public class ElevatorArm extends SubsystemBase{
         positionMap.put(ArmPosition.L1, new double[] {0, 0, 0});
         positionMap.put(ArmPosition.L2, new double[] {32.9788, .03976, .48674});
         positionMap.put(ArmPosition.L3, new double[] {71.4531, .0057, .48773});
-        positionMap.put(ArmPosition.L4, new double[] {117.5555, -12.162, .8819});
+        positionMap.put(ArmPosition.L4, new double[] {117.5555, -12.162, 265});
         positionMap.put(ArmPosition.Feeder, new double[] {0.5177, .19503, .24577});
         positionMap.put(ArmPosition.Net, new double[] {0,0,0});
 
@@ -273,6 +273,25 @@ public class ElevatorArm extends SubsystemBase{
         elevatorTarget = targets[0];
         shoulderTarget = targets[1];
         wristTarget = targets[2];
+    }
+
+    public double returnElevatorTarget(ArmPosition pos){
+        double[] targets = positionMap.get(pos);
+        elevatorTarget = targets[0];
+        SmartDashboard.putNumber("Elevator Setpoint", elevatorTarget);
+        return elevatorTarget;
+    }
+    public double returnShoulderTarget(ArmPosition pos){
+        double[] targets = positionMap.get(pos);
+        shoulderTarget = targets[1];
+        SmartDashboard.putNumber("Shoulder Setpoint", shoulderTarget);
+        return shoulderTarget;
+    }
+    public double returnWristTarget(ArmPosition pos){
+        double[] targets = positionMap.get(pos);
+        wristTarget = targets[2];
+        SmartDashboard.putNumber("Wrist Setpoint", wristTarget);
+        return wristTarget;
     }
 
     public void setElevator(double goal){
