@@ -121,7 +121,7 @@ public class OI
       driveController.start().whileTrue(Commands.none());
       driveController.back().whileTrue(Commands.none());
 
-      driveController.x().onTrue(drivebase.driveToPose(new Pose2d(1, 1, new Rotation2d(0))));
+      // driveController.x().onTrue(drivebase.driveToPose(new Pose2d(1, 1, new Rotation2d(0))));
 
       //Was creating a command of a command. Might work now. 
       driveController.leftBumper().onTrue(drivebase.alignToReef(true));
