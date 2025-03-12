@@ -3,6 +3,11 @@ package frc.robot;
 
 import com.pathplanner.lib.config.PIDConstants;
 
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
@@ -24,6 +29,10 @@ public final class RobotMap
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
   public static final double MAX_SPEED  = Units.feetToMeters(16); //TODO: make it faster
+  public static final double fieldLength   = Units.inchesToMeters(690.876);
+  public static final double fieldWidth    = Units.inchesToMeters(317);
+  public static final double startingLineX =
+      Units.inchesToMeters(299.438); // Measured from the inside of starting line
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 public static final String INTAKE_MOTOR = null;
 
@@ -40,6 +49,14 @@ public static final String INTAKE_MOTOR = null;
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10; // seconds
   }
+
+  public static class Left
+      {
+
+        public static final Transform2d offset = new Transform2d(Inches.of(24).in(Meters),
+                                                                 Inches.of(0).in(Meters),
+                                                                 Rotation2d.fromDegrees(0));
+      }
 
   public static final class ClimberConstants
   {
@@ -117,5 +134,21 @@ public static final String INTAKE_MOTOR = null;
     public static final int WRIST_MOTOR = 14;
     // public static final int intakeAlgaeMotor = 15;
     public static final int intakeCoralMotor = 16;
+  }
+
+  public static class CoralStation {
+    public static final double fieldLength   = Units.inchesToMeters(690.876);
+    public static final double fieldWidth    = Units.inchesToMeters(317);
+    public static final double stationLength = Units.inchesToMeters(79.750);
+    public static final Pose2d rightCenterFace =
+        new Pose2d(
+            Units.inchesToMeters(33.526),
+            Units.inchesToMeters(25.824),
+            Rotation2d.fromDegrees(144.011 - 90));
+    public static final Pose2d leftCenterFace =
+        new Pose2d(
+            rightCenterFace.getX(),
+            fieldWidth - rightCenterFace.getY(),
+            Rotation2d.fromRadians(-rightCenterFace.getRotation().getRadians()));
   }
 }
