@@ -15,6 +15,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private SparkMax coralIntake;
     private SparkLimitSwitch coralLimitSwitch;
     double speed = 1;
+    public boolean isCoralIn = false;
     // private DigitalInput coralLS, algaeLS;
 
 
@@ -24,6 +25,7 @@ public class IntakeSubsystem extends SubsystemBase {
         coralLimitSwitch = coralIntake.getReverseLimitSwitch();
         // coralLS = new DigitalInput(RobotMap.IntakeConstants.CORAL_LIMIT_SWITCH);
         // algaeLS = new DigitalInput(RobotMap.IntakeConstants.ALGAE_LIMIT_SWITCH);
+        SmartDashboard.putBoolean("IsCoralIn", isCoralIn);
     }
     //Coral Intake
     public void intakeCoral() {
@@ -55,6 +57,11 @@ public class IntakeSubsystem extends SubsystemBase {
     // }
 
     public boolean isCoralIn() {
-        return coralLimitSwitch.isPressed();
+        return isCoralIn;
+    }
+
+    @Override
+    public void periodic(){
+        isCoralIn = coralLimitSwitch.isPressed();
     }
 }

@@ -103,6 +103,7 @@ public class OI
   //Auto
   private final Command m_simpleAuto = drivebase.getAutonomousCommand("Simple Single Piece Auto");
   private final Command m_simpleDualAuto = drivebase.getAutonomousCommand("Simple Dual Piece Auto");
+  private final Command m_TestFeeder = drivebase.getAutonomousCommand("Test Feeder");
   //set default option
   public OI()
   {
@@ -121,6 +122,7 @@ public class OI
     NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
     m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
     m_chooser.addOption("Simple Auto 2 Auto", m_simpleDualAuto);
+    m_chooser.addOption("Test Feeder", m_TestFeeder);
   //post to smart dashboard
     SmartDashboard.putData(m_chooser);
   }
@@ -192,12 +194,12 @@ public class OI
       // operatorController.button(9).onTrue(new SetElevator(elevatorArm, 0.05)); //elippses
       // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //menu
 
-      elevatorArm.setDefaultCommand(new ManualElevatorArm(
-        elevatorArm,
-        () -> -getManipRightY(),
-        () -> getManipLeftY()
-      )
-      );
+      // elevatorArm.setDefaultCommand(new ManualElevatorArm(
+      //   elevatorArm,
+      //   () -> -getManipRightY(),
+      //   () -> getManipLeftY()
+      // )
+      // );
 
       operatorController.x().onTrue(new SetElevator(elevatorArm, 117.5555));
       operatorController.x().onTrue(new SetWrist(elevatorArm, 265));
@@ -217,9 +219,9 @@ public class OI
       operatorController.y().onTrue(new L3(intake, elevatorArm));
       // operatorController.button(9).onTrue(new L1(intake, elevatorArm)); // menu
       operatorController.button(14).onTrue(new StartingPos(elevatorArm));
-      operatorController.button(12).onTrue(new MoveClimber(climber, 1)); //forward
-      operatorController.button(13).onTrue(new MoveClimber(climber, -1));
-      // operatorController.rightBumper().onTrue(new IntakeCoral(intake)); //right trigger
+      operatorController.button(12).whileTrue(new MoveClimber(climber, 1)); //forward
+      operatorController.button(13).whileTrue(new MoveClimber(climber, -1));
+      operatorController.rightBumper().onTrue(new IntakeCoral(intake)); //right trigger
       // operatorController.leftBumper().onTrue(new OuttakeCoral(intake)); //left trigger
       
       // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
@@ -250,8 +252,8 @@ public class OI
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("Simple Single Piece Auto");
-    // return m_chooser.getSelected();
+    // return drivebase.getAutonomousCommand("Simple Single Piece Auto");
+    return m_chooser.getSelected();
   } 
   
 
