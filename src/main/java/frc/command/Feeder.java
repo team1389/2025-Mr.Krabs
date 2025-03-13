@@ -10,7 +10,7 @@ public class Feeder extends SequentialCommandGroup{
     public Feeder(IntakeSubsystem intake, ElevatorArm elevatorArm){
         addCommands(
             new ParallelCommandGroup(
-                new SetShoulder(elevatorArm, .24577),
+                new SetShoulder(elevatorArm, .19503),
                 new SetWrist(elevatorArm, 74.13), //TODO change
                 new SetElevator(elevatorArm, .5177)
             )

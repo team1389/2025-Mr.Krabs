@@ -11,7 +11,7 @@ public class L2 extends SequentialCommandGroup{
         addCommands(
             new ParallelCommandGroup(
                 new SetShoulder(elevatorArm, .03976),
-                new SetWrist(elevatorArm, 265), //TODO change
+                new SetWrist(elevatorArm, 79.09802), 
                 new SetElevator(elevatorArm, 32.9788)
             )
             // new TimedOuttakeCoral(intake)

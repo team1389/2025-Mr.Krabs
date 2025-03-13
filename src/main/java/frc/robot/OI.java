@@ -110,7 +110,11 @@ public class OI
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-    NamedCommands.registerCommand("L4", new L4(elevatorArm)); //TODO change wrist for all
+    NamedCommands.registerCommand("L4", new L4(elevatorArm));
+    NamedCommands.registerCommand("WristL4", new SetWrist(elevatorArm, 265));
+    NamedCommands.registerCommand("ShoulderL4", new SetShoulder(elevatorArm, -12.162));
+    NamedCommands.registerCommand("ElevatorL4", new SetElevator(elevatorArm, 117.5555));
+
     NamedCommands.registerCommand("StartingPos", new StartingPos(elevatorArm));
     NamedCommands.registerCommand("Feeder", new Feeder(intake, elevatorArm));
     NamedCommands.registerCommand("Intake", new IntakeCoral(intake));

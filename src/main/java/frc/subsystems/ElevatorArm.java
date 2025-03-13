@@ -307,6 +307,8 @@ public class ElevatorArm extends SubsystemBase{
         double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
         // elevatorMotorRight.setVoltage(MathUtil.clamp(speed+FF, -7, 7));
         elevatorMotorRight.set(speed+FF);
+        SmartDashboard.putNumber("elevator pid speed", speed);
+        SmartDashboard.putNumber("elevator pid FF", FF);
         SmartDashboard.putNumber("Elevator Goal", goal);
     }
 
