@@ -684,9 +684,15 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void zeroGyro()
   {
-    swerveDrive.zeroGyro();
-    Rotation3d rot = new Rotation3d(0, 0, Math.PI);
-    swerveDrive.setGyro(rot);
+    if (isRedAlliance())
+     {
+       swerveDrive.zeroGyro();
+       //Set the pose 180 degrees
+       resetOdometry(new Pose2d(getPose().getTranslation(), Rotation2d.fromDegrees(180)));
+     } else
+     {
+       swerveDrive.zeroGyro();
+     }
   }
 
   /**
