@@ -121,6 +121,8 @@ public class OI
       driveController.start().whileTrue(Commands.none());
       driveController.back().whileTrue(Commands.none());
 
+      // driveController.x().onTrue(drivebase.driveToPose(new Pose2d(1, 1, new Rotation2d(0))));
+
       //Was creating a command of a command. Might work now. 
       driveController.leftBumper().onTrue(drivebase.alignToReef(true));
       driveController.rightBumper().onTrue(drivebase.alignToReef(false));
@@ -197,7 +199,7 @@ public class OI
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("location 7 to bottom feeder");
+    return drivebase.getAutonomousCommand("Tag7-18Left");
   }
 
   public void setMotorBrake(boolean brake)

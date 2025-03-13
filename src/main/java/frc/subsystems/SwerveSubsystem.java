@@ -41,6 +41,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -50,6 +51,9 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import frc.robot.RobotMap;
+import frc.robot.RobotMap.CoralStation;
+import frc.robot.RobotMap.Left;
+import frc.util.AllianceFlipUtil;
 import frc.util.LimelightHelpers;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
@@ -170,28 +174,42 @@ public class SwerveSubsystem extends SubsystemBase
   public void periodic()
   {
     // When vision is enabled we must manually update odometry in SwerveDrive
-    if (visionDriveTest)
-    {
-      swerveDrive.updateOdometry();
+    // if (visionDriveTest)
+    // {
       // vision.updatePoseEstimation(swerveDrive);
-    }
+    // }
     
     //x
     SmartDashboard.putNumber("limelightX", visionSubsystem.getRobotPosition()[0]);
     //y
     SmartDashboard.putNumber("limelightY", visionSubsystem.getRobotPosition()[1]);  
-    if (visionSubsystem.canLimelightSeeTag()){
-      addLLMeasurement();
-    }
+    // if (visionSubsystem.canLimelightSeeTag()){
+    //   addLLMeasurement();
+    // }
+    swerveDrive.updateOdometry();
     SmartDashboard.putNumber("RobotX", swerveDrive.getPose().getX());
     SmartDashboard.putNumber("RobotY", swerveDrive.getPose().getY());
     SmartDashboard.putBoolean("Ready To Align (Needs to see april tag))", visionSubsystem.canLimelightSeeTag());
     SmartDashboard.putBoolean("Are we the sus (red) alliance?", isRedAlliance());
     SmartDashboard.putNumber("TargetID", visionSubsystem.getTargetID());
+
+    
   }
 
   public void addLLMeasurement(){
     swerveDrive.addVisionMeasurement(new Pose2d(visionSubsystem.getRobotPosition()[0], visionSubsystem.getRobotPosition()[1], swerveDrive.getYaw()), Timer.getFPGATimestamp());
+  }
+
+  public Command driveToLeftHP()
+  {
+      Pose2d startingPose = CoralStation.leftCenterFace;
+      SmartDashboard.putString("Station Targetted Pose without Offset (Meters)", startingPose.toString());
+      Pose2d scorePose = startingPose.plus(Left.offset);
+      SmartDashboard.putString("Station Targetted Pose with Offset (Meters)", scorePose.toString());
+      return Commands.either(driveToPose(AllianceFlipUtil.flip(scorePose)),
+                             driveToPose(scorePose),
+                             () -> DriverStation.getAlliance().isPresent() &&
+                                   DriverStation.getAlliance().get() == Alliance.Red);
   }
 
   public Command alignToReef(boolean isLeft){
