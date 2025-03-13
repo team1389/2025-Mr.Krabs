@@ -106,7 +106,8 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit()
   {
-    m_OI.getZeroGyro();
+    //check if we need the zero gyro thing
+    // m_OI.getZeroGyro();
     // Commands.runOnce(() -> swerveDrive.zeroGyro());
     m_autonomousCommand = m_OI.getAutonomousCommand();
 

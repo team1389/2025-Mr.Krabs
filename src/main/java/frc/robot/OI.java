@@ -28,6 +28,7 @@ import frc.command.SetShoulder;
 import frc.command.SetWrist;
 import frc.command.StartingPos;
 import frc.command.TimedOuttakeCoral;
+import frc.command.AlignToReefTagRelative;
 import frc.command.Feeder;
 // import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
@@ -74,7 +75,6 @@ public class OI
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driveController.getLeftY(),// * -1,
                                                                 () -> driveController.getLeftX())// * -1) 
-                                                                //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
                                                                 //Raw axis of rightTriggerAxis is 3 for some reason
                                                             .withControllerRotationAxis(() -> driveController.getRightTriggerAxis() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
@@ -144,17 +144,18 @@ public class OI
 
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
       //EDIT YOUR COMMANDS HERE_______________________________________________________________________________________________________________________________
-      //dont use driver B for aything else, its already used for auto align
       driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driveController.start().whileTrue(Commands.none());
       driveController.back().whileTrue(Commands.none());
 
-      //should theoritically work. Untested with the modifications to how it is called
-      driveController.leftBumper().onTrue(drivebase.alignToReef(true));
-      driveController.rightBumper().onTrue(drivebase.alignToReef(false));
+      //should theoritically work. Untested with the modifications to how it is called.
+      //UPADATE: IT DONT WORK
+      // driveController.leftBumper().onTrue(drivebase.alignToReef(true));
+      // driveController.rightBumper().onTrue(drivebase.alignToReef(false));
 
 
-      driveController.b().onTrue(Commands.runOnce(drivebase::toggleAlign));
+      driveController.leftBumper().onTrue(new AlignToReefTagRelative(false, drivebase));
+      driveController.rightBumper().onTrue(new AlignToReefTagRelative(true, drivebase));
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.rightBumper().whileTrue(Commands.run(climber::spinForwards, climber));
