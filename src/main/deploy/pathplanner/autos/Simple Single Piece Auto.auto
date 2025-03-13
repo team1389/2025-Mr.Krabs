@@ -13,8 +13,20 @@
                 "data": {
                   "pathName": "Close Side 1 piece location 3"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake"
           }
         }
       ]
