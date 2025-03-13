@@ -74,8 +74,8 @@ public class OI
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driveController.getLeftY(),// * -1,
-                                                                () -> driveController.getLeftX())// * -1) 
+                                                                () -> driveController.getLeftY() * -1,
+                                                                () -> driveController.getLeftX() * -1) 
                                                                 //Raw axis of rightTriggerAxis is 3 for some reason
                                                             .withControllerRotationAxis(() -> driveController.getRightTriggerAxis() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
