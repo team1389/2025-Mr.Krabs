@@ -76,7 +76,7 @@ public class OI
                                                                 () -> driveController.getLeftY(),// * -1,
                                                                 () -> driveController.getLeftX())// * -1) 
                                                                 //Raw axis of rightTriggerAxis is 3 for some reason
-                                                            .withControllerRotationAxis(() -> driveController.getRightTriggerAxis())
+                                                            .withControllerRotationAxis(() -> driveController.getRightTriggerAxis() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -109,7 +109,7 @@ public class OI
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-    NamedCommands.registerCommand("L4", new L4Action(elevatorArm, ArmPosition.L4)); //TODO change wrist for all
+    NamedCommands.registerCommand("L4", new L4(elevatorArm, ArmPosition.L4)); //TODO change wrist for all
     NamedCommands.registerCommand("StartingPos", new StartingPos(elevatorArm));
     NamedCommands.registerCommand("Feeder", new Feeder(intake, elevatorArm));
     NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
@@ -205,7 +205,7 @@ public class OI
       //Micalea btn bindings
       // operatorController.x().onTrue(new L2(intake, elevatorArm));
       // operatorController.a().onTrue(new Feeder(intake, elevatorArm));
-      operatorController.b().onTrue(new L4Action(elevatorArm, ArmPosition.L4));
+      operatorController.b().onTrue(new L4(elevatorArm, ArmPosition.L4));
       operatorController.y().onTrue(new L3(intake, elevatorArm));
       // operatorController.button(9).onTrue(new L1(intake, elevatorArm)); // menu
       operatorController.button(14).onTrue(new StartingPos(elevatorArm));
@@ -242,7 +242,7 @@ public class OI
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    return drivebase.getAutonomousCommand("Simple Single Piece Auto");
     // return m_chooser.getSelected();
   } 
   
