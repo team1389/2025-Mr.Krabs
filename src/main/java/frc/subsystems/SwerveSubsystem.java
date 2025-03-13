@@ -170,23 +170,20 @@ public class SwerveSubsystem extends SubsystemBase
   public void periodic()
   {
     // When vision is enabled we must manually update odometry in SwerveDrive
-    if (visionDriveTest)
-    {
-      swerveDrive.updateOdometry();
       // vision.updatePoseEstimation(swerveDrive);
-    }
     
     //x
     SmartDashboard.putNumber("limelightX", visionSubsystem.getRobotPosition()[0]);
     //y
     SmartDashboard.putNumber("limelightY", visionSubsystem.getRobotPosition()[1]);  
-    if (visionSubsystem.canLimelightSeeTag()){
-      addLLMeasurement();
-    }
+    // if (visionSubsystem.canLimelightSeeTag()){
+    //   addLLMeasurement();
+    // }
     SmartDashboard.putNumber("RobotX", swerveDrive.getPose().getX());
     SmartDashboard.putNumber("RobotY", swerveDrive.getPose().getY());
     SmartDashboard.putBoolean("Ready To Align (Needs to see april tag))", visionSubsystem.canLimelightSeeTag());
     SmartDashboard.putBoolean("Are we the sus (red) alliance?", isRedAlliance());
+    swerveDrive.updateOdometry();
   }
 
   public void addLLMeasurement(){
@@ -679,7 +676,15 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void zeroGyro()
   {
-    swerveDrive.zeroGyro();
+    if (isRedAlliance())
+    {
+      swerveDrive.zeroGyro();
+      //Set the pose 180 degrees
+      resetOdometry(new Pose2d(getPose().getTranslation(), Rotation2d.fromDegrees(180)));
+    } else
+    {
+      swerveDrive.zeroGyro();
+    }
     // Rotation3d rot = new Rotation3d(0, 0, Math.PI);
     // swerveDrive.setGyro(rot);
   }
