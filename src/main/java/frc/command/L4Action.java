@@ -25,23 +25,23 @@ public class L4Action extends Command{
 
     @Override
     public void execute(){
-        if(!elevatorArm.atTargetPosition(117.5555)){
+        // if(!elevatorArm.atTargetPosition(117.5555)){
             elevatorArm.setElevator(117.5555);
-        } else {
-            elevatorArm.setManualElevator(0);
-        }
+        // } else {
+        //     elevatorArm.setManualElevator(0);
+        // }
 
-        if(!elevatorArm.atShoulderTargetPosition(-12.162)){
+        // if(!elevatorArm.atShoulderTargetPosition(-12.162)){
             elevatorArm.moveToSetpointShoulder(-12.162);
-        } else{
-            elevatorArm.setManualShoulder(0);
-        }
+        // } else{
+        //     elevatorArm.setManualShoulder(0);
+        // }
 
-        if(!elevatorArm.atWristTargetPosition(265)){
+        // if(!elevatorArm.atWristTargetPosition(265)){
             elevatorArm.setWrist(265);
-        } else{
-            elevatorArm.setManualWrist(0);
-        }
+        // } else{
+        //     elevatorArm.setManualWrist(0);
+        // }
 
     }
 
