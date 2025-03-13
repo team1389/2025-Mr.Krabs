@@ -61,9 +61,8 @@ public class OI
                                                                                 "swerve"));
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  private final Command m_simpleAuto = drivebase.getAutonomousCommand("Simple Single Piece Auto");
-  private final Command m_simpleDualAuto = drivebase.getAutonomousCommand("Simple Dual Piece Auto");
-  private final Command m_driveOut = drivebase.getAutonomousCommand("Leave Starting Area Only");
+  private final Command m_simpleOnePieceAuto = drivebase.getAutonomousCommand("Simple One Piece Auto");
+  private final Command m_driveOut = drivebase.getAutonomousCommand("Drive Out");
                                                                                 
                                                                               
   /**Leave Starting Area Only
@@ -108,8 +107,7 @@ public class OI
     // NamedCommands.registerCommand("Feeder", new Feeder(intake, elevatorArm));
     // NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
     // NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
-    m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
-    m_chooser.addOption("Simple Auto 2 Auto", m_simpleDualAuto);
+    m_chooser.setDefaultOption("Simple One Piece Auto", m_simpleOnePieceAuto);
     m_chooser.addOption("Drive Out Only", m_driveOut);
   //post to smart dashboard
     SmartDashboard.putData(m_chooser);
