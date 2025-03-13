@@ -211,6 +211,7 @@ public class OI
       // operatorController.x().onTrue(new L2(intake, elevatorArm));
       // operatorController.a().onTrue(new Feeder(intake, elevatorArm));
       operatorController.b().onTrue(new L4(elevatorArm));
+      operatorController.leftBumper().onTrue(new L4Action(elevatorArm, ArmPosition.Starting));
       operatorController.y().onTrue(new L3(intake, elevatorArm));
       // operatorController.button(9).onTrue(new L1(intake, elevatorArm)); // menu
       operatorController.button(14).onTrue(new StartingPos(elevatorArm));
