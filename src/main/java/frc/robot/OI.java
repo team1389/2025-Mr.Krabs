@@ -28,7 +28,7 @@ import frc.command.SetShoulder;
 import frc.command.SetWrist;
 import frc.command.StartingPos;
 import frc.command.TimedOuttakeCoral;
-import frc.command.AlignToReefTagRelative;
+// import frc.command.AlignToReefTagRelative;
 import frc.command.Feeder;
 // import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
@@ -159,8 +159,8 @@ public class OI
       // driveController.rightBumper().onTrue(drivebase.alignToReef(false));
 
 
-      driveController.leftBumper().onTrue(new AlignToReefTagRelative(false, drivebase));
-      driveController.rightBumper().onTrue(new AlignToReefTagRelative(true, drivebase));
+      // driveController.leftBumper().onTrue(new AlignToReefTagRelative(false, drivebase));
+      // driveController.rightBumper().onTrue(new AlignToReefTagRelative(true, drivebase));
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.rightBumper().whileTrue(Commands.run(climber::spinForwards, climber));
@@ -172,8 +172,8 @@ public class OI
       // operatorController.x().whileTrue(new IntakeCoral(intake));
       // operatorController.b().whileTrue(new OuttakeCoral(intake));
 
-      operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
-      operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
+      // operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
+      // operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
       // operatorController.y().onTrue(new SetWrist(elevatorArm, 155.5));
       // operatorController.a().onTrue(new SetWrist(elevatorArm, 72.05));
@@ -211,7 +211,9 @@ public class OI
       // operatorController.x().onTrue(new L2(intake, elevatorArm));
       // operatorController.a().onTrue(new Feeder(intake, elevatorArm));
       operatorController.b().onTrue(new L4(elevatorArm));
-      operatorController.leftBumper().onTrue(new L4Action(elevatorArm, ArmPosition.Starting));
+      // operatorController.leftBumper().onTrue(new SetShoulder(elevatorArm, -10));
+      // operatorController.rightBumper().onTrue(new SetElevator(elevatorArm, 70));
+
       operatorController.y().onTrue(new L3(intake, elevatorArm));
       // operatorController.button(9).onTrue(new L1(intake, elevatorArm)); // menu
       operatorController.button(14).onTrue(new StartingPos(elevatorArm));

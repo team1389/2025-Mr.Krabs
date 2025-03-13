@@ -82,7 +82,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
 
    //TODO:figure out a way to make this automatic
-  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  // private final VisionSubsystem visionSubsystem = new VisionSubsystem();
   /**
    * Enable vision odometry updates while driving.
    */
@@ -161,10 +161,10 @@ public class SwerveSubsystem extends SubsystemBase
   public void updatePose(){
   }
 
-  public Pose2d getRobotPose(){
-    //TODO: get the rotation angle from gyro. Need to test this
-    return new Pose2d(visionSubsystem.getRobotPosition()[0], visionSubsystem.getRobotPosition()[1], swerveDrive.getPose().getRotation());
-  }
+  // public Pose2d getRobotPose(){
+  //   //TODO: get the rotation angle from gyro. Need to test this
+  //   return new Pose2d(visionSubsystem.getRobotPosition()[0], visionSubsystem.getRobotPosition()[1], swerveDrive.getPose().getRotation());
+  // }
 
   @Override
   public void periodic()
@@ -173,84 +173,84 @@ public class SwerveSubsystem extends SubsystemBase
       // vision.updatePoseEstimation(swerveDrive);
     
     //x
-    SmartDashboard.putNumber("limelightX", visionSubsystem.getRobotPosition()[0]);
-    //y
-    SmartDashboard.putNumber("limelightY", visionSubsystem.getRobotPosition()[1]);  
+    // SmartDashboard.putNumber("limelightX", visionSubsystem.getRobotPosition()[0]);
+    // //y
+    // SmartDashboard.putNumber("limelightY", visionSubsystem.getRobotPosition()[1]);  
     // if (visionSubsystem.canLimelightSeeTag()){
     //   addLLMeasurement();
     // }
     SmartDashboard.putNumber("RobotX", swerveDrive.getPose().getX());
     SmartDashboard.putNumber("RobotY", swerveDrive.getPose().getY());
-    SmartDashboard.putBoolean("Ready To Align (Needs to see april tag))", visionSubsystem.canLimelightSeeTag());
+    // SmartDashboard.putBoolean("Ready To Align (Needs to see april tag))", visionSubsystem.canLimelightSeeTag());
     SmartDashboard.putBoolean("Are we the sus (red) alliance?", isRedAlliance());
     swerveDrive.updateOdometry();
   }
 
-  public void addLLMeasurement(){
-    swerveDrive.addVisionMeasurement(new Pose2d(visionSubsystem.getRobotPosition()[0], visionSubsystem.getRobotPosition()[1], swerveDrive.getYaw()), Timer.getFPGATimestamp());
-  }
+  // public void addLLMeasurement(){
+  //   swerveDrive.addVisionMeasurement(new Pose2d(visionSubsystem.getRobotPosition()[0], visionSubsystem.getRobotPosition()[1], swerveDrive.getYaw()), Timer.getFPGATimestamp());
+  // }
 
-  public Command alignToReef(boolean isLeft){
-    if (visionSubsystem.getTargetID() == 6 || visionSubsystem.getTargetID() == 17){
-      if (isLeft){
-        return new PathPlannerAuto("Tag6-17Left");
-      }
-      else{
-        return new PathPlannerAuto("Tag6-17Right");
-      }
-    }
-    else if (visionSubsystem.getTargetID()==7 || visionSubsystem.getTargetID() == 18){
-      if (isLeft){
-        return new PathPlannerAuto("Tag7-18Left");
-      }
-      else{
-        return new PathPlannerAuto("Tag7-18Right");
-      }
+  // public Command alignToReef(boolean isLeft){
+  //   if (visionSubsystem.getTargetID() == 6 || visionSubsystem.getTargetID() == 17){
+  //     if (isLeft){
+  //       return new PathPlannerAuto("Tag6-17Left");
+  //     }
+  //     else{
+  //       return new PathPlannerAuto("Tag6-17Right");
+  //     }
+  //   }
+  //   else if (visionSubsystem.getTargetID()==7 || visionSubsystem.getTargetID() == 18){
+  //     if (isLeft){
+  //       return new PathPlannerAuto("Tag7-18Left");
+  //     }
+  //     else{
+  //       return new PathPlannerAuto("Tag7-18Right");
+  //     }
 
-    }
-    else if (visionSubsystem.getTargetID()==8 || visionSubsystem.getTargetID() == 19){
-      if (isLeft){
-        return new PathPlannerAuto("Tag8-19Left");
-      }
-      else{
-        return new PathPlannerAuto("Tag8-19Right");
-      }
+  //   }
+  //   else if (visionSubsystem.getTargetID()==8 || visionSubsystem.getTargetID() == 19){
+  //     if (isLeft){
+  //       return new PathPlannerAuto("Tag8-19Left");
+  //     }
+  //     else{
+  //       return new PathPlannerAuto("Tag8-19Right");
+  //     }
       
-    }
-    else if (visionSubsystem.getTargetID()==9 || visionSubsystem.getTargetID() == 20){
-      if (isLeft){
-        return new PathPlannerAuto("Tag9-20Left");
-      }
-      else {
-        return new PathPlannerAuto("Tag9-20Right");
-      }
+  //   }
+  //   else if (visionSubsystem.getTargetID()==9 || visionSubsystem.getTargetID() == 20){
+  //     if (isLeft){
+  //       return new PathPlannerAuto("Tag9-20Left");
+  //     }
+  //     else {
+  //       return new PathPlannerAuto("Tag9-20Right");
+  //     }
       
-    }
-    else if (visionSubsystem.getTargetID()==10 || visionSubsystem.getTargetID() == 21){
-      if (isLeft){
-        return new PathPlannerAuto("Tag10-21Left");
-      }
-      else{
-        return new PathPlannerAuto("Tag10-21Right");
-      }
+  //   }
+  //   else if (visionSubsystem.getTargetID()==10 || visionSubsystem.getTargetID() == 21){
+  //     if (isLeft){
+  //       return new PathPlannerAuto("Tag10-21Left");
+  //     }
+  //     else{
+  //       return new PathPlannerAuto("Tag10-21Right");
+  //     }
       
-    }
-    else if (visionSubsystem.getTargetID()==11 || visionSubsystem.getTargetID() == 22){
-      if(isLeft){
-        return new PathPlannerAuto("Tag11-22Left");
-      }
-      else{
-        return new PathPlannerAuto("Tag11-22Right");
-      }
-    }
-    else{
-      return Commands.none();
-    }
-  }
+  //   }
+  //   else if (visionSubsystem.getTargetID()==11 || visionSubsystem.getTargetID() == 22){
+  //     if(isLeft){
+  //       return new PathPlannerAuto("Tag11-22Left");
+  //     }
+  //     else{
+  //       return new PathPlannerAuto("Tag11-22Right");
+  //     }
+  //   }
+  //   else{
+  //     return Commands.none();
+  //   }
+  // }
 
-  public double getAlignTx(){
-    return visionSubsystem.getAlignTX();
-  }
+  // public double getAlignTx(){
+  //   return visionSubsystem.getAlignTX();
+  // }
 
 
   /**
