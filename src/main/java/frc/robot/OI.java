@@ -172,8 +172,8 @@ public class OI
       // operatorController.x().whileTrue(new IntakeCoral(intake));
       // operatorController.b().whileTrue(new OuttakeCoral(intake));
 
-      operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
-      operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
+      // operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
+      // operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
 
       // operatorController.y().onTrue(new SetWrist(elevatorArm, 155.5));
       // operatorController.a().onTrue(new SetWrist(elevatorArm, 72.05));
