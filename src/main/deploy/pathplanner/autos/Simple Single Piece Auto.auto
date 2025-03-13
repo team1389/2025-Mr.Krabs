@@ -17,18 +17,6 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "WristL4"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ShoulderL4"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
                   "name": "ElevatorL4"
                 }
               }
