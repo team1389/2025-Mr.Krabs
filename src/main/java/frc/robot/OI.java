@@ -34,6 +34,7 @@ import frc.command.Feeder;
 import frc.command.IntakeCoral;
 import frc.command.L2;
 import frc.command.L3;
+import frc.command.L4;
 import frc.command.L4Action;
 import frc.command.ManualElevatorArm;
 // import frc.command.ManualElevatorArm;
@@ -109,7 +110,7 @@ public class OI
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-    NamedCommands.registerCommand("L4", new L4(elevatorArm, ArmPosition.L4)); //TODO change wrist for all
+    NamedCommands.registerCommand("L4", new L4(elevatorArm)); //TODO change wrist for all
     NamedCommands.registerCommand("StartingPos", new StartingPos(elevatorArm));
     NamedCommands.registerCommand("Feeder", new Feeder(intake, elevatorArm));
     NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
