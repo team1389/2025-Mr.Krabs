@@ -28,7 +28,7 @@ import frc.command.SetShoulder;
 import frc.command.SetWrist;
 import frc.command.StartingPos;
 import frc.command.TimedOuttakeCoral;
-import frc.command.AlignToReefTagRelative;
+// import frc.command.AlignToReefTagRelative;
 import frc.command.Feeder;
 // import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
@@ -161,6 +161,8 @@ public class OI
 
       // driveController.leftBumper().onTrue(new AlignToReefTagRelative(false, drivebase));
       // driveController.rightBumper().onTrue(new AlignToReefTagRelative(true, drivebase));
+      // driveController.leftBumper().onTrue(new AlignToReefTagRelative(false, drivebase));
+      // driveController.rightBumper().onTrue(new AlignToReefTagRelative(true, drivebase));
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.rightBumper().whileTrue(Commands.run(climber::spinForwards, climber));
@@ -211,8 +213,9 @@ public class OI
       // operatorController.x().onTrue(new L2(intake, elevatorArm));
       // operatorController.a().onTrue(new Feeder(intake, elevatorArm));
       operatorController.b().onTrue(new L4(elevatorArm));
-      operatorController.leftBumper().onTrue(new SetElevator(elevatorArm, 0.5));
-      operatorController.rightBumper().onTrue(new SetElevator(elevatorArm, 70));
+      // operatorController.leftBumper().onTrue(new SetShoulder(elevatorArm, -10));
+      // operatorController.rightBumper().onTrue(new SetElevator(elevatorArm, 70));
+
       operatorController.y().onTrue(new L3(intake, elevatorArm));
       // operatorController.button(9).onTrue(new L1(intake, elevatorArm)); // menu
       operatorController.button(14).onTrue(new StartingPos(elevatorArm));
