@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.subsystems.SwerveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -20,6 +22,7 @@ public class Robot extends TimedRobot
 
   private static Robot   instance;
   private        Command m_autonomousCommand;
+  // private SwerveSubsystem swerveDrive;
 
   private OI m_OI;
 
@@ -103,6 +106,8 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit()
   {
+    m_OI.getZeroGyro();
+    // Commands.runOnce(() -> swerveDrive.zeroGyro());
     m_autonomousCommand = m_OI.getAutonomousCommand();
 
     // schedule the autonomous command (example)

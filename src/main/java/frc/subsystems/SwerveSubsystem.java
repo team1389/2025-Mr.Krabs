@@ -680,8 +680,8 @@ public class SwerveSubsystem extends SubsystemBase
   public void zeroGyro()
   {
     swerveDrive.zeroGyro();
-    Rotation3d rot = new Rotation3d(0, 0, Math.PI);
-    swerveDrive.setGyro(rot);
+    // Rotation3d rot = new Rotation3d(0, 0, Math.PI);
+    // swerveDrive.setGyro(rot);
   }
 
   /**

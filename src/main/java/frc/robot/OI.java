@@ -128,6 +128,8 @@ public class OI
    * {@link CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller PS4}
    * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight joysticks}.
    */
+
+   Command zeroGyroCommand = Commands.runOnce(()-> drivebase.zeroGyro());
   private void configureBindings()
   {
     //RESERVE DRIVE B FOR AUTO ALIGN
@@ -228,6 +230,9 @@ public class OI
     return operatorController.leftTrigger().getAsBoolean();
   }
 
+  public Command getZeroGyro(){
+    return zeroGyroCommand;
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -236,9 +241,9 @@ public class OI
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    // return drivebase.getAutonomousCommand("Simple Single Piece Auto");
-    return m_chooser.getSelected();
-  }
+    return drivebase.getAutonomousCommand("New Auto");
+    // return m_chooser.getSelected();
+  } 
   
 
   
