@@ -47,9 +47,8 @@ public class L4Action extends Command{
 
     @Override
     public boolean isFinished(){
-        return elevatorArm.atTargetPosition(elevatorPos) && 
-                elevatorArm.atShoulderTargetPosition(shoulderPos) &&
-                elevatorArm.atWristTargetPosition(wristPos);
+        return elevatorArm.atTargetPosition(elevatorPos);
+                
     }
 
         // addCommands(
