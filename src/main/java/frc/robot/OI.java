@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.MoveClimber;
 import frc.command.SetElevatorArm;
+import frc.command.SetElevatorAuto;
 import frc.command.SetElevator;
 import frc.command.SetShoulder;
 import frc.command.SetWrist;
@@ -37,6 +38,7 @@ import frc.command.L3;
 import frc.command.L4;
 import frc.command.L4Action;
 import frc.command.ManualElevatorArm;
+// import frc.command.ManualElevatorArm;
 // import frc.command.ManualElevatorArm;
 // import frc.command.ManualElevatorArm;
 import frc.robot.RobotMap.OperatorConstants;
@@ -214,7 +216,9 @@ public class OI
       // operatorController.a().onTrue(new Feeder(intake, elevatorArm));
       operatorController.b().onTrue(new L4(elevatorArm));
       // operatorController.leftBumper().onTrue(new SetShoulder(elevatorArm, -10));
-      // operatorController.rightBumper().onTrue(new SetElevator(elevatorArm, 70));
+      operatorController.rightBumper().onTrue(new SetElevatorAuto(elevatorArm, 70));
+      operatorController.leftBumper().onTrue(new SetElevatorAuto(elevatorArm, 0.5));
+
 
       operatorController.y().onTrue(new L3(intake, elevatorArm));
       // operatorController.button(9).onTrue(new L1(intake, elevatorArm)); // menu
