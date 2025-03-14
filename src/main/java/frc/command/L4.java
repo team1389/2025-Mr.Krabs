@@ -12,7 +12,7 @@ public class L4 extends SequentialCommandGroup{
                 // runs l4 sequence
                 new SetShoulder(elevatorArm, -12.162),
                 new SetElevatorAuto(elevatorArm, 117.5555),
-                new SetWrist(elevatorArm, 265)
+                new SetWrist(elevatorArm, 255)
 
             )
         );

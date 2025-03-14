@@ -196,12 +196,13 @@ public class OI
       // );
 
 
-      elevatorArm.setDefaultCommand(new ManualElevatorArm(
-        elevatorArm,
-        () -> -getManipRightY(),
-        () -> getManipLeftY()
-      )
-      );
+      // COMMENT THIS FOR AUTOS TO WORK
+      // elevatorArm.setDefaultCommand(new ManualElevatorArm(
+      //   elevatorArm,
+      //   () -> -getManipRightY(),
+      //   () -> getManipLeftY()
+      // )
+      // );
 
       // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 0)); //Menu
       // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //menu
