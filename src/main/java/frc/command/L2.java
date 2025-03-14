@@ -7,14 +7,13 @@ import frc.subsystems.ElevatorArm;
 import frc.subsystems.IntakeSubsystem;
 
 public class L2 extends SequentialCommandGroup{
-    public L2(IntakeSubsystem intake, ElevatorArm elevatorArm){
+    public L2(ElevatorArm elevatorArm){
         addCommands(
             new ParallelCommandGroup(
                 new SetShoulder(elevatorArm, .03976),
                 new SetWrist(elevatorArm, 79.09802), 
                 new SetElevator(elevatorArm, 32.9788)
             )
-            // new TimedOuttakeCoral(intake)
         );
     }
 }

@@ -14,11 +14,10 @@ public class TimedOuttakeCoral extends Command {
         SmartDashboard.putBoolean("IsCoralIn", intakeSub.isCoralIn());
     }
 
-    // public void initilize(){
-    //     timer.reset();
-    //     timer.start();
-    // } 
-    // May need to add this
+    public void initilize(){
+        timer.reset();
+        timer.start();
+    } 
 
     @Override
     public void execute() {

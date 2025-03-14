@@ -18,7 +18,6 @@ public class L4 extends SequentialCommandGroup{
                 new SetWrist(elevatorArm, 265)
 
             )
-            // new TimedOuttakeCoral(intake)
         );
     }
         
