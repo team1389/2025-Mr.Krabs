@@ -65,6 +65,7 @@ public class OI
 
   private final Command m_simpleOnePieceAuto = drivebase.getAutonomousCommand("Simple One Piece Auto");
   private final Command m_driveOut = drivebase.getAutonomousCommand("Drive Out");
+  private final Command twoPieceThree11 = drivebase.getAutonomousCommand("Two Piece (3,11)");
                                                                                 
                                                                               
   /**Leave Starting Area Only
@@ -100,17 +101,15 @@ public class OI
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
-    // NamedCommands.registerCommand("L4", new L4(elevatorArm));
-    // NamedCommands.registerCommand("WristL4", new SetWrist(elevatorArm, 265));
-    // NamedCommands.registerCommand("ShoulderL4", new SetShoulder(elevatorArm, -12.162));
-    // NamedCommands.registerCommand("ElevatorL4", new SetElevator(elevatorArm, 117.5555));
+    NamedCommands.registerCommand("L4", new L4(elevatorArm));
 
-    // NamedCommands.registerCommand("StartingPos", new StartingPos(elevatorArm));
-    // NamedCommands.registerCommand("Feeder", new Feeder(intake, elevatorArm));
-    // NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
-    // NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
+    NamedCommands.registerCommand("StartingPos", new Starting(elevatorArm));
+    NamedCommands.registerCommand("Feeder", new Feeder(elevatorArm));
+    NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
+    NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
     m_chooser.setDefaultOption("Simple One Piece Auto", m_simpleOnePieceAuto);
     m_chooser.addOption("Drive Out Only", m_driveOut);
+    m_chooser.addOption("Two Piece (3,11)", twoPieceThree11);
   //post to smart dashboard
     SmartDashboard.putData(m_chooser);
   }

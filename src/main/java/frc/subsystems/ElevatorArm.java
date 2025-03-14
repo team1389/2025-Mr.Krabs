@@ -91,7 +91,7 @@ public class ElevatorArm extends SubsystemBase{
 
         // wristRelEncoder.setPosition(0);
         wristRelEncoder.setPosition(wristAbsEncoder.getPosition() * 2*Math.PI* RobotMap.ArmConstants.WristGearRatio);
- 
+
         elevatorClosedLoopController = elevatorMotorRight.getClosedLoopController();
         shoulderClosedLoopController = leftShoulderMotor.getClosedLoopController();
         wristClosedLoopController = wristMotor.getClosedLoopController();
