@@ -7,6 +7,9 @@ package frc.robot;
 import java.io.File;
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -58,17 +61,21 @@ public class OI
   private final IntakeSubsystem intake = new IntakeSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  private final Command m_simpleOnePieceAuto = drivebase.getAutonomousCommand("Simple One Piece Auto");
+  private final Command m_driveOut = drivebase.getAutonomousCommand("Drive Out");
                                                                                 
                                                                               
-  /**
+  /**Leave Starting Area Only
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driveController.getLeftY(),// * -1,
-                                                                () -> driveController.getLeftX())// * -1) 
+                                                                () -> driveController.getLeftY() * -1,
+                                                                () -> driveController.getLeftX() * -1)
                                                                 //possible change to getRightY if issue persists TODO: SEE IF IT WORKS with RightY
                                                                 //Raw axis of rightTriggerAxis is 3 for some reason
-                                                            .withControllerRotationAxis(() -> driveController.getRightTriggerAxis())
+                                                            .withControllerRotationAxis(() -> driveController.getRightTriggerAxis() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -93,7 +100,19 @@ public class OI
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
-    NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+    // NamedCommands.registerCommand("L4", new L4(elevatorArm));
+    // NamedCommands.registerCommand("WristL4", new SetWrist(elevatorArm, 265));
+    // NamedCommands.registerCommand("ShoulderL4", new SetShoulder(elevatorArm, -12.162));
+    // NamedCommands.registerCommand("ElevatorL4", new SetElevator(elevatorArm, 117.5555));
+
+    // NamedCommands.registerCommand("StartingPos", new StartingPos(elevatorArm));
+    // NamedCommands.registerCommand("Feeder", new Feeder(intake, elevatorArm));
+    // NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
+    // NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
+    m_chooser.setDefaultOption("Simple One Piece Auto", m_simpleOnePieceAuto);
+    m_chooser.addOption("Drive Out Only", m_driveOut);
+  //post to smart dashboard
+    SmartDashboard.putData(m_chooser);
   }
 
 
@@ -126,8 +145,8 @@ public class OI
       // driveController.x().onTrue(drivebase.driveToPose(new Pose2d(1, 1, new Rotation2d(0))));
 
       //Was creating a command of a command. Might work now. 
-      driveController.leftBumper().onTrue(drivebase.alignToReef(true));
-      driveController.rightBumper().onTrue(drivebase.alignToReef(false));
+      // driveController.leftBumper().onTrue(drivebase.alignToReef(true));
+      // driveController.rightBumper().onTrue(drivebase.alignToReef(false));
 
       operatorController.rightBumper().whileTrue(new IntakeCoral(intake));
       operatorController.leftBumper().whileTrue(new OuttakeCoral(intake));
@@ -216,8 +235,7 @@ public class OI
    */
   public Command getAutonomousCommand()
   {
-    // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("Tag7-18Left");
+    return m_chooser.getSelected();
   }
 
   public void setMotorBrake(boolean brake)
