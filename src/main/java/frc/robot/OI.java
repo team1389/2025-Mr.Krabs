@@ -256,7 +256,7 @@ public class OI
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("Simple Single Piece Auto");
+    return drivebase.getAutonomousCommand("New Auto");
     // return m_chooser.getSelected();
   } 
   
