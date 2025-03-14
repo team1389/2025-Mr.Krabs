@@ -220,7 +220,7 @@ public class OI
       operatorController.leftBumper().onTrue(new SetElevatorAuto(elevatorArm, 0.5));
 
 
-      operatorController.y().onTrue(new L3(intake, elevatorArm));
+      operatorController.y().onTrue(new IntakeCoral(intake));
       // operatorController.button(9).onTrue(new L1(intake, elevatorArm)); // menu
       operatorController.button(14).onTrue(new StartingPos(elevatorArm));
       operatorController.button(12).onTrue(new MoveClimber(climber, 1)); //forward
