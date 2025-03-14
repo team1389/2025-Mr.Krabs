@@ -120,7 +120,7 @@ public class OI
     m_chooser.addOption("Top 1 Piece (2)", Top1Piece2);
 
   //post to smart dashboard
-    SmartDashboard.putData(m_chooser);
+    // SmartDashboard.putData(m_chooser);
   }
 
 
@@ -168,7 +168,7 @@ public class OI
       // operatorController.b().onTrue(new SetWrist(elevatorArm, 265));
       // operatorController.b().onTrue(new SetElevator(elevatorArm, 117.555));
 
-      operatorController.y().onTrue(new L2(elevatorArm));
+      operatorController.x().onTrue(new L2(elevatorArm));
 
       // operatorController.y().onTrue(new SetShoulder(elevatorArm, .03976)); //L2
       // operatorController.y().onTrue(new SetWrist(elevatorArm, 79.09802));
@@ -180,7 +180,7 @@ public class OI
       // operatorController.a().onTrue(new SetWrist(elevatorArm, 74.13));
       // operatorController.a().onTrue(new SetElevator(elevatorArm, 0.5177));
 
-      operatorController.x().onTrue(new L3(elevatorArm));
+      operatorController.y().onTrue(new L3(elevatorArm));
 
       // operatorController.x().onTrue(new SetShoulder(elevatorArm, 0.0057)); //L3
       // operatorController.x().onTrue(new SetWrist(elevatorArm, 79.09802));
@@ -250,6 +250,8 @@ public class OI
     // return new PathPlannerAuto("Two Piece (3, 11)");
     // //never run this guy in acutal matches
     return new PathPlannerAuto("Faux Two Piece 3,11");
+    // //cage auto
+    // return new PathPlannerAuto("Top 1 Piece (2)");
   }
 
   public void setMotorBrake(boolean brake)
