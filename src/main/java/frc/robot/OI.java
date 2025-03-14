@@ -24,14 +24,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.MoveClimber;
-import frc.command.SetElevatorArm;
 import frc.command.SetElevator;
 import frc.command.SetShoulder;
 import frc.command.SetWrist;
-// import frc.command.IntakeAlgae;
+import frc.command.Starting;
+import frc.command.Feeder;
 import frc.command.IntakeCoral;
+import frc.command.L2;
+import frc.command.L3;
+import frc.command.L4;
 import frc.command.ManualElevatorArm;
-import frc.command.ManualWrist;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
 import frc.subsystems.ElevatorArm;
@@ -152,38 +154,49 @@ public class OI
       operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
       operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); //right trigger
 
-      operatorController.b().onTrue(new SetShoulder(elevatorArm, -12.162)); //L4
-      operatorController.b().onTrue(new SetWrist(elevatorArm, 265));
-      operatorController.b().onTrue(new SetElevator(elevatorArm, 117.555));
+      operatorController.b().onTrue(new L4(elevatorArm));
 
-      operatorController.y().onTrue(new SetShoulder(elevatorArm, .03976)); //L2
-      operatorController.y().onTrue(new SetWrist(elevatorArm, 79.09802));
-      operatorController.y().onTrue(new SetElevator(elevatorArm, 32.9788));
+      // operatorController.b().onTrue(new SetShoulder(elevatorArm, -12.162)); //L4
+      // operatorController.b().onTrue(new SetWrist(elevatorArm, 265));
+      // operatorController.b().onTrue(new SetElevator(elevatorArm, 117.555));
 
-      operatorController.a().onTrue(new SetShoulder(elevatorArm, .19503)); //Feeder
-      operatorController.a().onTrue(new SetWrist(elevatorArm, 74.13));
-      operatorController.a().onTrue(new SetElevator(elevatorArm, 0.5177));
+      operatorController.y().onTrue(new L2(elevatorArm));
 
-      operatorController.x().onTrue(new SetShoulder(elevatorArm, 0.0057)); //L3
-      operatorController.x().onTrue(new SetWrist(elevatorArm, 79.09802));
-      operatorController.x().onTrue(new SetElevator(elevatorArm, 71.4531));
+      // operatorController.y().onTrue(new SetShoulder(elevatorArm, .03976)); //L2
+      // operatorController.y().onTrue(new SetWrist(elevatorArm, 79.09802));
+      // operatorController.y().onTrue(new SetElevator(elevatorArm, 32.9788));
 
-      operatorController.button(9).onTrue(new SetShoulder(elevatorArm, .208)); //starting
-      operatorController.button(9).onTrue(new SetWrist(elevatorArm, 62.95)); //ellipses
-      operatorController.button(9).onTrue(new SetElevator(elevatorArm, .5177));
+      operatorController.a().onTrue(new Feeder(elevatorArm));
+
+      // operatorController.a().onTrue(new SetShoulder(elevatorArm, .19503)); //Feeder
+      // operatorController.a().onTrue(new SetWrist(elevatorArm, 74.13));
+      // operatorController.a().onTrue(new SetElevator(elevatorArm, 0.5177));
+
+      operatorController.x().onTrue(new L3(elevatorArm));
+
+      // operatorController.x().onTrue(new SetShoulder(elevatorArm, 0.0057)); //L3
+      // operatorController.x().onTrue(new SetWrist(elevatorArm, 79.09802));
+      // operatorController.x().onTrue(new SetElevator(elevatorArm, 71.4531));
+
+      operatorController.button(9).onTrue(new Starting(elevatorArm));
+
+      // operatorController.button(9).onTrue(new SetShoulder(elevatorArm, .208)); //starting
+      // operatorController.button(9).onTrue(new SetWrist(elevatorArm, 62.95)); //ellipses
+      // operatorController.button(9).onTrue(new SetElevator(elevatorArm, .5177));
 
 
  
-      // elevator.setDefaultCommand(new ManualElevator(
-      //   elevator,
+      // elevatorArm.setDefaultCommand(new ManualElevatorArm(
+      //   elevatorArm,
+      //   () -> -getManipRightY(),
       //   () -> getManipLeftY(),
-      //   () -> getManipRightY(),
-      //   () -> getManipRightTrigger(),
-      //   () -> getManipLeftTrigger()
+      //   () -> getManipGoogle(),
+      //   () -> getManipFullscreen()
       // )
       // );
 
 
+      // COMMENT THIS FOR AUTOS TO WORK
       // elevatorArm.setDefaultCommand(new ManualElevatorArm(
       //   elevatorArm,
       //   () -> -getManipRightY(),
@@ -208,6 +221,12 @@ public class OI
   }
   public boolean getManipLeftTrigger(){
     return operatorController.leftTrigger().getAsBoolean();
+  }
+  public boolean getManipGoogle(){
+    return operatorController.button(14).getAsBoolean();
+  }
+  public boolean getManipFullscreen(){
+    return operatorController.button(15).getAsBoolean(); //TODO idk if it's 15
   }
 
   /**
