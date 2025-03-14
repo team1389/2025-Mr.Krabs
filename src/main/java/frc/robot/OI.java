@@ -244,7 +244,12 @@ public class OI
    */
   public Command getAutonomousCommand()
   {
-    return m_chooser.getSelected();
+    // return m_chooser.getSelected();
+    //if auto is here it good
+    // return new PathPlannerAuto("Simple One Piece Auto");
+    // return new PathPlannerAuto("Two Piece (3, 11)");
+    // //never run this guy in acutal matches
+    return new PathPlannerAuto("Faux Two Piece 3,11");
   }
 
   public void setMotorBrake(boolean brake)
