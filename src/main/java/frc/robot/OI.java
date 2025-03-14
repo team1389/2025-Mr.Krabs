@@ -65,7 +65,10 @@ public class OI
 
   private final Command m_simpleOnePieceAuto = drivebase.getAutonomousCommand("Simple One Piece Auto");
   private final Command m_driveOut = drivebase.getAutonomousCommand("Drive Out");
-  private final Command twoPieceThree11 = drivebase.getAutonomousCommand("Two Piece (3,11)");
+  private final Command twoPieceThree11 = drivebase.getAutonomousCommand("Two Piece (3, 11)");
+  private final Command threePieceThree11Twelve = drivebase.getAutonomousCommand("Three Piece (3, 11, 12)");
+  private final Command Top2PieceTwo12 = drivebase.getAutonomousCommand("Top 2 Piece (2, 12)");
+  private final Command Top3PieceTwo12Eleven = drivebase.getAutonomousCommand("Top 3 Piece (2, 12, 11)");
                                                                                 
                                                                               
   /**Leave Starting Area Only
@@ -102,14 +105,18 @@ public class OI
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("L4", new L4(elevatorArm));
-
     NamedCommands.registerCommand("StartingPos", new Starting(elevatorArm));
     NamedCommands.registerCommand("Feeder", new Feeder(elevatorArm));
     NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
     NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
+
     m_chooser.setDefaultOption("Simple One Piece Auto", m_simpleOnePieceAuto);
     m_chooser.addOption("Drive Out Only", m_driveOut);
-    m_chooser.addOption("Two Piece (3,11)", twoPieceThree11);
+    m_chooser.addOption("Two Piece (3, 11)", twoPieceThree11);
+    m_chooser.addOption("Top 2 Piece (2, 12)", Top2PieceTwo12);
+    m_chooser.addOption("Top 3 Piece (2, 12, 11)", Top3PieceTwo12Eleven);
+    m_chooser.addOption("Three Piece (3, 11, 12)", threePieceThree11Twelve);
+    
   //post to smart dashboard
     SmartDashboard.putData(m_chooser);
   }
