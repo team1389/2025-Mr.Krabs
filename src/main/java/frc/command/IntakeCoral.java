@@ -3,19 +3,27 @@ package frc.command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.subsystems.IntakeSubsystem;
+import edu.wpi.first.wpilibj.Timer;
 
 public class IntakeCoral extends Command{
     public IntakeSubsystem intakeSub;
+    public Timer timer;
 
     public IntakeCoral(IntakeSubsystem intakeSub) {
         this.intakeSub = intakeSub;
-        SmartDashboard.putBoolean("IsCoralIn", intakeSub.isCoralIn());
+        timer = new Timer();
+        SmartDashboard.putNumber("time", timer.get());
+    }
+
+    public void initialize(){
+        timer.reset();
+        timer.start();
     }
 
     @Override
     public void execute() {
         intakeSub.intakeCoral();
-        SmartDashboard.putBoolean("IsCoralIn", intakeSub.isCoralIn());
+        SmartDashboard.putNumber("time", timer.get());
     }
 
     @Override
@@ -23,8 +31,8 @@ public class IntakeCoral extends Command{
         intakeSub.stopCoral();
     }
 
-    // @Override
-    // public boolean isFinished(){
-    //     return intakeSub.ifCoral();
-    // }
+    @Override
+    public boolean isFinished(){
+        return timer.get() > 1;
+    }
 }
