@@ -207,7 +207,7 @@ public class OI
       operatorController.x().onTrue(new SetWrist(elevatorArm, 265));
       operatorController.x().onTrue(new SetShoulder(elevatorArm, -12.162));
 
-      operatorController.a().onTrue(new SetElevator(elevatorArm, .24577));
+      operatorController.a().onTrue(new SetElevator(elevatorArm, .29577));
       operatorController.a().onTrue(new SetWrist(elevatorArm, 74.13));
       operatorController.a().onTrue(new SetShoulder(elevatorArm, .19503));
 
