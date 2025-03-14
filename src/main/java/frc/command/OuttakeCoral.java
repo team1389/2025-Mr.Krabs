@@ -16,6 +16,11 @@ public class OuttakeCoral extends Command {
         SmartDashboard.putBoolean("IsCoralIn", intakeSub.isCoralIn());
     }
 
+    public void initialize(){
+        timer.reset();
+        timer.start();
+    }
+
     @Override
     public void execute() {
         intakeSub.outtakeCoral();
