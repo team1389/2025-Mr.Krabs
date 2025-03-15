@@ -247,9 +247,9 @@ public class OI
     // return m_chooser.getSelected();
     //if auto is here it good
     // return new PathPlannerAuto("Simple One Piece Auto");
-    // return new PathPlannerAuto("Two Piece (3, 11)");
+    return new PathPlannerAuto("Two Piece (3, 11)");
     // //never run this guy in acutal matches
-    return new PathPlannerAuto("Faux Two Piece 3,11");
+    // return new PathPlannerAuto("Faux Two Piece 3,11");
     // //cage auto
     // return new PathPlannerAuto("Top 1 Piece (2)");
   }
