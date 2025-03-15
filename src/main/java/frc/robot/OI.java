@@ -30,6 +30,7 @@ import frc.command.SetWrist;
 import frc.command.Starting;
 import frc.command.Feeder;
 import frc.command.IntakeCoral;
+import frc.command.IntakeCoralTeleop;
 import frc.command.L2;
 import frc.command.L3;
 import frc.command.L4;
@@ -153,10 +154,10 @@ public class OI
       // driveController.x().onTrue(drivebase.driveToPose(new Pose2d(1, 1, new Rotation2d(0))));
 
       //Was creating a command of a command. Might work now. 
-      // driveController.leftBumper().onTrue(drivebase.alignToReef(true));
+      // driveController.leftBumper().onTrue(drivebase.alignToReef(true));o
       // driveController.rightBumper().onTrue(drivebase.alignToReef(false));
-
-      operatorController.rightBumper().whileTrue(new IntakeCoral(intake));
+ 
+      operatorController.rightBumper().whileTrue(new IntakeCoralTeleop(intake));
       operatorController.leftBumper().whileTrue(new OuttakeCoral(intake));
 
       operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); //left trigger
@@ -213,7 +214,7 @@ public class OI
       // );
 
       // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 0)); //Menu
-      // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)); //menu
+      // operatorController.button(10).onTrue(new SetElevator(elevatorArm, 70)  ); //menu
       // operatorController.button(14).onTrue(new SetElevatorArm(elevatorArm, ArmPosition.Starting)); //Google
 
   }
@@ -246,12 +247,16 @@ public class OI
   {
     // return m_chooser.getSelected();
     //if auto is here it good
-    // return new PathPlannerAuto("Simple One Piece Auto");
-    return new PathPlannerAuto("Two Piece (3, 11)");
+    //inverted two Pice 3, 11 (bottom feeder)
+    return new PathPlannerAuto("Bottom 2 Piece (4, 8)");
+    //top feeder 2 piece
+    // return new PathPlannerAuto("Two Piece (3, 11)");
     // //never run this guy in acutal matches
     // return new PathPlannerAuto("Faux Two Piece 3,11");
     // //cage auto
     // return new PathPlannerAuto("Top 1 Piece (2)");
+    //just drive out
+    //return new PathPlannerAuto("Drive Out")
   }
 
   public void setMotorBrake(boolean brake)

@@ -159,6 +159,10 @@ public class ElevatorArm extends SubsystemBase{
 
     }
 
+    public void zeroElevator(){
+        rightElevatorRelEncoder.setPosition(0);
+    }
+
 
     public void setManualElevator(double elevatorSpeed){
         // elevatorMotorLeft.set(elevatorSpeed);
@@ -319,7 +323,7 @@ public class ElevatorArm extends SubsystemBase{
         // SmartDashboard.putNumber("elevator M per S", getVelocityMetersPerSecond());
         // SmartDashboard.putNumber("elevator position M", getPositionMeters());
 
-        SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
+        // SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
 
         // elevatorPid.setP(SmartDashboard.getNumber("P Elevator", 0));
         // elevatorPid.setP(SmartDashboard.getNumber("I Elevator", 0));

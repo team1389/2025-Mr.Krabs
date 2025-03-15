@@ -10,7 +10,7 @@ public class Starting extends SequentialCommandGroup{
             new ParallelCommandGroup(
                 new SetShoulder(elevatorArm, .2018),
                 new SetWrist(elevatorArm, 62.95), //TODO change
-                new SetElevator(elevatorArm, .5177)
+                new SetElevatorZero(elevatorArm, .5177)
             )
         );
     }
