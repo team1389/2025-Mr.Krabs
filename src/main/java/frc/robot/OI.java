@@ -45,6 +45,10 @@ import frc.subsystems.ElevatorArm;
 import frc.subsystems.IntakeSubsystem;
 import frc.subsystems.ElevatorArm.ArmPosition;
 import frc.subsystems.SwerveSubsystem;
+import frc.util.AllianceFlipUtil;
+import frc.util.TargetingSystem;
+import frc.util.FieldConstants.CoralStation;
+import frc.util.TargetingSystem.ReefBranchSide;
 import swervelib.SwerveInputStream;
 import frc.command.OuttakeCoral;
 import frc.command.RunManualShoulder;
@@ -68,6 +72,7 @@ public class OI
   private final IntakeSubsystem intake = new IntakeSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
+  private final TargetingSystem targetingSystem = new TargetingSystem();
                                                                                 
                                                                               
   /**
@@ -154,6 +159,17 @@ public class OI
       driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driveController.start().whileTrue(Commands.none());
       driveController.back().whileTrue(Commands.none());
+
+      driveController.leftBumper().whileTrue(targetingSystem.setBranchSide(ReefBranchSide.LEFT)
+                                                               .andThen(Commands.runOnce(() -> drivebase.getSwerveDrive().field.getObject(
+                                                                                                            "target")
+                                                                                                                               .setPose(
+                                                                                                                                   targetingSystem.getCoralTargetPose()))));
+      driveController.rightBumper().whileTrue(targetingSystem.setBranchSide(ReefBranchSide.RIGHT)
+                                                                .andThen(Commands.runOnce(() -> drivebase.getSwerveDrive().field.getObject(
+                                                                                                             "target")
+                                                                                                                                .setPose(
+                                                                                                                                    targetingSystem.getCoralTargetPose()))));
 
       //should theoritically work. Untested with the modifications to how it is called.
       //UPADATE: IT DONT WORK
