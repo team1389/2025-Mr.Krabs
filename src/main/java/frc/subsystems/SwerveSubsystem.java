@@ -92,7 +92,7 @@ public class SwerveSubsystem extends SubsystemBase
 
 
   public double count=0;
-  Limelight              limelight = new Limelight("limelight-front");
+  Limelight              limelight;
   LimelightPoseEstimator limelightPoseEstimator;
 
   public double[] pos = new double[2];
@@ -102,8 +102,6 @@ public class SwerveSubsystem extends SubsystemBase
    * AprilTag field layout.
    */
 
-   //TODO:figure out a way to make this automatic
-  // private final VisionSubsystem visionSubsystem = new VisionSubsystem();
   /**
    * Enable vision odometry updates while driving.
    */
@@ -149,11 +147,11 @@ public class SwerveSubsystem extends SubsystemBase
 //    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
     if (visionDriveTest)
     {
-      setupLimelight();
       // Stop the odometry thread if we are using vision that way we can synchronize updates better.
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
+    setupLimelight();
   }
 
   /**
@@ -177,7 +175,6 @@ public class SwerveSubsystem extends SubsystemBase
   public void setupLimelight()
   {
 
-    //TODO:tune limelight pos
     swerveDrive.stopOdometryThread();
     limelight = new Limelight("limelight-front");
     limelight.getSettings()
@@ -195,10 +192,7 @@ public class SwerveSubsystem extends SubsystemBase
   public void updatePose(){
   }
 
-  // public Pose2d getRobotPose(){
-  //   //TODO: get the rotation angle from gyro. Need to test this
-  //   return new Pose2d(visionSubsystem.getRobotPosition()[0], visionSubsystem.getRobotPosition()[1], swerveDrive.getPose().getRotation());
-  // }
+
 
   @Override
   public void periodic()
