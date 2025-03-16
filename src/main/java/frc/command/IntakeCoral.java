@@ -12,12 +12,18 @@ public class IntakeCoral extends Command{
     public IntakeCoral(IntakeSubsystem intakeSub) {
         this.intakeSub = intakeSub;
         timer = new Timer();
+        SmartDashboard.putNumber("time", timer.get());
+    }
+
+    public void initialize(){
+        timer.reset();
+        timer.start();
     }
 
     @Override
     public void execute() {
         intakeSub.intakeCoral();
-        SmartDashboard.putBoolean("IsCoralIn", intakeSub.isCoralIn());
+        SmartDashboard.putNumber("time", timer.get());
     }
 
     @Override
@@ -25,8 +31,8 @@ public class IntakeCoral extends Command{
         intakeSub.stopCoral();
     }
 
-    // @Override
-    // public boolean isFinished(){
-    //     return timer.get() > 2;
-    // }
+    @Override
+    public boolean isFinished(){
+        return timer.get() > 1;
+    }
 }

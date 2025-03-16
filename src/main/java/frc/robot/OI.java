@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.MoveClimber;
 import frc.command.SetElevatorArm;
+import frc.command.SetElevatorAuto;
 import frc.command.SetElevator;
 import frc.command.SetShoulder;
 import frc.command.SetWrist;
@@ -30,15 +31,10 @@ import frc.command.StartingPos;
 import frc.command.TimedOuttakeCoral;
 // import frc.command.AlignToReefTagRelative;
 import frc.command.Feeder;
-// import frc.command.IntakeAlgae;
 import frc.command.IntakeCoral;
 import frc.command.L2;
 import frc.command.L3;
 import frc.command.L4;
-import frc.command.L4Action;
-import frc.command.ManualElevatorArm;
-// import frc.command.ManualElevatorArm;
-// import frc.command.ManualElevatorArm;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
 import frc.subsystems.ElevatorArm;
@@ -179,6 +175,8 @@ public class OI
 
       // driveController.leftBumper().onTrue(new AlignToReefTagRelative(false, drivebase));
       // driveController.rightBumper().onTrue(new AlignToReefTagRelative(true, drivebase));
+      // driveController.leftBumper().onTrue(new AlignToReefTagRelative(false, drivebase));
+      // driveController.rightBumper().onTrue(new AlignToReefTagRelative(true, drivebase));
       // operatorController.pov(0).whileTrue(Commands.run(climber::spinForwards, climber));
       // operatorController.pov(180).whileTrue(Commands.run(climber::spinBackwards, climber));
       // operatorController.rightBumper().whileTrue(Commands.run(climber::spinForwards, climber));
@@ -216,12 +214,18 @@ public class OI
       //   () -> getManipLeftY()
       // )
       // );
+      // elevatorArm.setDefaultCommand(new ManualElevatorArm(
+      //   elevatorArm,
+      //   () -> -getManipRightY(),
+      //   () -> getManipLeftY()
+      // )
+      // );
 
       operatorController.x().onTrue(new SetElevator(elevatorArm, 117.5555));
       operatorController.x().onTrue(new SetWrist(elevatorArm, 265));
       operatorController.x().onTrue(new SetShoulder(elevatorArm, -12.162));
 
-      operatorController.a().onTrue(new SetElevator(elevatorArm, .24577));
+      operatorController.a().onTrue(new SetElevator(elevatorArm, .29577));
       operatorController.a().onTrue(new SetWrist(elevatorArm, 74.13));
       operatorController.a().onTrue(new SetShoulder(elevatorArm, .19503));
 
@@ -230,9 +234,11 @@ public class OI
       // operatorController.a().onTrue(new Feeder(intake, elevatorArm));
       operatorController.b().onTrue(new L4(elevatorArm));
       // operatorController.leftBumper().onTrue(new SetShoulder(elevatorArm, -10));
-      // operatorController.rightBumper().onTrue(new SetElevator(elevatorArm, 70));
+      operatorController.rightBumper().onTrue(new SetElevatorAuto(elevatorArm, 70));
+      operatorController.leftBumper().onTrue(new SetElevatorAuto(elevatorArm, 0.5));
 
-      operatorController.y().onTrue(new L3(intake, elevatorArm));
+
+      operatorController.y().onTrue(new IntakeCoral(intake));
       // operatorController.button(9).onTrue(new L1(intake, elevatorArm)); // menu
       operatorController.button(14).onTrue(new StartingPos(elevatorArm));
       operatorController.button(12).whileTrue(new MoveClimber(climber, 1)); //forward
@@ -268,8 +274,8 @@ public class OI
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    // return drivebase.getAutonomousCommand("Simple Single Piece Auto");
-    return m_chooser.getSelected();
+    return drivebase.getAutonomousCommand("New Auto");
+    // return m_chooser.getSelected();
   } 
   
 

@@ -23,9 +23,7 @@ public class IntakeSubsystem extends SubsystemBase {
         // algaeIntake = new SparkFlex(RobotMap.MotorPorts.intakeAlgaeMotor, MotorType.kBrushless);
         coralIntake = new SparkMax(RobotMap.MotorPorts.intakeCoralMotor, MotorType.kBrushless);
         coralLimitSwitch = coralIntake.getReverseLimitSwitch();
-        // coralLS = new DigitalInput(RobotMap.IntakeConstants.CORAL_LIMIT_SWITCH);
-        // algaeLS = new DigitalInput(RobotMap.IntakeConstants.ALGAE_LIMIT_SWITCH);
-        SmartDashboard.putBoolean("IsCoralIn", isCoralIn);
+
     }
     //Coral Intake
     public void intakeCoral() {
@@ -48,12 +46,6 @@ public class IntakeSubsystem extends SubsystemBase {
     }
     // public void stopAlgae() {
     //     algaeIntake.set(0);
-    // }
-    // public boolean ifAlgae() {
-    //     return algaeLS.get();
-    // }
-    // public boolean ifCoral() {
-    //     return coralLS.get();
     // }
 
     public boolean isCoralIn() {

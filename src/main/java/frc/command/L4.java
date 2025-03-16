@@ -11,16 +11,13 @@ import frc.subsystems.IntakeSubsystem;
 public class L4 extends SequentialCommandGroup{
     public L4(ElevatorArm elevatorArm){
         addCommands(
-            new SetElevatorAuto(elevatorArm, 117.5555),
             new ParallelCommandGroup(
                 // runs l4 sequence
-                // new SetElevatorAuto(elevatorArm, 117.5555)
-                new SetWrist(elevatorArm, 255),
-                new SetShoulder(elevatorArm, -12.162)
-
+                new SetShoulder(elevatorArm, -12.162),
+                new SetElevatorAuto(elevatorArm, 117.5555),
+                new SetWrist(elevatorArm, 265)
 
             )
-            // new TimedOuttakeCoral(intake)
         );
     }
         
