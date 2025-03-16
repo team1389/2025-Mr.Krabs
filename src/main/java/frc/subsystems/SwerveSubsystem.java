@@ -206,7 +206,7 @@ public class SwerveSubsystem extends SubsystemBase
              .save();
     Optional<PoseEstimate>     poseEstimates = limelightPoseEstimator.getPoseEstimate();
     Optional<LimelightResults> results       = limelight.getLatestResults();
-    if (results.isPresent()/* && poseEstimates.isPresent()*/)
+    if (results.isPresent() /*&& poseEstimates.isPresent()*/)
     {
       LimelightResults result       = results.get();
       PoseEstimate     poseEstimate = poseEstimates.get();
