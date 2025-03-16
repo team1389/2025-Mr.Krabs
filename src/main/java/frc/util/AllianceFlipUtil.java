@@ -11,19 +11,18 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.RobotMap;
 
 public class AllianceFlipUtil
 {
 
   public static double applyX(double x)
   {
-    return shouldFlip() ? RobotMap.fieldLength - x : x;
+    return shouldFlip() ? FieldConstants.fieldLength - x : x;
   }
 
   public static double applyY(double y)
   {
-    return shouldFlip() ? RobotMap.fieldWidth - y : y;
+    return shouldFlip() ? FieldConstants.fieldWidth - y : y;
   }
 
   public static Translation2d apply(Translation2d translation)
