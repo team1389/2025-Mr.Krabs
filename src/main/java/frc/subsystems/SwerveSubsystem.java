@@ -8,8 +8,11 @@ import static edu.wpi.first.units.Units.Meter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
@@ -17,6 +20,7 @@ import java.util.function.DoubleSupplier;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.json.simple.parser.ParseException;
 
@@ -34,6 +38,7 @@ import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -59,7 +64,13 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import frc.robot.RobotMap;
+import frc.util.AllianceFlipUtil;
+import frc.util.FieldConstants;
+import frc.util.FieldConstants.Reef;
+import frc.util.FieldConstants.ReefHeight;
 import frc.util.LimelightHelpers;
+import frc.util.TargetingSystem;
+import frc.util.TargetingSystem.ReefBranch;
 import limelight.Limelight;
 import limelight.networktables.AngularVelocity3d;
 import limelight.networktables.LimelightPoseEstimator;
@@ -222,34 +233,30 @@ public class SwerveSubsystem extends SubsystemBase
       SmartDashboard.putNumber("Limelight Pose/x", poseEstimate.pose.getX());
       SmartDashboard.putNumber("Limelight Pose/y", poseEstimate.pose.getY());
       SmartDashboard.putNumber("Limelight Pose/degrees", poseEstimate.pose.toPose2d().getRotation().getDegrees());
-//       if (result.valid /*&& RobotState.isTeleop()*/)
-//       {
-//         SmartDashboard.putBoolean("isaligning", true);
-//         // Pose2d estimatorPose = poseEstimate.pose.toPose2d();
-//         Pose2d usefulPose     = result.getBotPose2d(Alliance.Blue);
-//         double distanceToPose = usefulPose.getTranslation().getDistance(swerveDrive.getPose().getTranslation());
-//         if (distanceToPose < 0.5 || (outofAreaReading > 10) || (outofAreaReading > 10 && !initialReading))
-//         {
-//           if (!initialReading)
-//           {
-//             initialReading = true;
-//           }
-//           outofAreaReading = 0;
-//           // System.out.println(usefulPose.toString());
-//           swerveDrive.setVisionMeasurementStdDevs(VecBuilder.fill(0.05, 0.05, 0.022));
-//           // System.out.println(result.timestamp_LIMELIGHT_publish);
-//           // System.out.println(result.timestamp_RIOFPGA_capture);
-//           swerveDrive.addVisionMeasurement(usefulPose, Timer.getTimestamp());
-//         } else
-//         {
-//           outofAreaReading += 1;
-//         }
-// //        swerveDrive.addVisionMeasurement(estimatorPose, poseEstimate.timestampSeconds);
-//       }
-//       else{
-//         SmartDashboard.putBoolean("isaligning", false);
-
-//       }
+      if (result.valid && RobotState.isTeleop())
+      {
+        // Pose2d estimatorPose = poseEstimate.pose.toPose2d();
+        Pose2d usefulPose     = result.getBotPose2d(Alliance.Blue);
+        double distanceToPose = usefulPose.getTranslation().getDistance(swerveDrive.getPose().getTranslation());
+        if (distanceToPose < 0.5 || (outofAreaReading > 10) || (outofAreaReading > 10 && !initialReading))
+        {
+          if (!initialReading)
+          {
+            initialReading = true;
+          }
+          outofAreaReading = 0;
+          // System.out.println(usefulPose.toString());
+          swerveDrive.setVisionMeasurementStdDevs(VecBuilder.fill(0.05, 0.05, 0.022));
+          // System.out.println(result.timestamp_LIMELIGHT_publish);
+          // System.out.println(result.timestamp_RIOFPGA_capture);
+          swerveDrive.addVisionMeasurement(usefulPose, Timer.getTimestamp());
+        } else
+        {
+          outofAreaReading += 1;
+          
+        }
+//        swerveDrive.addVisionMeasurement(estimatorPose, poseEstimate.timestampSeconds);
+      }
 
     }
     swerveDrive.updateOdometry();
@@ -928,5 +935,67 @@ public class SwerveSubsystem extends SubsystemBase
 
   // public void toggleAlign(){
   //   commandAlign = !commandAlign;
+  // }
+
+  // List<Pose2d> reefBranches = new ArrayList<Pose2d>();
+  // private List<Pose2d>            allianceRelativeReefBranches = null;
+  // private Map<Pose2d, ReefBranch> reefPoseToBranchMap          = null;
+
+  // private void initializeBranchPoses()
+  // {
+  //   reefBranches = new ArrayList<>();
+  //   reefPoseToBranchMap = new HashMap<>();
+  //   for (int branchPositionIndex = 0; branchPositionIndex < Reef.branchPositions.size(); branchPositionIndex++)
+  //   {
+  //     Map<ReefHeight, Pose3d> branchPosition = Reef.branchPositions.get(branchPositionIndex);
+  //     Pose2d                  targetPose     = branchPosition.get(ReefHeight.L4).toPose2d();
+  //     reefBranches.add(targetPose);
+  //     reefPoseToBranchMap.put(targetPose, ReefBranch.values()[branchPositionIndex]);
+  //     reefPoseToBranchMap.put(AllianceFlipUtil.flip(targetPose), ReefBranch.values()[branchPositionIndex]);
+  //   }
+  //   allianceRelativeReefBranches = reefBranches.stream().map(AllianceFlipUtil::apply).collect(Collectors.toList());
+  // }
+
+  // private static int rightBranchOrdinal(ReefBranch branch)
+  // {
+  //   boolean isRight = (branch.ordinal()+1) % 2 == 0;
+  //   return MathUtil.clamp(branch.ordinal() + (isRight ? 0 : 1),0,11);
+  // }
+
+  // private static int leftBranchOrdinal(ReefBranch branch)
+  // {
+  //   boolean isRight = (branch.ordinal()+1) % 2 == 0;
+  //   return MathUtil.clamp(branch.ordinal() - (isRight ? 1 : 0),0,11);
+  // }
+
+  // public int getTargetBranchOrdinal()
+  // {
+  //   if (targetBranch != null)
+  //   {
+  //     switch (targetReefBranchSide)
+  //     {
+  //       case CLOSEST ->
+  //       {
+  //         return targetBranch.ordinal();
+  //       }
+  //       case RIGHT ->
+  //       {
+  //         return rightBranchOrdinal(targetBranch);
+  //       }
+  //       case LEFT ->
+  //       {
+  //         return leftBranchOrdinal(targetBranch);
+  //       }
+  //     }
+  //   }
+  //   return 0;
+  // }
+
+  // public Command autoAlignRight(){
+  //   return defer(() -> driveToPose(getPose().nearest(FieldConstants.Reef.branchPositions.get(outofAreaReading))));
+  // }
+
+  // public Command autoAlignLeft(){
+  //   return defer(() -> driveToPose(getPose()));
   // }
 }
