@@ -3,7 +3,6 @@ package frc.command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.subsystems.ElevatorArm;
-import frc.subsystems.ElevatorArm.ArmPosition;
 
 public class L4 extends SequentialCommandGroup{
     public L4(ElevatorArm elevatorArm){
