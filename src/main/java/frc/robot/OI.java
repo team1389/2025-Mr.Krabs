@@ -168,10 +168,6 @@ public class OI
 
 
       // driveController.x().onTrue(drivebase.driveToPose(new Pose2d(1, 1, new Rotation2d(0))));
-
-      //Was creating a command of a command. Might work now. 
-      // driveController.leftBumper().onTrue(drivebase.alignToReef(true));o
-      // driveController.rightBumper().onTrue(drivebase.alignToReef(false));
  
       operatorController.rightBumper().whileTrue(new IntakeCoralTeleop(intake));
       operatorController.leftBumper().whileTrue(new OuttakeCoral(intake));
@@ -203,13 +199,13 @@ public class OI
       // operatorController.x().onTrue(new SetWrist(elevatorArm, 79.09802));
       // operatorController.x().onTrue(new SetElevator(elevatorArm, 71.4531));
 
-      operatorController.button(9).onTrue(new Starting(elevatorArm));
+      operatorController.button(9).onTrue(new Starting(elevatorArm)); //ellipses
 
       // operatorController.button(9).onTrue(new SetShoulder(elevatorArm, .208)); //starting
       // operatorController.button(9).onTrue(new SetWrist(elevatorArm, 62.95)); //ellipses
       // operatorController.button(9).onTrue(new SetElevator(elevatorArm, .5177));
 
-
+      operatorController.button(10).onTrue(new SetWrist(elevatorArm, 115));
  
       // elevatorArm.setDefaultCommand(new ManualElevatorArm(
       //   elevatorArm,

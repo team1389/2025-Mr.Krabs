@@ -48,6 +48,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -221,29 +222,34 @@ public class SwerveSubsystem extends SubsystemBase
       SmartDashboard.putNumber("Limelight Pose/x", poseEstimate.pose.getX());
       SmartDashboard.putNumber("Limelight Pose/y", poseEstimate.pose.getY());
       SmartDashboard.putNumber("Limelight Pose/degrees", poseEstimate.pose.toPose2d().getRotation().getDegrees());
-      if (result.valid)
-      {
-        // Pose2d estimatorPose = poseEstimate.pose.toPose2d();
-        Pose2d usefulPose     = result.getBotPose2d(Alliance.Blue);
-        double distanceToPose = usefulPose.getTranslation().getDistance(swerveDrive.getPose().getTranslation());
-        if (distanceToPose < 0.5 || (outofAreaReading > 10) || (outofAreaReading > 10 && !initialReading))
-        {
-          if (!initialReading)
-          {
-            initialReading = true;
-          }
-          outofAreaReading = 0;
-          // System.out.println(usefulPose.toString());
-          swerveDrive.setVisionMeasurementStdDevs(VecBuilder.fill(0.05, 0.05, 0.022));
-          // System.out.println(result.timestamp_LIMELIGHT_publish);
-          // System.out.println(result.timestamp_RIOFPGA_capture);
-          swerveDrive.addVisionMeasurement(usefulPose, Timer.getTimestamp());
-        } else
-        {
-          outofAreaReading += 1;
-        }
-//        swerveDrive.addVisionMeasurement(estimatorPose, poseEstimate.timestampSeconds);
-      }
+//       if (result.valid /*&& RobotState.isTeleop()*/)
+//       {
+//         SmartDashboard.putBoolean("isaligning", true);
+//         // Pose2d estimatorPose = poseEstimate.pose.toPose2d();
+//         Pose2d usefulPose     = result.getBotPose2d(Alliance.Blue);
+//         double distanceToPose = usefulPose.getTranslation().getDistance(swerveDrive.getPose().getTranslation());
+//         if (distanceToPose < 0.5 || (outofAreaReading > 10) || (outofAreaReading > 10 && !initialReading))
+//         {
+//           if (!initialReading)
+//           {
+//             initialReading = true;
+//           }
+//           outofAreaReading = 0;
+//           // System.out.println(usefulPose.toString());
+//           swerveDrive.setVisionMeasurementStdDevs(VecBuilder.fill(0.05, 0.05, 0.022));
+//           // System.out.println(result.timestamp_LIMELIGHT_publish);
+//           // System.out.println(result.timestamp_RIOFPGA_capture);
+//           swerveDrive.addVisionMeasurement(usefulPose, Timer.getTimestamp());
+//         } else
+//         {
+//           outofAreaReading += 1;
+//         }
+// //        swerveDrive.addVisionMeasurement(estimatorPose, poseEstimate.timestampSeconds);
+//       }
+//       else{
+//         SmartDashboard.putBoolean("isaligning", false);
+
+//       }
 
     }
     swerveDrive.updateOdometry();
