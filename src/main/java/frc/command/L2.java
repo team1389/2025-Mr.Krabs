@@ -10,7 +10,7 @@ public class L2 extends SequentialCommandGroup{
             new ParallelCommandGroup(
                 new SetShoulder(elevatorArm, .03976),
                 new SetWrist(elevatorArm, 136.5), 
-                new SetElevator(elevatorArm, 24.904855)
+                new SetElevatorAuto(elevatorArm, 24.904855)
             )
         );
     }
