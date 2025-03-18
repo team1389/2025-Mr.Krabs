@@ -233,7 +233,7 @@ public class SwerveSubsystem extends SubsystemBase
       SmartDashboard.putNumber("Limelight Pose/x", poseEstimate.pose.getX());
       SmartDashboard.putNumber("Limelight Pose/y", poseEstimate.pose.getY());
       SmartDashboard.putNumber("Limelight Pose/degrees", poseEstimate.pose.toPose2d().getRotation().getDegrees());
-      if (result.valid && RobotState.isTeleop())
+      if (result.valid )
       {
         // Pose2d estimatorPose = poseEstimate.pose.toPose2d();
         Pose2d usefulPose     = result.getBotPose2d(Alliance.Blue);
@@ -398,7 +398,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
 // Create the constraints to use while pathfinding
     PathConstraints constraints = new PathConstraints(
-        swerveDrive.getMaximumChassisVelocity(), 4.0,
+        swerveDrive.getMaximumChassisVelocity(), 1,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
 
 // Since AutoBuilder is configured, we can use it to build pathfinding commands
@@ -930,4 +930,8 @@ public class SwerveSubsystem extends SubsystemBase
   // public Command autoAlignLeft(){
   //   return defer(() -> driveToPose(getPose()));
   // }
+
+  public Command cancel(){
+    return Commands.none();
+  }
 }

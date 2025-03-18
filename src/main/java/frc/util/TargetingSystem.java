@@ -164,8 +164,8 @@ public class TargetingSystem
       SmartDashboard.putString("Targetted Coral Pose without Offset (Meters)", startingPose.toString());
 
       //TODO: TUNE THIS POSE //Reef.coralOffset in setpoints //x+front, y+left !center to bumper is 19
-      scoringPose = startingPose.plus(new Transform2d(Inches.of(-6).in(Meters),
-                                                                    Inches.of(12).in(Meters),
+      scoringPose = startingPose.plus(new Transform2d(Inches.of(15).in(Meters),
+                                                                    Inches.of(-9.5).in(Meters),
                                                                     Rotation2d.fromDegrees(180)));
       SmartDashboard.putString("Targetted Coral Pose with Offset (Meters)", scoringPose.toString());
 
