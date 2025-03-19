@@ -176,8 +176,8 @@ public class OI {
         // HERE_______________________________________________________________________________________________________________________________
         // dont use driver B for aything else, its already used for auto align
         driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        driveController.start().whileTrue(drivebase.cancel());
         driveController.back().whileTrue(Commands.none());
+        // driveController.b().whileTrue(new AlignLeftAuto(drivebase, targetingSystem));
 
         driveController.leftBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
                 .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
