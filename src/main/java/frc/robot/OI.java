@@ -226,7 +226,8 @@ public class OI {
 
       operatorController.button(9).onTrue(new Starting(elevatorArm)); //ellipses
 
-      operatorController.button(10).onTrue(new SetWrist(elevatorArm, 115));
+      // operatorController.button(10).onTrue(new SetWrist(elevatorArm, 115));
+      operatorController.button(10).onTrue(new SetShoulder(elevatorArm, -12.162));
  
       // elevatorArm.setDefaultCommand(new ManualElevatorArm(
       //   elevatorArm,

@@ -113,8 +113,8 @@ public class ElevatorArm extends SubsystemBase{
             .outputRange(-1, 1)
             .maxMotion
             // Set MAXMotion parameters for position control
-            .maxVelocity(5000)
-            .maxAcceleration(3000)
+            .maxVelocity(6000) //prev 5000
+            .maxAcceleration(10000) //prev 3000, 7000 works
             .allowedClosedLoopError(0.5);
 
     elevatorMotorRight.configure(elevatorConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -125,14 +125,14 @@ public class ElevatorArm extends SubsystemBase{
                 .closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // Set PID values for position control
-                .p(.5)
+                .p(.5) //prev .5
                 .outputRange(-1, 1) //try FF without maxMotion
-                // .velocityFF(5) TODO
+                // .velocityFF(.5)
                 .maxMotion
                 // Set MAXMotion parameters for position control
                 .maxVelocity(5000) //2000
                 .maxAcceleration(100000) //10000
-                .allowedClosedLoopError(0.05);
+                .allowedClosedLoopError(0.1);
 
         leftShoulderMotor.configure(shoulderConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
