@@ -297,7 +297,7 @@ public class OI {
         // just drive out
         // return new PathPlannerAuto("Drive Out")
         //return new PathPlannerAuto("Simple One Piece Auto");
-        return new PathPlannerAuto("Copy of Simple One Piece Auto");
+        return new PathPlannerAuto("AutoAlignTwoPiece");
     }
 
     public void setMotorBrake(boolean brake) {
