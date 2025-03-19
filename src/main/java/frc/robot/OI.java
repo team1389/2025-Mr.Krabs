@@ -172,16 +172,16 @@ public class OI {
         // HERE_______________________________________________________________________________________________________________________________
         // dont use driver B for aything else, its already used for auto align
         driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        driveController.start().whileTrue(Commands.none());
+        driveController.start().whileTrue(drivebase.cancel());
         driveController.back().whileTrue(Commands.none());
 
-        driveController.leftBumper().onTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
+        driveController.leftBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
                 .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
                 .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
                 .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
                 Set.of(drivebase)));
 
-        driveController.rightBumper().onTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
+        driveController.rightBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
                 .andThen(targetingSystem.setBranchSide(ReefBranchSide.RIGHT))
                 .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
                 .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
@@ -202,8 +202,8 @@ public class OI {
         // driveController.x().onTrue(drivebase.driveToPose(new Pose2d(1, 1, new
         // Rotation2d(0))));
 
-        // Was creating a command of a command. Might work now.
-        // driveController.leftBumper().onTrue(drivebase.alignToReef(true));o
+        // // Was creating a command of a command. Might work now.
+        // driveController.leftBumper().onTrue(drivebase.alignToReef(true));
         // driveController.rightBumper().onTrue(drivebase.alignToReef(false));
 
         operatorController.rightBumper().whileTrue(new IntakeCoralTeleop(intake));
@@ -283,7 +283,7 @@ public class OI {
         // return m_chooser.getSelected();
         // if auto is here it good
         // inverted two Pice 3, 11 (bottom feeder)
-        return new PathPlannerAuto("Bottom 2 Piece (4, 8)");
+        // return new PathPlannerAuto("Bottom 2 Piece (4, 8)");
         // top feeder 2 piece
         // return new PathPlannerAuto("Two Piece (3, 11)");
         // //never run this guy in acutal matches
@@ -292,6 +292,7 @@ public class OI {
         // return new PathPlannerAuto("Top 1 Piece (2)");
         // just drive out
         // return new PathPlannerAuto("Drive Out")
+        return new PathPlannerAuto("Simple One Piece Auto");
     }
 
     public void setMotorBrake(boolean brake) {

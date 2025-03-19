@@ -218,7 +218,7 @@ public class SwerveSubsystem extends SubsystemBase
              .save();
     Optional<PoseEstimate>     poseEstimates = limelightPoseEstimator.getPoseEstimate();
     Optional<LimelightResults> results       = limelight.getLatestResults();
-    if (results.isPresent() /*&& poseEstimates.isPresent()*/)
+    if (results.isPresent())
     {
       LimelightResults result       = results.get();
       PoseEstimate     poseEstimate = poseEstimates.get();
@@ -233,7 +233,7 @@ public class SwerveSubsystem extends SubsystemBase
       SmartDashboard.putNumber("Limelight Pose/x", poseEstimate.pose.getX());
       SmartDashboard.putNumber("Limelight Pose/y", poseEstimate.pose.getY());
       SmartDashboard.putNumber("Limelight Pose/degrees", poseEstimate.pose.toPose2d().getRotation().getDegrees());
-      if (result.valid && RobotState.isTeleop())
+      if (result.valid )
       {
         // Pose2d estimatorPose = poseEstimate.pose.toPose2d();
         Pose2d usefulPose     = result.getBotPose2d(Alliance.Blue);
@@ -255,80 +255,12 @@ public class SwerveSubsystem extends SubsystemBase
           outofAreaReading += 1;
           
         }
-//        swerveDrive.addVisionMeasurement(estimatorPose, poseEstimate.timestampSeconds);
       }
 
     }
     swerveDrive.updateOdometry();
 
   }
-
-  // public void addLLMeasurement(){
-  //   swerveDrive.addVisionMeasurement(new Pose2d(visionSubsystem.getRobotPosition()[0], visionSubsystem.getRobotPosition()[1], swerveDrive.getYaw()), Timer.getFPGATimestamp());
-  // }
-
-  // public Command alignToReef(boolean isLeft){
-  //   if (visionSubsystem.getTargetID() == 6 || visionSubsystem.getTargetID() == 17){
-  //     if (isLeft){
-  //       return new PathPlannerAuto("Tag6-17Left");
-  //     }
-  //     else{
-  //       return new PathPlannerAuto("Tag6-17Right");
-  //     }
-  //   }
-  //   else if (visionSubsystem.getTargetID()==7 || visionSubsystem.getTargetID() == 18){
-  //     if (isLeft){
-  //       return new PathPlannerAuto("Tag7-18Left");
-  //     }
-  //     else{
-  //       return new PathPlannerAuto("Tag7-18Right");
-  //     }
-
-  //   }
-  //   else if (visionSubsystem.getTargetID()==8 || visionSubsystem.getTargetID() == 19){
-  //     if (isLeft){
-  //       return new PathPlannerAuto("Tag8-19Left");
-  //     }
-  //     else{
-  //       return new PathPlannerAuto("Tag8-19Right");
-  //     }
-      
-  //   }
-  //   else if (visionSubsystem.getTargetID()==9 || visionSubsystem.getTargetID() == 20){
-  //     if (isLeft){
-  //       return new PathPlannerAuto("Tag9-20Left");
-  //     }
-  //     else {
-  //       return new PathPlannerAuto("Tag9-20Right");
-  //     }
-      
-  //   }
-  //   else if (visionSubsystem.getTargetID()==10 || visionSubsystem.getTargetID() == 21){
-  //     if (isLeft){
-  //       return new PathPlannerAuto("Tag10-21Left");
-  //     }
-  //     else{
-  //       return new PathPlannerAuto("Tag10-21Right");
-  //     }
-      
-  //   }
-  //   else if (visionSubsystem.getTargetID()==11 || visionSubsystem.getTargetID() == 22){
-  //     if(isLeft){
-  //       return new PathPlannerAuto("Tag11-22Left");
-  //     }
-  //     else{
-  //       return new PathPlannerAuto("Tag11-22Right");
-  //     }
-  //   }
-  //   else{
-  //     return Commands.none();
-  //   }
-  // }
-
-  // public double getAlignTx(){
-  //   return visionSubsystem.getAlignTX();
-  // }
-
 
   /**
    * Drive the robot given a chassis field oriented velocity.
@@ -466,7 +398,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
 // Create the constraints to use while pathfinding
     PathConstraints constraints = new PathConstraints(
-        swerveDrive.getMaximumChassisVelocity(), 4.0,
+        swerveDrive.getMaximumChassisVelocity(), 1,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
 
 // Since AutoBuilder is configured, we can use it to build pathfinding commands
@@ -998,4 +930,8 @@ public class SwerveSubsystem extends SubsystemBase
   // public Command autoAlignLeft(){
   //   return defer(() -> driveToPose(getPose()));
   // }
+
+  public Command cancel(){
+    return Commands.none();
+  }
 }
