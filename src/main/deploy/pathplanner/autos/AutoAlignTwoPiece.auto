@@ -9,12 +9,6 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "L4"
-                }
-              },
-              {
                 "type": "sequential",
                 "data": {
                   "commands": [
@@ -28,6 +22,12 @@
                       "type": "named",
                       "data": {
                         "name": "AutoAlignRight"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "L4"
                       }
                     }
                   ]
