@@ -42,20 +42,19 @@ public class ElevatorArm extends SubsystemBase{
     private final SparkClosedLoopController shoulderClosedLoopController;
     private final SparkClosedLoopController wristClosedLoopController;
 
-
     private ProfiledPIDController elevatorPid = new ProfiledPIDController(RobotMap.ArmConstants.ElevatorP, 
                                                                             RobotMap.ArmConstants.ElevatorI, 
                                                                             RobotMap.ArmConstants.ElevatorD, 
                                                                             new Constraints(RobotMap.ArmConstants.ElevatorMaxVelocity, 
                                                                                             RobotMap.ArmConstants.ElevatorMaxAccerlation));
 
-    private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(.5, .3); //TODO
+    private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(.5, .3);
     // private ProfiledPIDController shoulderPid = new ProfiledPIDController(.5, 0, 0, arm1Constraints);
     private ProfiledPIDController shoulderPid = new ProfiledPIDController(0, 0, 0, arm1Constraints);
 
     // private PIDController shoulderPid = new PIDController(2, 2, 0);
 
-    private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3000, 4000); //TODO
+    private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3000, 4000);
     private ProfiledPIDController wristPid = new ProfiledPIDController(.03, 0, 0, wristConstraints);
     // private PIDController wristPid = new PIDController(.003, 0, 0);
 
@@ -127,7 +126,8 @@ public class ElevatorArm extends SubsystemBase{
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // Set PID values for position control
                 .p(.5)
-                .outputRange(-1, 1)
+                .outputRange(-1, 1) //try FF without maxMotion
+                // .velocityFF(5) TODO
                 .maxMotion
                 // Set MAXMotion parameters for position control
                 .maxVelocity(5000) //2000

@@ -8,9 +8,12 @@ public class L3 extends SequentialCommandGroup{
     public L3(ElevatorArm elevatorArm){
         addCommands(
             new ParallelCommandGroup(
-                new SetShoulder(elevatorArm, .0057),
-                new SetWrist(elevatorArm, 136.5),
-                new SetElevatorAuto(elevatorArm, 59.83064)
+                new SetWrist(elevatorArm, 37.9),
+                new SetElevatorAuto(elevatorArm, 117.5555),
+                new SetShoulder(elevatorArm, .0057)
+            ),
+            new ParallelCommandGroup(
+                new SetWrist(elevatorArm, 136.5)
             )
         );
     }
