@@ -30,6 +30,8 @@ import frc.command.SetElevator;
 import frc.command.SetShoulder;
 import frc.command.SetWrist;
 import frc.command.Starting;
+import frc.command.AlignLeftAuto;
+import frc.command.AlignRightAuto;
 import frc.command.Feeder;
 import frc.command.IntakeCoral;
 import frc.command.IntakeCoralTeleop;
@@ -119,6 +121,8 @@ public class OI {
         // Configure the trigger bindings
         configureBindings();
         DriverStation.silenceJoystickConnectionWarning(true);
+        NamedCommands.registerCommand("AutoAlignLeft", new AlignLeftAuto(drivebase, targetingSystem));
+        NamedCommands.registerCommand("AutoAlignRight", new AlignRightAuto(drivebase, targetingSystem));
         NamedCommands.registerCommand("L4", new L4(elevatorArm));
         NamedCommands.registerCommand("StartingPos", new Starting(elevatorArm));
         NamedCommands.registerCommand("Feeder", new Feeder(elevatorArm));
