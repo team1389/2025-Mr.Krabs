@@ -176,13 +176,13 @@ public class OI {
         driveController.back().whileTrue(Commands.none());
 
         driveController.leftBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
-                .andThen(targetingSystem.setBranchSide(ReefBranchSide.RIGHT))
+                .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
                 .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
                 .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
                 Set.of(drivebase)));
 
         driveController.rightBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
-                .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
+                .andThen(targetingSystem.setBranchSide(ReefBranchSide.RIGHT))
                 .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
                 .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
                 Set.of(drivebase)));
