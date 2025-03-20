@@ -31,9 +31,7 @@ import frc.command.SetShoulder;
 import frc.command.SetWrist;
 import frc.command.Starting;
 import frc.command.AlignLeftAuto;
-import frc.command.AlignLeftAutoInit;
 import frc.command.AlignRightAuto;
-import frc.command.AlignRightAutoInit;
 import frc.command.Feeder;
 import frc.command.IntakeCoral;
 import frc.command.IntakeCoralTeleop;
@@ -125,8 +123,6 @@ public class OI {
         DriverStation.silenceJoystickConnectionWarning(true);
         NamedCommands.registerCommand("AutoAlignLeft", new AlignLeftAuto(drivebase, targetingSystem));
         NamedCommands.registerCommand("AutoAlignRight", new AlignRightAuto(drivebase, targetingSystem));
-        NamedCommands.registerCommand("AutoAlignLeftInit", new AlignLeftAutoInit(drivebase, targetingSystem));
-        NamedCommands.registerCommand("AutoAlignRightInit", new AlignRightAutoInit(drivebase, targetingSystem));
         NamedCommands.registerCommand("L4", new L4(elevatorArm));
         NamedCommands.registerCommand("StartingPos", new Starting(elevatorArm));
         NamedCommands.registerCommand("Feeder", new Feeder(elevatorArm));
@@ -195,7 +191,7 @@ public class OI {
         //         .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
         //         .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
         //         Set.of(drivebase)));
-        
+
         driveController.leftBumper().whileTrue(targetingSystem.autoTargetCommand(drivebase::getPose)
                 .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
                 .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
