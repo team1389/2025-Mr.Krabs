@@ -5,35 +5,27 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "aling test"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "AutoAlignRight"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "L4"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
+            "pathName": "aling test"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoAlignRightInit"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoAlignRight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4"
           }
         },
         {
@@ -68,35 +60,27 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "top feeder to location 10"
-                }
-              }
-            ]
+            "pathName": "top feeder to location 10"
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoAlignLeft"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "L4"
-                }
-              }
-            ]
+            "name": "AutoAlignLeftInit"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoAlignLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4"
           }
         },
         {
