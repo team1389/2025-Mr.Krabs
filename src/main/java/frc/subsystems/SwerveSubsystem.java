@@ -233,8 +233,9 @@ public class SwerveSubsystem extends SubsystemBase
       SmartDashboard.putNumber("Limelight Pose/x", poseEstimate.pose.getX());
       SmartDashboard.putNumber("Limelight Pose/y", poseEstimate.pose.getY());
       SmartDashboard.putNumber("Limelight Pose/degrees", poseEstimate.pose.toPose2d().getRotation().getDegrees());
-      if (result.valid )
+      if (result.valid)
       {
+        
         // Pose2d estimatorPose = poseEstimate.pose.toPose2d();
         Pose2d usefulPose     = result.getBotPose2d(Alliance.Blue);
         double distanceToPose = usefulPose.getTranslation().getDistance(swerveDrive.getPose().getTranslation());

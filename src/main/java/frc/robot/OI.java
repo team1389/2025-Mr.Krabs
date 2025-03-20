@@ -178,14 +178,16 @@ public class OI {
         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
         // EDIT YOUR COMMANDS
         // HERE_______________________________________________________________________________________________________________________________
-        // dont use driver B for aything else, its already used for auto align
         driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
         driveController.back().whileTrue(Commands.none());
+        
         // driveController.b().whileTrue(new AlignLeftAuto(drivebase, targetingSystem));
+
+        //TODO: Mention to nstrike or watson that the auto align doesn't acutally go to the nearset branch, its goes to the last known vision pose's closest branch
 
         driveController.leftBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
                 .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
-                .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
+                .andThen(Commands.runOnce(()->{/*source of error?*/drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
                 .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
                 Set.of(drivebase)));
 
@@ -195,24 +197,6 @@ public class OI {
                 .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
                 Set.of(drivebase)));
 
-        // driveController.leftBumper().whileTrue(targetingSystem.setBranchSide(ReefBranchSide.LEFT)
-        // .andThen(Commands.runOnce(() -> drivebase.getSwerveDrive().field.getObject(
-        // "target")
-        // .setPose(
-        // targetingSystem.getCoralTargetPose()))));
-
-        // driveController.rightBumper().whileTrue(targetingSystem.setBranchSide(ReefBranchSide.RIGHT)
-        // .andThen(Commands.runOnce(() -> drivebase.getSwerveDrive().field.getObject(
-        // "target")
-        // .setPose(
-        // targetingSystem.getCoralTargetPose()))));
-
-        // driveController.x().onTrue(drivebase.driveToPose(new Pose2d(1, 1, new
-        // Rotation2d(0))));
-
-        // // Was creating a command of a command. Might work now.
-        // driveController.leftBumper().onTrue(drivebase.alignToReef(true));
-        // driveController.rightBumper().onTrue(drivebase.alignToReef(false));
 
         operatorController.rightBumper().whileTrue(new IntakeCoralTeleop(intake));
         operatorController.leftBumper().whileTrue(new OuttakeCoral(intake));
