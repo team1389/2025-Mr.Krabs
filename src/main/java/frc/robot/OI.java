@@ -183,19 +183,28 @@ public class OI {
         
         // driveController.b().whileTrue(new AlignLeftAuto(drivebase, targetingSystem));
 
-        //TODO: Mention to nstrike or watson that the auto align doesn't acutally go to the nearset branch, its goes to the last known vision pose's closest branch
+        // //MOSTLY WORKING AUTO ALIGN CODE
+        // driveController.leftBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
+        //         .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
+        //         .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
+        //         .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
+        //         Set.of(drivebase)));
 
-        driveController.leftBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
+        // driveController.rightBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
+        //         .andThen(targetingSystem.setBranchSide(ReefBranchSide.RIGHT))
+        //         .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
+        //         .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
+        //         Set.of(drivebase)));
+        
+        driveController.leftBumper().whileTrue(targetingSystem.autoTargetCommand(drivebase::getPose)
                 .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
-                .andThen(Commands.runOnce(()->{/*source of error?*/drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
-                .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
-                Set.of(drivebase)));
-
-        driveController.rightBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
-                .andThen(targetingSystem.setBranchSide(ReefBranchSide.RIGHT))
                 .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
-                .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
-                Set.of(drivebase)));
+                .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())));
+
+        driveController.rightBumper().whileTrue(targetingSystem.autoTargetCommand(drivebase::getPose)
+        .andThen(targetingSystem.setBranchSide(ReefBranchSide.RIGHT))
+        .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
+        .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())));
 
 
         operatorController.rightBumper().whileTrue(new IntakeCoralTeleop(intake));
