@@ -13,12 +13,6 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoAlignRightInit"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "AutoAlignRight"
           }
         },
