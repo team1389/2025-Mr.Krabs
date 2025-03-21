@@ -291,7 +291,7 @@ public class OI {
         // just drive out
         // return new PathPlannerAuto("Drive Out")
         //return new PathPlannerAuto("Simple One Piece Auto");
-        // return new PathPlannerAuto("AutoAlignTwoPiece");
+        // return new PathPlannerAuto("AutoAlignTwoPieceBottom");
         return new PathPlannerAuto("AutoAlignTwoPieceTop");
     }
 

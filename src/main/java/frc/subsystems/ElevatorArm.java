@@ -294,7 +294,7 @@ public class ElevatorArm extends SubsystemBase{
 
     public boolean atShoulderTargetPosition(double height){
         shoulderClose = Math.abs(getShoulderRelPos() - height) < .05;
-        // SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
+        SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
         return shoulderClose;
     }
 
