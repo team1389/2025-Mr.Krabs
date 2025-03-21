@@ -292,7 +292,7 @@ public class OI {
         // return new PathPlannerAuto("Drive Out")
         //return new PathPlannerAuto("Simple One Piece Auto");
         // return new PathPlannerAuto("AutoAlignTwoPiece");
-        return new PathPlannerAuto("AutoAlignTwoPiece");
+        return new PathPlannerAuto("AutoAlignTwoPieceTop");
     }
 
     public void setMotorBrake(boolean brake) {
