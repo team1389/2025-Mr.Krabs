@@ -11,11 +11,10 @@ import frc.util.TargetingSystem.ReefBranchSide;
 public class AlignLeftAuto extends SequentialCommandGroup{
     public AlignLeftAuto(SwerveSubsystem drivebase, TargetingSystem targetingSystem){
         addCommands(
-            Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
-            .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
-            .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
-            .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
-            Set.of(drivebase))
-        );
+            targetingSystem.autoTargetCommand(drivebase::getPose)
+                .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
+                .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
+                .andThen(Commands.defer(()->drivebase.driveToPose(targetingSystem.getCoralTargetPose()), Set.of(drivebase)))
+                );
     }
 }

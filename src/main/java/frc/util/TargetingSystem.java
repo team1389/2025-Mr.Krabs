@@ -139,12 +139,12 @@ public class TargetingSystem
     return targetBranch;
   }
 
-  public Command driveToCoralTarget(SwerveSubsystem swerveDrive)
-  {
-    return (Commands.runOnce(() -> {
-      swerveDrive.getSwerveDrive().field.getObject("target").setPose(getCoralTargetPose());
-    })).andThen(swerveDrive.driveToPose(getCoralTargetPose()));
-  }
+  // public Command driveToCoralTarget(SwerveSubsystem swerveDrive)
+  // {
+  //   return (Commands.runOnce(() -> {
+  //     swerveDrive.getSwerveDrive().field.getObject("target").setPose(getCoralTargetPose());
+  //   })).andThen(swerveDrive.driveToPose(getCoralTargetPose()));
+  // }
 
   // public Command driveToAlgaeTarget(SwerveSubsystem swerveDrive)
   // {

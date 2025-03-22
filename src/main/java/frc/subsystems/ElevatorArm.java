@@ -262,6 +262,7 @@ public class ElevatorArm extends SubsystemBase{
         // should be based on your hardware.
         // power = -MathUtil.clamp(power, -.3, .3); // Example: Limit between -1 and 1
         double power = -wristPid.calculate(getWristRelPos(), setpoint);
+        // wristMotor.setVoltage(MathUtil.clamp(power, -7, 7));
         wristMotor.set(MathUtil.clamp(power, -.3, .3));
     }
 

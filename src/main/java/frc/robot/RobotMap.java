@@ -28,7 +28,7 @@ public final class RobotMap
   public static final double ROBOT_MASS = 61.235;
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = 5; //IN METERS TODO: FIND MAX ACTUAL SPEED!
+  public static final double MAX_SPEED  = 9; //IN METERS TODO: FIND MAX ACTUAL SPEED!
   public static final double fieldLength   = Units.inchesToMeters(690.876);
   public static final double fieldWidth    = Units.inchesToMeters(317);
   public static final double startingLineX =
