@@ -7,10 +7,14 @@ import frc.subsystems.ElevatorArm;
 public class L3 extends SequentialCommandGroup{
     public L3(ElevatorArm elevatorArm){
         addCommands(
-            new SetWrist(elevatorArm, 37.9),
-            new SetShoulder(elevatorArm, .0057),
-            new SetElevatorAuto(elevatorArm, 59.83064),
-            new SetWrist(elevatorArm, 136.5)
+            new ParallelCommandGroup(
+                new SetWrist(elevatorArm, 37.9),
+                new SetElevatorAuto(elevatorArm, 59.83064)
+            ),
+            new ParallelCommandGroup(
+                new SetWrist(elevatorArm, 136.5),
+                new SetShoulder(elevatorArm, .0057)
+            )
         );
     }
 }

@@ -172,6 +172,8 @@ public class OI {
                 driveDirectAngle);
 
         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+        driveController.rightTrigger()
+                        .whileTrue(Commands.run(() -> driveAngularVelocity.scaleTranslation(0.4)));
         // EDIT YOUR COMMANDS
         // HERE_______________________________________________________________________________________________________________________________
         driveController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
@@ -179,28 +181,19 @@ public class OI {
         
         // driveController.b().whileTrue(new AlignLeftAuto(drivebase, targetingSystem));
 
-        // //MOSTLY WORKING AUTO ALIGN CODE
-        // driveController.leftBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
-        //         .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
-        //         .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
-        //         .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
-        //         Set.of(drivebase)));
-
-        // driveController.rightBumper().whileTrue(Commands.defer(() -> targetingSystem.autoTargetCommand(drivebase::getPose)
-        //         .andThen(targetingSystem.setBranchSide(ReefBranchSide.RIGHT))
-        //         .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
-        //         .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())),
-        //         Set.of(drivebase)));
-
+        //VERY WORKING AUTO ALIGN CODE
         driveController.leftBumper().whileTrue(targetingSystem.autoTargetCommand(drivebase::getPose)
                 .andThen(targetingSystem.setBranchSide(ReefBranchSide.LEFT))
                 .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
-                .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())));
+                .andThen(Commands.defer(()->drivebase.driveToPose(targetingSystem.getCoralTargetPose()), Set.of(drivebase))));
 
         driveController.rightBumper().whileTrue(targetingSystem.autoTargetCommand(drivebase::getPose)
-        .andThen(targetingSystem.setBranchSide(ReefBranchSide.RIGHT))
-        .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
-        .andThen(drivebase.driveToPose(targetingSystem.getCoralTargetPose())));
+                .andThen(targetingSystem.setBranchSide(ReefBranchSide.RIGHT))
+                .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
+                .andThen(Commands.defer(()->drivebase.driveToPose(targetingSystem.getCoralTargetPose()), Set.of(drivebase))));
+
+        
+
 
 
         operatorController.rightBumper().whileTrue(new IntakeCoralTeleop(intake));
@@ -217,9 +210,7 @@ public class OI {
 
         operatorController.y().onTrue(new L3(elevatorArm));
 
-        operatorController.button(9).onTrue(new SetWrist(elevatorArm, 115));
-
-    //   operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -.5)); //ellipses
+      operatorController.button(9).onTrue(new SetWrist(elevatorArm, 115)); //ellipses
 
       // operatorController.button(10).onTrue(new SetWrist(elevatorArm, 115));
       operatorController.button(10).onTrue(new SetShoulder(elevatorArm, -12.162)); //menu
