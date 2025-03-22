@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Bottom to location 6"
+            "pathName": "aling test"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AutoAlignLeft"
+            "name": "AutoAlignRight"
           }
         },
         {
@@ -35,7 +35,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "location 6 to bottom feeder"
+                  "pathName": "location 3 to top feeder"
                 }
               },
               {
@@ -54,41 +54,15 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "bottom feeder to location 8"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.5
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "L4"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
+            "pathName": "top feeder to location 11"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 0.333
+            "name": "L4"
           }
         },
         {

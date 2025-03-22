@@ -213,7 +213,7 @@ public class OI {
       operatorController.button(9).onTrue(new SetWrist(elevatorArm, 115)); //ellipses
 
       // operatorController.button(10).onTrue(new SetWrist(elevatorArm, 115));
-      operatorController.button(10).onTrue(new SetShoulder(elevatorArm, -12.162));
+      operatorController.button(10).onTrue(new SetShoulder(elevatorArm, -12.162)); //menu
  
       // elevatorArm.setDefaultCommand(new ManualElevatorArm(
       //   elevatorArm,
@@ -284,8 +284,8 @@ public class OI {
         // just drive out
         // return new PathPlannerAuto("Drive Out")
         //return new PathPlannerAuto("Simple One Piece Auto");
-        // return new PathPlannerAuto("AutoAlignTwoPiece");
-        return new PathPlannerAuto("AutoAlignTwoPiece");
+        // return new PathPlannerAuto("AutoAlignTwoPieceBottom");
+        return new PathPlannerAuto("AutoAlignTwoPieceTop");
     }
 
     public void setMotorBrake(boolean brake) {
