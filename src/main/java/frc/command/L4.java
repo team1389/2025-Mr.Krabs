@@ -8,7 +8,6 @@ import frc.subsystems.ElevatorArm;
 
 public class L4 extends SequentialCommandGroup{
     public L4(ElevatorArm elevatorArm){
-        Timer timer = new Timer();
 
         addCommands(
             new ParallelCommandGroup(
