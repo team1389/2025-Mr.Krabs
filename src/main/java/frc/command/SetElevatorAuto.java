@@ -10,6 +10,8 @@ public class SetElevatorAuto extends Command{
     public SetElevatorAuto(ElevatorArm elevator, double height){
         this.elevator = elevator;
         this.height = height;
+
+        // addRequirements(elevator);
     }
 
     @Override

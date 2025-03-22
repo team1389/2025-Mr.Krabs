@@ -10,13 +10,20 @@ public class SetShoulder extends Command{
     public SetShoulder(ElevatorArm shoulder, double position){
         this.shoulder = shoulder;
         this.position = position;
+
+        addRequirements(shoulder);
     }
 
     @Override
-    public void execute(){
-        // shoulder.setShoulder(position);
+    public void initialize(){
         shoulder.moveToSetpointShoulder(position);
     }
+
+    // @Override
+    // public void execute(){
+    //     // shoulder.setShoulder(position);
+    //     shoulder.moveToSetpointShoulder(position);
+    // }
 
     @Override
     public boolean isFinished(){

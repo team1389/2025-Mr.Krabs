@@ -10,6 +10,8 @@ public class SetWrist extends Command{
     public SetWrist(ElevatorArm wrist, double position){
         this.wrist = wrist;
         this.position = position;
+
+        addRequirements(wrist);
     }
 
     @Override

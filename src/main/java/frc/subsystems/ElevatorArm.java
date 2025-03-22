@@ -329,7 +329,7 @@ public class ElevatorArm extends SubsystemBase{
         // elevatorPid.setP(SmartDashboard.getNumber("I Elevator", 0));
         // elevatorPid.setP(SmartDashboard.getNumber("D Elevator", 0));
 
-        SmartDashboard.putNumber("Right Elevator Pos", getRightRelElevatorPos()); //TODO comment for comp
+        SmartDashboard.putNumber("Right Elevator Pos", getRightRelElevatorPos());
         SmartDashboard.putNumber("Shoulder Rel Pos", getShoulderRelPos());
         SmartDashboard.putNumber("Wrist Abs Position", getWristPos());
         SmartDashboard.putNumber("Wrist Rel Pos", getWristRelPos());
