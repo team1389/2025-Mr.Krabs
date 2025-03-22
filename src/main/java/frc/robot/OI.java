@@ -217,10 +217,12 @@ public class OI {
 
         operatorController.y().onTrue(new L3(elevatorArm));
 
-      operatorController.button(9).onTrue(new Starting(elevatorArm)); //ellipses
+        operatorController.button(9).onTrue(new SetWrist(elevatorArm, 115));
+
+    //   operatorController.button(9).onTrue(new SetShoulder(elevatorArm, -.5)); //ellipses
 
       // operatorController.button(10).onTrue(new SetWrist(elevatorArm, 115));
-      operatorController.button(10).onTrue(new SetShoulder(elevatorArm, -12.162));
+      operatorController.button(10).onTrue(new SetShoulder(elevatorArm, -12.162)); //menu
  
       // elevatorArm.setDefaultCommand(new ManualElevatorArm(
       //   elevatorArm,

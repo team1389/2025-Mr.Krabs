@@ -140,7 +140,7 @@ public class ElevatorArm extends SubsystemBase{
             wristConfig
                 .closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .p(.5)
+                .p(.5) //.5
                 .outputRange(-1, 1)
                 .maxMotion
                 .maxVelocity(2000)
@@ -238,7 +238,7 @@ public class ElevatorArm extends SubsystemBase{
 
     public void moveToSetpointShoulder(double goal){
         shoulderClosedLoopController.setReference(
-        goal, ControlType.kMAXMotionPositionControl);
+        goal, ControlType.kPosition);
     }
 
     public void setShoulder(double setpoint){
@@ -262,7 +262,7 @@ public class ElevatorArm extends SubsystemBase{
         // should be based on your hardware.
         // power = -MathUtil.clamp(power, -.3, .3); // Example: Limit between -1 and 1
         double power = -wristPid.calculate(getWristRelPos(), setpoint);
-        wristMotor.set(MathUtil.clamp(power, -.3, .3));
+        wristMotor.set(MathUtil.clamp(power, -.4, .4));
     }
 
 
