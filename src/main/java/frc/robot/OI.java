@@ -284,8 +284,10 @@ public class OI {
         // just drive out
         // return new PathPlannerAuto("Drive Out")
         //return new PathPlannerAuto("Simple One Piece Auto");
-        // return new PathPlannerAuto("AutoAlignTwoPieceBottom");
-        return new PathPlannerAuto("AutoAlignTwoPieceTop");
+        // return new PathPlannerAuto("Bottom 2 Piece (6, 8) Cage");
+        // return new PathPlannerAuto("AutoAlignTwoPieceTop");
+        return new PathPlannerAuto("Top 2 Piece (1, 11) Cage");
+        // return new PathPlannerAuto("Bottom 2 Piece (6, 8) Cage");
     }
 
     public void setMotorBrake(boolean brake) {

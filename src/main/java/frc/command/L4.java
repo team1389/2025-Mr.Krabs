@@ -15,10 +15,11 @@ public class L4 extends SequentialCommandGroup{
                 new SetElevatorAuto(elevatorArm, 117.5555)
                  
             ),
+            // new SetShoulder(elevatorArm, -12.162, 259.4)
             new ParallelCommandGroup(
                 // runs l4 sequence
-                new SetWrist(elevatorArm, 259.4),
-                new SetShoulder(elevatorArm, -12.162)
+                new SetWrist(elevatorArm, 270.4), //261.4, 264.4
+                new SetShoulder(elevatorArm, -13.162) //-12.162
                 // new SetElevatorAuto(elevatorArm, 117.5555),
                 
             )

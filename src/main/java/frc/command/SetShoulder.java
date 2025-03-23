@@ -1,22 +1,25 @@
 package frc.command;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.subsystems.ElevatorArm;
 
 public class SetShoulder extends Command{
     public ElevatorArm shoulder;
-    public double position;
+    public double shoulderPos, wristPos;
 
-    public SetShoulder(ElevatorArm shoulder, double position){
+    public SetShoulder(ElevatorArm shoulder, double shoulderPos){
         this.shoulder = shoulder;
-        this.position = position;
+        this.shoulderPos = shoulderPos;
+        this.wristPos = wristPos;
 
-        addRequirements(shoulder);
+        // addRequirements(shoulder);
     }
 
     @Override
     public void initialize(){
-        shoulder.moveToSetpointShoulder(position);
+        // shoulder.setWristTarget(wristPos);
+        shoulder.moveToSetpointShoulder(shoulderPos);
     }
 
     // @Override
@@ -27,7 +30,7 @@ public class SetShoulder extends Command{
 
     @Override
     public boolean isFinished(){
-        return shoulder.atShoulderTargetPosition(position);
+        return shoulder.atShoulderTargetPosition(shoulderPos);
     }
 
     @Override

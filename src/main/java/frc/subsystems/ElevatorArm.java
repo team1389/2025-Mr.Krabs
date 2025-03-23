@@ -31,6 +31,7 @@ public class ElevatorArm extends SubsystemBase{
     private SparkFlex elevatorMotorRight, leftShoulderMotor, rightShoulderMotor, elevatorMotorLeft;
     private SparkMax wristMotor;
     double elevatorSpeed = 1;
+    double power;
 
     boolean shoulderClose = false;
     private RelativeEncoder shoulderRelEncoder, rightElevatorRelEncoder, wristRelEncoder;
@@ -55,14 +56,16 @@ public class ElevatorArm extends SubsystemBase{
     // private PIDController shoulderPid = new PIDController(2, 2, 0);
 
     private final TrapezoidProfile.Constraints wristConstraints = new TrapezoidProfile.Constraints(3000, 4000);
-    private ProfiledPIDController wristPid = new ProfiledPIDController(.03, 0, 0, wristConstraints);
+    // private ProfiledPIDController wristPid = new ProfiledPIDController(.03, 0, 0, wristConstraints);
+    private ProfiledPIDController wristPid = new ProfiledPIDController(.01, 0, 0, wristConstraints);
+
     // private PIDController wristPid = new PIDController(.003, 0, 0);
 
     private final ElevatorFeedforward elevatorFF = new ElevatorFeedforward(0.02, .9, 3.8, .17);
     private final ArmFeedforward shoulderFF = new ArmFeedforward(0,  0, 0); //ks is static friction, might not need it
     private final ArmFeedforward wristFF = new ArmFeedforward(0, 1.75, 1.95, 0); 
 
-    private double elevatorTarget, shoulderTarget, wristTarget;
+    private double elevatorTarget, shoulderTarget, wristTarget = 68.8;
 
     public enum ArmPosition {
         Starting,
@@ -265,6 +268,10 @@ public class ElevatorArm extends SubsystemBase{
         wristMotor.set(MathUtil.clamp(power, -.4, .4));
     }
 
+    public void setWristTarget(double setpoint){
+        wristTarget = setpoint;
+    }
+
 
     public void stop(){
         elevatorMotorRight.set(0);
@@ -317,13 +324,21 @@ public class ElevatorArm extends SubsystemBase{
     @Override
     public void periodic(){
         wristRelEncoder.setPosition(wristAbsEncoder.getPosition() * 2*Math.PI* RobotMap.ArmConstants.WristGearRatio);
+
+        SmartDashboard.putNumber("Wrist Current", wristMotor.getOutputCurrent());
+
+        // if(!atWristTargetPosition(wristTarget)){
+            power = -wristPid.calculate(getWristRelPos(), wristTarget);
+            wristMotor.set(MathUtil.clamp(power, -.4, .4));
+        // }
+
+        SmartDashboard.putNumber("Wrist Target", wristTarget);
         // SmartDashboard.putNumber("wrist acc error", wristPid.getAccumulatedError());
         // SmartDashboard.putNumber("wrist error", wristPid.getPositionError());
 
         // SmartDashboard.putNumber("elevator M per S", getVelocityMetersPerSecond());
         // SmartDashboard.putNumber("elevator position M", getPositionMeters());
 
-        // SmartDashboard.putBoolean("Shoulder At Target", shoulderClose);
 
         // elevatorPid.setP(SmartDashboard.getNumber("P Elevator", 0));
         // elevatorPid.setP(SmartDashboard.getNumber("I Elevator", 0));

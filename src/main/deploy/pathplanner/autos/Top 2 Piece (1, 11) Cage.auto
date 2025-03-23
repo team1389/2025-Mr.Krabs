@@ -7,19 +7,26 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Bottom to location 6"
+            "pathName": "Middle Top to location 1"
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "AutoAlignLeft"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L4"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoAlignRight"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
+              }
+            ]
           }
         },
         {
@@ -35,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "location 6 to bottom feeder"
+                  "pathName": "location 1 to top feeder"
                 }
               },
               {
@@ -60,22 +67,29 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "bottom feeder to location 8"
+                  "pathName": "top feeder to location 11"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "AutoAlignLeft"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L4"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoAlignRight"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
+              }
+            ]
           }
         },
         {

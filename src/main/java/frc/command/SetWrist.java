@@ -15,10 +15,15 @@ public class SetWrist extends Command{
     }
 
     @Override
-    public void execute(){
-        // wrist.moveToSetpointWrist(position);
-        wrist.setWrist(position);
+    public void initialize(){
+        wrist.setWristTarget(position);
     }
+
+    // @Override
+    // public void execute(){
+    //     // wrist.moveToSetpointWrist(position);
+    //     wrist.setWrist(position);
+    // }
 
     @Override
     public boolean isFinished(){
