@@ -192,8 +192,6 @@ public class OI {
                 .andThen(Commands.runOnce(()->{drivebase.getSwerveDrive().field.getObject("target").setPose(targetingSystem.getCoralTargetPose());}))
                 .andThen(Commands.defer(()->drivebase.driveToPose(targetingSystem.getCoralTargetPose()), Set.of(drivebase))));
 
-        
-
 
 
         operatorController.rightBumper().whileTrue(new IntakeCoralTeleop(intake));
