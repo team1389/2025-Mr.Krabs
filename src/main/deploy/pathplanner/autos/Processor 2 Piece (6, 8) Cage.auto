@@ -5,25 +5,45 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Middle Top to location 1"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "AutoAlignRight"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Middle Bottom to location 6"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "AutoAlignLeft"
+                      }
+                    }
+                  ]
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "L4"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.2
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "L4"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -42,7 +62,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "location 1 to top feeder"
+                  "pathName": "location 6 to bottom feeder"
                 }
               },
               {
@@ -67,7 +87,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "top feeder to location 11"
+                  "pathName": "bottom feeder to location 8"
                 }
               }
             ]
@@ -80,7 +100,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoAlignRight"
+                  "name": "AutoAlignLeft"
                 }
               },
               {

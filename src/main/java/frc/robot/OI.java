@@ -27,7 +27,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.command.MoveClimber;
 import frc.command.SetElevator;
+import frc.command.SetElevatorAuto;
 import frc.command.SetShoulder;
+import frc.command.SetShoulderWrist;
 import frc.command.SetWrist;
 import frc.command.Starting;
 import frc.command.AlignLeftAuto;
@@ -38,6 +40,7 @@ import frc.command.IntakeCoralTeleop;
 import frc.command.L2;
 import frc.command.L3;
 import frc.command.L4;
+import frc.command.L4Test;
 import frc.command.ManualElevatorArm;
 import frc.robot.RobotMap.OperatorConstants;
 import frc.subsystems.ClimberSubsystem;
@@ -197,10 +200,13 @@ public class OI {
         operatorController.rightBumper().whileTrue(new IntakeCoralTeleop(intake));
         operatorController.leftBumper().whileTrue(new OuttakeCoral(intake));
 
+        // operatorController.rightBumper().whileTrue(new RunManualShoulder(elevatorArm, 1));
+        // operatorController.leftBumper().whileTrue(new RunManualShoulder(elevatorArm, -1));
+
         operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); // left trigger
         operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); // right trigger
 
-        operatorController.b().onTrue(new L4(elevatorArm));
+        operatorController.b().onTrue(new L4Test(elevatorArm));
 
         operatorController.x().onTrue(new L2(elevatorArm));
 
@@ -211,7 +217,11 @@ public class OI {
       operatorController.button(9).onTrue(new SetWrist(elevatorArm, 115)); //ellipses
 
       // operatorController.button(10).onTrue(new SetWrist(elevatorArm, 115));
-      operatorController.button(10).onTrue(new SetShoulder(elevatorArm, -12.162)); //menu
+      operatorController.button(10).onTrue(new SetShoulder(elevatorArm, -13.162)); //menu
+
+    //   operatorController.button(14).onTrue(new SetShoulderWrist(elevatorArm, -13.162, 270.4)); //TODO try, Google
+
+    operatorController.button(14).onTrue(new SetElevatorAuto(elevatorArm, 45.2138));
  
       // elevatorArm.setDefaultCommand(new ManualElevatorArm(
       //   elevatorArm,
@@ -223,7 +233,7 @@ public class OI {
       // );
 
 
-        // COMMENT THIS FOR AUTOS TO WORK
+        // COMMENT THIS FOR POSITIONS TO WORK
         // elevatorArm.setDefaultCommand(new ManualElevatorArm(
         // elevatorArm,
         // () -> -getManipRightY(),
@@ -269,23 +279,12 @@ public class OI {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // return m_chooser.getSelected();
-        // if auto is here it good
-        // inverted two Pice 3, 11 (bottom feeder)
-        // return new PathPlannerAuto("Bottom 2 Piece (4, 8)");
-        // top feeder 2 piece
-        // return new PathPlannerAuto("Two Piece (3, 11)");
-        // //never run this guy in acutal matches
-        // return new PathPlannerAuto("Faux Two Piece 3,11");
-        // //cage auto
-        // return new PathPlannerAuto("Top 1 Piece (2)");
-        // just drive out
-        // return new PathPlannerAuto("Drive Out")
-        //return new PathPlannerAuto("Simple One Piece Auto");
-        // return new PathPlannerAuto("Bottom 2 Piece (6, 8) Cage");
-        // return new PathPlannerAuto("AutoAlignTwoPieceTop");
-        return new PathPlannerAuto("Top 2 Piece (1, 11) Cage");
-        // return new PathPlannerAuto("Bottom 2 Piece (6, 8) Cage");
+        //MIDDLE TO OPPOSITE PROCESSOR
+        // return new PathPlannerAuto("AutoAlignTwoPieceProcessorOp");
+        //USED TO BE NAMED TOP -> NOW OPPOSITE SIDE OF PROCESSOR
+        return new PathPlannerAuto("Opposite Processor 2 Piece (1, 11) Cage");
+        //USED TO BE NAMED BOTTOM -> NOW PROCESSOR SIDE
+        // return new PathPlannerAuto("Processor 2 Piece (6, 8) Cage");
     }
 
     public void setMotorBrake(boolean brake) {

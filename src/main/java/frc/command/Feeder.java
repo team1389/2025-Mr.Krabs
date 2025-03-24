@@ -13,7 +13,7 @@ public class Feeder extends SequentialCommandGroup{
                 new SetElevatorAuto(elevatorArm, .5177)
                 
             ),
-            new SetShoulder(elevatorArm, .19503)
+            new SetShoulderWrist(elevatorArm, .19503, 68.8)
             // new SetShoulder(elevatorArm, .19503)
             // new SetWrist(elevatorArm, 68.8)
         );

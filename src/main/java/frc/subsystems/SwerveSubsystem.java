@@ -191,7 +191,7 @@ public class SwerveSubsystem extends SubsystemBase
     limelight = new Limelight("limelight-front");
     limelight.getSettings()
              .withPipelineIndex(0)
-             .withCameraOffset(new Pose3d(Units.inchesToMeters(0),
+             .withCameraOffset(new Pose3d(Units.inchesToMeters(1),
                                           Units.inchesToMeters(8.9),
                                           Units.inchesToMeters(9.1),
                                           new Rotation3d(0, Units.degreesToRadians(25), 0)))
@@ -395,26 +395,26 @@ public class SwerveSubsystem extends SubsystemBase
    * @param pose Target {@link Pose2d} to go to.
    * @return PathFinding command
    */
-  public Command driveToPose(Supplier<Pose2d> pose)
-  {
-// Create the constraints to use while pathfinding
-    PathConstraints constraints = new PathConstraints(
-        swerveDrive.getMaximumChassisVelocity(), 2,
-        swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
+//   public Command driveToPose(Supplier<Pose2d> pose)
+//   {
+// // Create the constraints to use while pathfinding
+//     PathConstraints constraints = new PathConstraints(
+//         swerveDrive.getMaximumChassisVelocity(), 1.5,
+//         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
 
-// Since AutoBuilder is configured, we can use it to build pathfinding commands
-    return AutoBuilder.pathfindToPose(
-        pose.get(),
-        constraints,
-        edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
-                                     );
-  }
+// // Since AutoBuilder is configured, we can use it to build pathfinding commands
+//     return AutoBuilder.pathfindToPose(
+//         pose.get(),
+//         constraints,
+//         edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
+//                                      );
+//   }
 
   public Command driveToPose(Pose2d pose)
   {
 // Create the constraints to use while pathfinding
     PathConstraints constraints = new PathConstraints(
-        swerveDrive.getMaximumChassisVelocity(), 1.5,
+        swerveDrive.getMaximumChassisVelocity(), .5,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
 
 // Since AutoBuilder is configured, we can use it to build pathfinding commands

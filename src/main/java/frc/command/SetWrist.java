@@ -11,19 +11,19 @@ public class SetWrist extends Command{
         this.wrist = wrist;
         this.position = position;
 
-        addRequirements(wrist);
-    }
-
-    @Override
-    public void initialize(){
-        wrist.setWristTarget(position);
+        // addRequirements(wrist);
     }
 
     // @Override
-    // public void execute(){
-    //     // wrist.moveToSetpointWrist(position);
-    //     wrist.setWrist(position);
+    // public void initialize(){
+    //     wrist.setWristTarget(position);
     // }
+
+    @Override
+    public void execute(){
+        // wrist.moveToSetpointWrist(position);
+        wrist.setWrist(position);
+    }
 
     @Override
     public boolean isFinished(){

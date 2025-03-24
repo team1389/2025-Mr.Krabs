@@ -65,7 +65,8 @@ public class ElevatorArm extends SubsystemBase{
     private final ArmFeedforward shoulderFF = new ArmFeedforward(0,  0, 0); //ks is static friction, might not need it
     private final ArmFeedforward wristFF = new ArmFeedforward(0, 1.75, 1.95, 0); 
 
-    private double elevatorTarget, shoulderTarget, wristTarget = 68.8;
+    private double elevatorTarget, shoulderTarget = .19503, wristTarget = 68.8;
+    private boolean wristDone = false, shoulderDone = false;
 
     public enum ArmPosition {
         Starting,
@@ -220,7 +221,7 @@ public class ElevatorArm extends SubsystemBase{
         double speed = ((elevatorPid.calculate(getRightRelElevatorPos(), goal)));
         double FF = elevatorFF.calculate(elevatorPid.getSetpoint().velocity);
         // elevatorMotorRight.setVoltage(MathUtil.clamp(speed+FF, -7, 7));
-        elevatorMotorRight.set(speed+FF);
+        elevatorMotorRight.set(MathUtil.clamp(speed+FF, -.3, .3));
         SmartDashboard.putNumber("Elevator Goal", goal);
     }
 
@@ -270,11 +271,47 @@ public class ElevatorArm extends SubsystemBase{
 
     public void setWristTarget(double setpoint){
         wristTarget = setpoint;
+        wristDone = false;
+    }
+
+    public void setShoulderTarget(double setpoint){
+        shoulderTarget = setpoint;
+        shoulderDone = false;
+    }
+
+    public void updateWrist(){
+        if(!wristDone){
+            if(atWristTargetPosition(wristTarget)){
+                wristDone = true;
+                wristMotor.set(0);
+            } else {
+                setWrist(wristTarget);
+            }
+        }
+    }
+
+    public void updateShoulder(){
+        if(!shoulderDone){
+            if(atShoulderTargetPosition(shoulderTarget)){
+                shoulderDone = true;
+                setManualShoulder(0);
+            } else {
+                moveToSetpointShoulder(shoulderTarget);
+            }
+        }
+    }
+
+    public boolean ifWristAtTarget(){
+        return wristDone;
+    }
+
+    public boolean ifShoulderAtTarget(){
+        return shoulderDone;
     }
 
 
     public void stop(){
-        elevatorMotorRight.set(0);
+        // elevatorMotorRight.set(0);
         leftShoulderMotor.set(0);
         wristMotor.set(0);
     }
@@ -328,8 +365,8 @@ public class ElevatorArm extends SubsystemBase{
         SmartDashboard.putNumber("Wrist Current", wristMotor.getOutputCurrent());
 
         // if(!atWristTargetPosition(wristTarget)){
-            power = -wristPid.calculate(getWristRelPos(), wristTarget);
-            wristMotor.set(MathUtil.clamp(power, -.4, .4));
+            // power = -wristPid.calculate(getWristRelPos(), wristTarget);
+            // wristMotor.set(MathUtil.clamp(power, -.4, .4));
         // }
 
         SmartDashboard.putNumber("Wrist Target", wristTarget);
