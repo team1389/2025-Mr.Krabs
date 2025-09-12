@@ -51,7 +51,7 @@ public class ElevatorArm extends SubsystemBase{
 
     private final TrapezoidProfile.Constraints arm1Constraints = new TrapezoidProfile.Constraints(.5, .3);
     // private ProfiledPIDController shoulderPid = new ProfiledPIDController(.5, 0, 0, arm1Constraints);
-    private ProfiledPIDController shoulderPid = new ProfiledPIDController(0, 0, 0, arm1Constraints);
+    private ProfiledPIDController shoulderPid = new ProfiledPIDController(.5, 0, 0, arm1Constraints);
 
     // private PIDController shoulderPid = new PIDController(2, 2, 0);
 
@@ -131,7 +131,7 @@ public class ElevatorArm extends SubsystemBase{
                 // Set PID values for position control
                 .p(.5) //prev .5
                 .outputRange(-1, 1) //try FF without maxMotion
-                // .velocityFF(.5)
+                //.velocityFF(.5);
                 .maxMotion
                 // Set MAXMotion parameters for position control
                 .maxVelocity(5000) //2000
@@ -144,13 +144,9 @@ public class ElevatorArm extends SubsystemBase{
             wristConfig
                 .closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .p(.5) //.5
-                .outputRange(-1, 1)
-                .maxMotion
-                .maxVelocity(2000)
-                .maxAcceleration(10000)
-                .allowedClosedLoopError(1);
-
+                .p(1) //.5
+                .outputRange(-1, 1);
+                
             // wristConfig
             //     .softLimit
             //         .forwardSoftLimit(.1)
@@ -291,14 +287,28 @@ public class ElevatorArm extends SubsystemBase{
     }
 
     public void updateShoulder(){
-        if(!shoulderDone){
+        //if(!shoulderDone){
+
+            while(!atShoulderTargetPosition(shoulderTarget)){
+                moveToSetpointShoulder(shoulderTarget);
+                shoulderDone = false;
+            }
+            leftShoulderMotor.set(0);
+            rightShoulderMotor.set(0);
+            shoulderDone = true;
+            /*
             if(atShoulderTargetPosition(shoulderTarget)){
+                //shoulderDone = true;
+                //setManualShoulder(0);
+                leftShoulderMotor.set(0);
+                rightShoulderMotor.set(0);
                 shoulderDone = true;
-                setManualShoulder(0);
             } else {
                 moveToSetpointShoulder(shoulderTarget);
+                shoulderDone = false;
             }
-        }
+ */
+        //}
     }
 
     public boolean ifWristAtTarget(){
@@ -361,7 +371,7 @@ public class ElevatorArm extends SubsystemBase{
     @Override
     public void periodic(){
         wristRelEncoder.setPosition(wristAbsEncoder.getPosition() * 2*Math.PI* RobotMap.ArmConstants.WristGearRatio);
-
+        updateShoulder();
         SmartDashboard.putNumber("Wrist Current", wristMotor.getOutputCurrent());
 
         // if(!atWristTargetPosition(wristTarget)){

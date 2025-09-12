@@ -206,7 +206,7 @@ public class OI {
         operatorController.button(13).whileTrue(new MoveClimber(climber, 1)); // left trigger
         operatorController.button(12).whileTrue(new MoveClimber(climber, -1)); // right trigger
 
-        operatorController.b().onTrue(new L4Test(elevatorArm));
+        operatorController.b().onTrue(new L4(elevatorArm));//Test(elevatorArm));
 
         operatorController.x().onTrue(new L2(elevatorArm));
 

@@ -10,14 +10,16 @@ public class L4Test extends SequentialCommandGroup{
     public L4Test(ElevatorArm elevatorArm){
 
         addCommands(
+            
             new ParallelCommandGroup(
-                new SetWrist(elevatorArm, 37.9),
+                //new SetWrist(elevatorArm, 37.9),
                 // new SetWrist(elevatorArm, 37.9),
                 new SetElevatorAuto(elevatorArm, 117.5555)
+                //new SetShoulder(elevatorArm, -7.162)
                  
-            ),
-            new SetShoulderWrist(elevatorArm, -13.162, 270.4)
-            // new SetShoulder(elevatorArm, -12.162, 259.4)
+            )
+            //new SetShoulderWrist(elevatorArm, -0.162, 270.4)
+            //new SetShoulder(elevatorArm, -12.162)//, 259.4)
             // new ParallelCommandGroup(
                 // runs l4 sequence
                 

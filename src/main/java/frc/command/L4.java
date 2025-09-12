@@ -11,7 +11,7 @@ public class L4 extends SequentialCommandGroup{
 
         addCommands(
             new ParallelCommandGroup(
-                new SetWrist(elevatorArm, 37.9),
+                //new SetWrist(elevatorArm, 37.9),
                 new SetElevatorAuto(elevatorArm, 117.5555)
                  
             ),
