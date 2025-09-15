@@ -282,7 +282,7 @@ public class OI {
         //MIDDLE TO OPPOSITE PROCESSOR
         // return new PathPlannerAuto("AutoAlignTwoPieceProcessorOp");
         //USED TO BE NAMED TOP -> NOW OPPOSITE SIDE OF PROCESSOR
-        return new PathPlannerAuto("Opposite Processor 2 Piece (1, 11) Cage");
+        return new PathPlannerAuto("Simple One Piece Auto");
         //USED TO BE NAMED BOTTOM -> NOW PROCESSOR SIDE
         // return new PathPlannerAuto("Processor 2 Piece (6, 8) Cage");
     }

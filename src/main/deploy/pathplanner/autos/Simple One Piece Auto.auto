@@ -14,10 +14,10 @@
                   "pathName": "Close Side 1 piece location 3"
                 }
               },
-              {
+              {:
                 "type": "named",
                 "data": {
-                  "name": "L4"
+                  "name": "L2"
                 }
               }
             ]
