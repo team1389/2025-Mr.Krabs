@@ -84,6 +84,7 @@ public class OI {
     private final Command Top2PieceTwo12 = drivebase.getAutonomousCommand("Top 2 Piece (2, 12)");
     private final Command Top3PieceTwo12Eleven = drivebase.getAutonomousCommand("Top 3 Piece (2, 12, 11)");
     private final Command Top1Piece2 = drivebase.getAutonomousCommand("Top 1 Piece (2)");
+    private final Command AutoTest = drivebase.getAutonomousCommand("AutoAlignTwoPieceTest");
 
     /**
      * Leave Starting Area Only
@@ -139,9 +140,10 @@ public class OI {
         m_chooser.addOption("Top 3 Piece (2, 12, 11)", Top3PieceTwo12Eleven);
         m_chooser.addOption("Three Piece (3, 11, 12)", threePieceThree11Twelve);
         m_chooser.addOption("Top 1 Piece (2)", Top1Piece2);
+        m_chooser.addOption("AutoTest", AutoTest);
 
         // post to smart dashboard
-        // SmartDashboard.putData(m_chooser);
+        SmartDashboard.putData(m_chooser);
     }
 
     /**
@@ -282,9 +284,11 @@ public class OI {
         //MIDDLE TO OPPOSITE PROCESSOR
         // return new PathPlannerAuto("AutoAlignTwoPieceProcessorOp");
         //USED TO BE NAMED TOP -> NOW OPPOSITE SIDE OF PROCESSOR
-        return new PathPlannerAuto("Simple One Piece Auto");
+        //return new PathPlannerAuto("TestAuto1");
         //USED TO BE NAMED BOTTOM -> NOW PROCESSOR SIDE
         // return new PathPlannerAuto("Processor 2 Piece (6, 8) Cage");
+
+        return m_chooser.getSelected();
     }
 
     public void setMotorBrake(boolean brake) {
