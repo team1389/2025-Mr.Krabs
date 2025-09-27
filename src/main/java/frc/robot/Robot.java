@@ -105,7 +105,7 @@ public class Robot extends TimedRobot
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) 
     {
-      m_autonomousCommand.schedule();
+      //m_autonomousCommand.schedule(); //disable auton
     }
   }
 
@@ -124,6 +124,8 @@ public class Robot extends TimedRobot
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    m_autonomousCommand.cancel();
+    CommandScheduler.getInstance().cancelAll();
     if (m_autonomousCommand != null)
     {
       m_autonomousCommand.cancel();

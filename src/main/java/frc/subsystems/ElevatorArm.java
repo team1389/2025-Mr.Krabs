@@ -262,17 +262,21 @@ public class ElevatorArm extends SubsystemBase{
         // should be based on your hardware.
         // power = -MathUtil.clamp(power, -.3, .3); // Example: Limit between -1 and 1
         double power = -wristPid.calculate(getWristRelPos(), setpoint);
+        SmartDashboard.putNumber("PID correction Wrist", power);
         wristMotor.set(MathUtil.clamp(power, -.4, .4));
+        SmartDashboard.putNumber("Wrist Correction Power", (MathUtil.clamp(power, -.4, .4)));
     }
 
     public void setWristTarget(double setpoint){
         wristTarget = setpoint;
         wristDone = false;
+        SmartDashboard.putNumber("Wrist Target", setpoint);
     }
 
     public void setShoulderTarget(double setpoint){
         shoulderTarget = setpoint;
         shoulderDone = false;
+        SmartDashboard.putNumber("Shoulder Target", setpoint);
     }
 
     public void updateWrist(){
@@ -280,6 +284,7 @@ public class ElevatorArm extends SubsystemBase{
             if(atWristTargetPosition(wristTarget)){
                 wristDone = true;
                 wristMotor.set(0);
+                SmartDashboard.putBoolean("Wrist Done", wristDone);
             } else {
                 setWrist(wristTarget);
             }
@@ -292,10 +297,12 @@ public class ElevatorArm extends SubsystemBase{
             while(!atShoulderTargetPosition(shoulderTarget)){
                 moveToSetpointShoulder(shoulderTarget);
                 shoulderDone = false;
+                //System.out.println(getShoulderRelPos()+" Shoulder Traveling");
             }
             leftShoulderMotor.set(0);
             rightShoulderMotor.set(0);
             shoulderDone = true;
+            //System.out.println(getShoulderRelPos() + " Shoulder Finished");
             /*
             if(atShoulderTargetPosition(shoulderTarget)){
                 //shoulderDone = true;
@@ -324,13 +331,14 @@ public class ElevatorArm extends SubsystemBase{
         // elevatorMotorRight.set(0);
         leftShoulderMotor.set(0);
         wristMotor.set(0);
+        //System.out.println("MOTOR STOP");
     }
 
     public boolean atTargetPosition(){
         boolean elevatorClose = atTargetPosition(elevatorTarget);
         boolean shoulderClose = atShoulderTargetPosition(shoulderTarget);
         boolean wristClose = atWristTargetPosition(wristTarget);
-    
+        
         return elevatorClose && shoulderClose && wristClose;
     }
 
