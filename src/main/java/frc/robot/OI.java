@@ -77,7 +77,7 @@ public class OI {
 
     private final TargetingSystem targetingSystem = new TargetingSystem();
 
-    private final Command m_simpleOnePieceAuto = drivebase.getAutonomousCommand("Simple One Piece Auto");
+    //private final Command m_simpleOnePieceAuto = drivebase.getAutonomousCommand("Simple One Piece Auto");
     private final Command m_driveOut = drivebase.getAutonomousCommand("Drive Out");
     private final Command twoPieceThree11 = drivebase.getAutonomousCommand("Two Piece (3, 11)");
     private final Command threePieceThree11Twelve = drivebase.getAutonomousCommand("Three Piece (3, 11, 12)");
@@ -134,7 +134,7 @@ public class OI {
         NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
 
         m_chooser.setDefaultOption("Drive Out Only", m_driveOut);
-        m_chooser.addOption("Simple One Piece Auto", m_simpleOnePieceAuto);
+        //m_chooser.addOption("Simple One Piece Auto", m_simpleOnePieceAuto);
         m_chooser.addOption("Two Piece (3, 11)", twoPieceThree11);
         m_chooser.addOption("Top 2 Piece (2, 12)", Top2PieceTwo12);
         m_chooser.addOption("Top 3 Piece (2, 12, 11)", Top3PieceTwo12Eleven);

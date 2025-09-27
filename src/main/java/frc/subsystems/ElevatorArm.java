@@ -349,8 +349,10 @@ public class ElevatorArm extends SubsystemBase{
     }
 
     public boolean  atWristTargetPosition(double height){
+        System.out.println("at setpoint");
         boolean wristClose = Math.abs(getWristRelPos() - height) < 1;
         SmartDashboard.putBoolean("Wrist At Target", wristClose);
+        if (wristClose) wristMotor.set(0);
         return wristClose;
     }
 
