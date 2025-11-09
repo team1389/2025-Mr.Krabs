@@ -2,6 +2,8 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+//Configures controllers to programmed commands
+
 package frc.robot;
 
 import java.io.File;
@@ -65,18 +67,24 @@ import frc.command.RunManualShoulder;
 public class OI {
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
-    final CommandXboxController driveController = new CommandXboxController(0);
-    final CommandXboxController operatorController = new CommandXboxController(1);
-    // The robot's subsystems and commands are defined here...
+    // Initializes controller objects
+    final CommandXboxController driveController = new CommandXboxController(0); //drive
+    final CommandXboxController operatorController = new CommandXboxController(1); //teleop
+    
+    // Initialize subsystems
     private final ElevatorArm elevatorArm = new ElevatorArm();
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
     private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
             "swerve"));
+
+    // Choose which auto to run on SmartDashboard
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+    // For vision targeting
     private final TargetingSystem targetingSystem = new TargetingSystem();
 
+    // Initialize command objects
     //private final Command m_simpleOnePieceAuto = drivebase.getAutonomousCommand("Simple One Piece Auto");
     private final Command m_driveOut = drivebase.getAutonomousCommand("Drive Out");
     private final Command twoPieceThree11 = drivebase.getAutonomousCommand("Two Piece (3, 11)");
@@ -125,6 +133,8 @@ public class OI {
         // Configure the trigger bindings
         configureBindings();
         DriverStation.silenceJoystickConnectionWarning(true);
+
+        // Register commands for Pathplanner
         NamedCommands.registerCommand("AutoAlignLeft", new AlignLeftAuto(drivebase, targetingSystem));
         NamedCommands.registerCommand("AutoAlignRight", new AlignRightAuto(drivebase, targetingSystem));
         NamedCommands.registerCommand("L4", new L4(elevatorArm));
@@ -133,6 +143,7 @@ public class OI {
         NamedCommands.registerCommand("Intake", new IntakeCoral(intake));
         NamedCommands.registerCommand("Outtake", new OuttakeCoral(intake));
 
+        // Add initialized autos as options to SmartDashboard
         m_chooser.setDefaultOption("Drive Out Only", m_driveOut);
         //m_chooser.addOption("Simple One Piece Auto", m_simpleOnePieceAuto);
         m_chooser.addOption("Two Piece (3, 11)", twoPieceThree11);
@@ -280,7 +291,7 @@ public class OI {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand() {
+    public Command getAutonomousCommand() { // return command selected on SmartDashboard
         //MIDDLE TO OPPOSITE PROCESSOR
         // return new PathPlannerAuto("AutoAlignTwoPieceProcessorOp");
         //USED TO BE NAMED TOP -> NOW OPPOSITE SIDE OF PROCESSOR
@@ -291,7 +302,7 @@ public class OI {
         return m_chooser.getSelected();
     }
 
-    public void setMotorBrake(boolean brake) {
+    public void setMotorBrake(boolean brake) { // set up brake command for YAGSL
         drivebase.setMotorBrake(brake);
     }
 }
